@@ -23,8 +23,8 @@ export default function MessageInput({ onSendMessage, onTransfer }: MessageInput
   };
 
   return (
-    <div className="p-4 border-t border-dark-border bg-dark-surface">
-      <div className="flex items-center gap-2">
+    <div className="p-4 border-t border-dark-border bg-dark-surface w-full">
+      <div className="flex items-center gap-2 w-full">
         <button className="w-10 h-10 rounded-full flex items-center justify-center hover:bg-dark-hover transition flex-shrink-0">
           <i className="ri-emotion-line text-xl text-slate-400"></i>
         </button>

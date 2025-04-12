@@ -108,9 +108,9 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="flex flex-1 h-full bg-dark-bg flex-col">
+    <div className="flex flex-1 h-full w-full bg-dark-bg flex-col">
       {/* Chat Header */}
-      <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface">
+      <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface w-full">
         <div className="flex items-center gap-3">
           <div className={`w-10 h-10 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
             {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
@@ -136,18 +136,18 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 w-full">
         {Object.entries(messagesByDate).map(([date, messages]) => (
-          <div key={date}>
+          <div key={date} className="w-full">
             {/* Date Header */}
-            <div className="flex justify-center mb-4">
+            <div className="flex justify-center mb-4 w-full">
               <div className="bg-dark-surface px-4 py-2 rounded-full text-sm text-slate-400">
                 {date}
               </div>
             </div>
             
             {/* Messages for this date */}
-            <div className="space-y-4">
+            <div className="space-y-4 w-full">
               {messages.map((message) => (
                 <MessageItem 
                   key={message.id}
