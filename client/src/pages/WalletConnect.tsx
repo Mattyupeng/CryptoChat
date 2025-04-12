@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { useWalletStore } from '@/store/store';
 import { Button } from '@/components/ui/button';

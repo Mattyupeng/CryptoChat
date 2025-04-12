@@ -61,17 +61,11 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   // Show empty state on mobile when no chat is selected
   if (!chatId) {
+    // Import ChatPlaceholder dynamically to avoid circular dependencies
+    const ChatPlaceholder = require('./ChatPlaceholder').default;
     return (
-      <div className="hidden md:flex md:flex-1 h-full bg-dark-bg flex-col items-center justify-center">
-        <div className="text-center p-4">
-          <div className="w-16 h-16 rounded-full bg-dark-surface mx-auto flex items-center justify-center mb-4">
-            <i className="ri-message-3-line text-2xl text-slate-400"></i>
-          </div>
-          <h3 className="text-xl font-medium mb-2">No Conversation Selected</h3>
-          <p className="text-slate-400 max-w-sm">
-            Select a conversation from the list or start a new one by adding a friend.
-          </p>
-        </div>
+      <div className="hidden md:flex md:flex-1 h-full">
+        <ChatPlaceholder />
       </div>
     );
   }

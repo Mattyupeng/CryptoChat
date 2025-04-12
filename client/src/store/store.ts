@@ -15,10 +15,11 @@ interface WalletState {
   isConnected: boolean;
   connecting: boolean;
   initialized: boolean;
-  chainType: 'evm' | 'solana' | null;
+  chainType: 'evm' | 'solana' | 'demo' | null;
   error: string | null;
   connectEVM: (provider?: string) => Promise<void>;
   connectSolana: () => Promise<void>;
+  connectGuest: () => void;  // Simple direct connection for guest mode
   disconnect: () => void;
   resolveEns: (name: string) => Promise<{ address: string, ensName: string } | null>;
   sendTransaction: (params: {
@@ -26,7 +27,7 @@ interface WalletState {
     amount: number;
     token: string;
     tokenAddress?: string;
-    chain: 'evm' | 'solana';
+    chain: 'evm' | 'solana' | 'demo';
   }) => Promise<string>;
 }
 
@@ -103,6 +104,44 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     }
   },
 
+  connectGuest: () => {
+    try {
+      set({ connecting: true, error: null });
+      
+      // Generate a random guest address and keys
+      const randomAddress = '0x' + Math.random().toString(16).substr(2, 40);
+      const { publicKey, privateKey } = generateKeyPair(); // Simplified for demo
+      
+      set({ 
+        address: randomAddress, 
+        ensName: 'guest.eth', 
+        publicKey, 
+        privateKey,
+        isConnected: true, 
+        connecting: false,
+        initialized: true,
+        chainType: 'demo'
+      });
+      
+      // Save to localStorage
+      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
+        address: randomAddress, 
+        ensName: 'guest.eth', 
+        publicKey, 
+        privateKey, 
+        chainType: 'demo'
+      }));
+      
+      console.log('Connected as guest with address:', randomAddress);
+    } catch (error) {
+      set({ 
+        error: error instanceof Error ? error.message : 'Failed to connect as guest',
+        connecting: false,
+        initialized: true
+      });
+    }
+  },
+  
   disconnect: () => {
     const { chainType } = get();
     
