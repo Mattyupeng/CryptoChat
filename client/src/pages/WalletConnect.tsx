@@ -54,7 +54,8 @@ export default function WalletConnect() {
       // Small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      navigate('/chat');
+      // Navigate directly to the demo chat for better UX
+      navigate('/chat/demo1');
     } catch (error) {
       setIsGuest(false);
       toast({
