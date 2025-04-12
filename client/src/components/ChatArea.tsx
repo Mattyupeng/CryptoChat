@@ -65,12 +65,18 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full bg-dark-bg p-8 text-center">
         <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
-        <p className="text-lg text-slate-400 max-w-md mb-4">
-          Choose a conversation from the sidebar to start chatting
+        <p className="text-lg text-slate-400 max-w-md mb-8">
+          Choose a conversation to start chatting
         </p>
-        <div className="animate-pulse text-6xl mb-6">💬</div>
-        <p className="text-sm text-slate-500">
-          No chat selected (chatId is null)
+        <div className="animate-pulse text-6xl mb-8">💬</div>
+        <button 
+          onClick={() => navigate('/chat/demo1')}
+          className="px-6 py-3 bg-primary text-white rounded-full font-medium mb-4 hover:bg-primary/90 transition"
+        >
+          Start Demo Chat
+        </button>
+        <p className="text-sm text-slate-500 mt-4">
+          Click the Demo User in the list or use the button above
         </p>
       </div>
     );

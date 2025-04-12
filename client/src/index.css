@@ -26,22 +26,19 @@
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 100vh;
-  z-index: 20;
-  background-color: var(--dark-bg);
 }
 
-/* Only apply absolute positioning on mobile */
-@media (min-width: 768px) {
-  .chat-area-wrapper {
-    position: relative;
-    height: auto;
-    z-index: 10;
+/* On mobile, only make chat area absolute when a chat is active */
+@media (max-width: 767px) {
+  .chat-area-wrapper.w-full {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 100vh;
+    z-index: 50;
+    background-color: var(--dark-bg);
   }
 }
 
