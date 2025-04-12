@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function WalletConnect() {
   const [, navigate] = useLocation();
-  const { connectEVM, connectSolana, isConnected, connecting, error } = useWalletStore();
+  const { connectEVM, connectSolana, connectGuest, isConnected, connecting, error } = useWalletStore();
   const [isGuest, setIsGuest] = useState(false);
   const { toast } = useToast();
 
@@ -42,16 +42,8 @@ export default function WalletConnect() {
     try {
       setIsGuest(true);
       
-      // Create a random wallet address
-      const randomAddress = '0x' + Math.random().toString(16).substring(2, 14) + Math.random().toString(16).substring(2, 14);
-      
-      // Set some values in localStorage to simulate being logged in
-      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
-        address: randomAddress,
-        publicKey: 'guestPublicKey',
-        privateKey: 'guestPrivateKey',
-        chainType: 'demo'
-      }));
+      // Use our improved connectGuest method
+      connectGuest();
       
       // Show success notification
       toast({

@@ -35,22 +35,36 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
               userAddress = data.payload.address;
               clients.set(userAddress, ws);
               
-              // Update user in storage or create if not exists
-              const existingUser = await storage.getUserByAddress(userAddress);
-              if (existingUser) {
-                await storage.updateUser(userAddress, {
-                  publicKey: data.payload.publicKey || existingUser.publicKey,
-                  lastSeen: new Date()
-                });
+              // Check if this is a guest user
+              const isGuest = data.payload.isGuest === true;
+              
+              if (isGuest) {
+                console.log(`Guest user connected with address: ${userAddress}`);
+                // For guest users, we don't persist them in storage
+                // Just keep them in the client map for the session
               } else {
-                // Create new user
-                await storage.createUser({
-                  address: userAddress,
-                  publicKey: data.payload.publicKey,
-                  ensName: '', // Empty string instead of null
-                  displayName: '', // Initialize display name
-                  lastSeen: new Date()
-                });
+                // Update user in storage or create if not exists
+                try {
+                  const existingUser = await storage.getUserByAddress(userAddress);
+                  if (existingUser) {
+                    await storage.updateUser(userAddress, {
+                      publicKey: data.payload.publicKey || existingUser.publicKey,
+                      lastSeen: new Date()
+                    });
+                  } else {
+                    // Create new user
+                    await storage.createUser({
+                      address: userAddress,
+                      publicKey: data.payload.publicKey,
+                      ensName: data.payload.ensName || '', // Empty string instead of null
+                      displayName: '', // Initialize display name
+                      lastSeen: new Date()
+                    });
+                  }
+                } catch (error) {
+                  console.error(`Error updating/creating user ${userAddress}:`, error);
+                  // Continue anyway - don't prevent connection due to storage errors
+                }
               }
               
               // Notify client of successful connection
@@ -143,11 +157,18 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
         // Remove from connected clients
         clients.delete(userAddress);
         
-        // Update last seen timestamp
-        try {
-          await storage.updateUser(userAddress, { lastSeen: new Date() });
-        } catch (error) {
-          console.error('Error updating user last seen:', error);
+        // Check if this is a guest address (starts with 0x and longer than usual)
+        const isGuestAddress = userAddress.startsWith('0x') && userAddress.length > 42;
+        
+        // Update last seen timestamp for real users only
+        if (!isGuestAddress) {
+          try {
+            await storage.updateUser(userAddress, { lastSeen: new Date() });
+          } catch (error) {
+            console.error('Error updating user last seen:', error);
+          }
+        } else {
+          console.log(`Guest user disconnected: ${userAddress}`);
         }
         
         // Broadcast offline status

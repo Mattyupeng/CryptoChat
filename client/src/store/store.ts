@@ -46,7 +46,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     try {
       set({ connecting: true, error: null });
       const { address, ensName } = await connectWeb3Wallet(provider);
-      const { publicKey, privateKey } = await generateKeyPair();
+      
+      // Create demo keys for now (in real app would use proper key generation)
+      const publicKey = 'evm_' + Math.random().toString(36).substring(2, 15);
+      const privateKey = 'private_' + Math.random().toString(36).substring(2, 15);
       
       set({ 
         address, 
@@ -77,7 +80,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
     try {
       set({ connecting: true, error: null });
       const { address } = await connectSolanaWallet();
-      const { publicKey, privateKey } = await generateKeyPair();
+      
+      // Create demo keys for now (in real app would use proper key generation)
+      const publicKey = 'sol_' + Math.random().toString(36).substring(2, 15);
+      const privateKey = 'private_' + Math.random().toString(36).substring(2, 15);
       
       set({ 
         address, 
@@ -110,7 +116,10 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       
       // Generate a random guest address and keys
       const randomAddress = '0x' + Math.random().toString(16).substr(2, 40);
-      const { publicKey, privateKey } = generateKeyPair(); // Simplified for demo
+      
+      // Create demo keys for guest mode
+      const publicKey = 'guest_' + Math.random().toString(36).substring(2, 15);
+      const privateKey = 'private_' + Math.random().toString(36).substring(2, 15);
       
       set({ 
         address: randomAddress, 
