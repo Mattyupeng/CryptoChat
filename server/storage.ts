@@ -28,7 +28,7 @@ export class MemStorage implements IStorage {
     // In our model, we're using address instead of username
     // This method is kept for interface compatibility
     return Array.from(this.users.values()).find(
-      (user) => user.address === username || user.ensName === username,
+      (user) => user.address === username,
     );
   }
 

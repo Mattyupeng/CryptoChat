@@ -19,7 +19,7 @@ const connectionCounter = {
 
 export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
   wss.on('connection', (ws, req) => {
-    let userAddress: string | null = null;
+    let userAddress: string = '';
     connectionCounter.increment();
     
     // Handle client messages
@@ -40,14 +40,16 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
               if (existingUser) {
                 await storage.updateUser(userAddress, {
                   publicKey: data.payload.publicKey || existingUser.publicKey,
-                  lastSeen: Date.now()
+                  lastSeen: new Date()
                 });
               } else {
+                // Create new user
                 await storage.createUser({
                   address: userAddress,
                   publicKey: data.payload.publicKey,
-                  ensName: null,
-                  lastSeen: Date.now()
+                  ensName: '', // Empty string instead of null
+                  displayName: '', // Initialize display name
+                  lastSeen: new Date()
                 });
               }
               
@@ -143,7 +145,7 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
         
         // Update last seen timestamp
         try {
-          await storage.updateUser(userAddress, { lastSeen: Date.now() });
+          await storage.updateUser(userAddress, { lastSeen: new Date() });
         } catch (error) {
           console.error('Error updating user last seen:', error);
         }

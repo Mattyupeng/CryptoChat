@@ -31,7 +31,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         address,
         publicKey,
         ensName: ensName || null,
-        lastSeen: Date.now()
+        lastSeen: new Date()
       });
       
       res.status(201).json(user);
@@ -72,7 +72,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updatedUser = await storage.updateUser(address, {
         publicKey: publicKey || user.publicKey,
         ensName: ensName !== undefined ? ensName : user.ensName,
-        lastSeen: lastSeen || Date.now()
+        lastSeen: lastSeen ? new Date(lastSeen) : new Date()
       });
       
       res.json(updatedUser);
