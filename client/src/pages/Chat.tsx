@@ -136,8 +136,9 @@ export default function Chat() {
   return (
     <Layout>
       <div className="flex h-full w-full overflow-hidden bg-dark-bg text-slate-50">
-        {/* Left column: Sidebar + Chat List */}
-        <div className="flex flex-col h-full md:w-80 md:flex-shrink-0 md:border-r md:border-dark-border">
+        {/* Left column: Sidebar + Chat List - hidden on mobile when chat is active */}
+        <div className={`flex-col h-full md:w-80 md:flex-shrink-0 md:border-r md:border-dark-border 
+                         ${currentChatId ? 'hidden md:flex' : 'flex'}`}>
           {/* Desktop Sidebar */}
           <div className="hidden md:flex">
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -179,16 +180,16 @@ export default function Chat() {
           </div>
         </div>
 
-        {/* Right column: Chat Area */}
-        <div className="chat-area-wrapper">
+        {/* Right column: Chat Area - fullscreen on mobile when active */}
+        <div className={`chat-area-wrapper ${currentChatId ? 'w-full' : 'hidden md:block'}`}>
           <ChatArea 
             chatId={currentChatId} 
             onTransfer={handleOpenTransfer} 
           />
         </div>
 
-        {/* Mobile Navigation */}
-        <div className="fixed bottom-0 left-0 right-0 md:hidden">
+        {/* Mobile Navigation - hide when chat is active */}
+        <div className={`fixed bottom-0 left-0 right-0 md:hidden ${currentChatId ? 'hidden' : 'block'}`}>
           <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 

@@ -112,6 +112,14 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       {/* Chat Header */}
       <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface w-full">
         <div className="flex items-center gap-3">
+          {/* Back button for mobile - hidden on desktop */}
+          <button 
+            onClick={() => navigate('/chat')} 
+            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+          >
+            <i className="ri-arrow-left-line text-xl text-slate-400"></i>
+          </button>
+          
           <div className={`w-10 h-10 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
             {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
           </div>
