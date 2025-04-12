@@ -3,7 +3,6 @@ import { useLocation } from 'wouter';
 import { useChatStore } from '@/store/store';
 import MessageItem from './MessageItem';
 import MessageInput from './MessageInput';
-import ChatPlaceholder from './ChatPlaceholder';
 import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
 
@@ -62,9 +61,18 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   // Show empty state on mobile when no chat is selected
   if (!chatId) {
+    // Use the ChatPlaceholder component directly, imported at the top of the file
     return (
       <div className="hidden md:flex md:flex-1 h-full">
-        <ChatPlaceholder />
+        <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-dark-bg text-center">
+          <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
+            <div className="text-4xl text-primary">💬</div>
+          </div>
+          <h2 className="text-2xl font-semibold mb-2">CryptoChat</h2>
+          <p className="text-slate-400 max-w-md mb-8">
+            Select a conversation from the sidebar or start a new chat by adding a contact.
+          </p>
+        </div>
       </div>
     );
   }

@@ -100,12 +100,6 @@ function handleSocketMessage(message: any) {
       // Not implemented yet
       break;
     
-    case 'ping':
-      // Server ping to keep connection alive - we can ignore these
-      // They're just a sign the connection is working
-      console.log('Received ping from server');
-      break;
-    
     case 'error':
       // Handle server errors
       console.error('Server error:', message.payload);

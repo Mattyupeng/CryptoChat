@@ -44,15 +44,12 @@ export default function Chat() {
     const hasWallet = localStorage.getItem('cryptoChat_wallet') !== null;
     
     if (isConnected || hasWallet) {
-      // First load any existing chats
       loadChats();
       loadFriends();
       
-      // Check if we need to add demo data for guest mode
-      const existingChats = JSON.parse(localStorage.getItem('cryptoChat_chats') || '[]');
-      
-      if (existingChats.length === 0) {
-        console.log('Creating demo conversation for guest mode');
+      // Add demo data for testing in guest mode
+      if (!localStorage.getItem('cryptoChat_chats') || 
+          JSON.parse(localStorage.getItem('cryptoChat_chats') || '[]').length === 0) {
         
         // Create demo friend
         const demoFriend = {
@@ -66,6 +63,9 @@ export default function Chat() {
           publicKey: 'demoPublicKey',
           createdAt: Date.now()
         };
+        
+        // Save to localStorage directly
+        localStorage.setItem('cryptoChat_friends', JSON.stringify([demoFriend]));
         
         // Create demo chat with messages
         const demoChat = {
@@ -100,22 +100,15 @@ export default function Chat() {
           createdAt: Date.now() - 86400000
         };
         
-        // Save to localStorage
-        localStorage.setItem('cryptoChat_friends', JSON.stringify([demoFriend]));
+        // Save to localStorage directly
         localStorage.setItem('cryptoChat_chats', JSON.stringify([demoChat]));
         
-        // Reload data to ensure it's in the state
+        // Reload data
         loadChats();
         loadFriends();
-        
-        // Auto-navigate to demo chat on first load for guest mode
-        if (match && !params?.id) {
-          // Only navigate if we're on /chat without an ID
-          navigate('/chat/demo1');
-        }
       }
     }
-  }, [isConnected, loadChats, loadFriends, match, params, navigate]);
+  }, [isConnected, loadChats, loadFriends]);
 
   // Handle opening transfer modal with specific recipient
   const handleOpenTransfer = (recipient?: string) => {
