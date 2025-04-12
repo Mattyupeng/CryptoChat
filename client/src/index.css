@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --dark-bg: #0c0f1d;
+  --dark-card: #151a30;
+  --dark-hover: #212a42;
+  --dark-border: #2a3453;
+}
+
 @layer base {
   * {
     @apply border-border;
@@ -9,5 +16,25 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    background-color: var(--dark-bg);
+    color: #fff;
+  }
+}
+
+@layer utilities {
+  .bg-dark-bg {
+    background-color: var(--dark-bg);
+  }
+  
+  .bg-dark-card {
+    background-color: var(--dark-card);
+  }
+  
+  .hover\:bg-dark-hover:hover {
+    background-color: var(--dark-hover);
+  }
+  
+  .border-dark-border {
+    border-color: var(--dark-border);
   }
 }

@@ -38,14 +38,39 @@ export default function WalletConnect() {
   };
 
   // Handle guest mode (temporary wallet)
-  const handleGuestMode = () => {
-    setIsGuest(true);
-    // Implement guest mode with temporary keypair
-    toast({
-      title: "Guest Mode",
-      description: "You are using a temporary wallet. Your data will not be saved between sessions.",
-    });
-    navigate('/chat');
+  const handleGuestMode = async () => {
+    try {
+      setIsGuest(true);
+      
+      // Create a random wallet address
+      const randomAddress = '0x' + Math.random().toString(16).substring(2, 14) + Math.random().toString(16).substring(2, 14);
+      
+      // Set some values in localStorage to simulate being logged in
+      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
+        address: randomAddress,
+        publicKey: 'guestPublicKey',
+        privateKey: 'guestPrivateKey',
+        chainType: 'demo'
+      }));
+      
+      // Show success notification
+      toast({
+        title: "Guest Mode Activated",
+        description: "You are using a temporary wallet. Your data will not be saved between sessions.",
+      });
+      
+      // Small delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      navigate('/chat');
+    } catch (error) {
+      setIsGuest(false);
+      toast({
+        title: "Error",
+        description: "Failed to enter guest mode. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   // Redirect if already connected
@@ -55,10 +80,10 @@ export default function WalletConnect() {
   }
 
   return (
-    <div className="md:hidden flex flex-col h-screen w-full bg-dark-bg text-slate-50">
+    <div className="flex flex-col h-screen w-full bg-dark-bg text-slate-50">
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
-          <i className="ri-wallet-3-line text-4xl text-primary"></i>
+          <div className="text-4xl text-primary">🔐</div>
         </div>
         <h1 className="text-2xl font-semibold mb-2">Connect Your Wallet</h1>
         <p className="text-slate-400 text-center mb-8">Connect your wallet to start sending encrypted messages and assets</p>
@@ -69,8 +94,7 @@ export default function WalletConnect() {
             disabled={connecting}
             className="w-full bg-[#3396FF] hover:bg-[#2d84db] py-3 px-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
           >
-            <i className="ri-wallet-3-line text-xl"></i>
-            Connect with WalletConnect
+            {connecting ? 'Connecting...' : 'Connect with WalletConnect'}
           </Button>
           
           <Button
@@ -78,8 +102,7 @@ export default function WalletConnect() {
             disabled={connecting}
             className="w-full bg-[#FF8000] hover:bg-[#e07200] py-3 px-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
           >
-            <i className="ri-compass-3-line text-xl"></i>
-            Connect with MetaMask
+            {connecting ? 'Connecting...' : 'Connect with MetaMask'}
           </Button>
           
           <Button
@@ -87,8 +110,7 @@ export default function WalletConnect() {
             disabled={connecting}
             className="w-full bg-[#9945FF] hover:bg-[#8a3dee] py-3 px-4 rounded-xl font-medium text-white flex items-center justify-center gap-2"
           >
-            <i className="ri-space-ship-fill text-xl"></i>
-            Connect with Phantom
+            {connecting ? 'Connecting...' : 'Connect with Phantom'}
           </Button>
           
           <div className="relative my-6">
@@ -105,10 +127,15 @@ export default function WalletConnect() {
             disabled={connecting || isGuest}
             className="w-full border border-slate-700 hover:bg-dark-hover py-3 px-4 rounded-xl font-medium text-slate-200 flex items-center justify-center gap-2"
           >
-            <i className="ri-user-line text-xl"></i>
-            Continue as Guest
+            {isGuest ? 'Loading Guest Mode...' : 'Continue as Guest'}
           </Button>
         </div>
+        
+        {error && (
+          <div className="mt-4 p-3 bg-red-900/30 border border-red-900 rounded-md text-red-200 text-sm max-w-xs">
+            {error}
+          </div>
+        )}
       </div>
       
       <div className="p-4 text-center text-xs text-slate-500">

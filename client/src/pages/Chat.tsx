@@ -22,16 +22,91 @@ export default function Chat() {
 
   // Check if user is authenticated, redirect if not
   useEffect(() => {
-    if (initialized && !isConnected) {
+    // Check if we have a wallet in localStorage (including guest mode wallet)
+    const hasWallet = localStorage.getItem('cryptoChat_wallet') !== null;
+    
+    if (initialized && !isConnected && !hasWallet) {
+      // Only redirect if we don't have a wallet stored
       navigate('/connect');
+    } else if (hasWallet && !isConnected) {
+      // If we have wallet info but store says not connected, attempt to load from localStorage
+      const storedWallet = JSON.parse(localStorage.getItem('cryptoChat_wallet') || '{}');
+      if (storedWallet.address) {
+        console.log('Restoring session from localStorage');
+        // Could dispatch action to restore wallet state here if needed
+      }
     }
   }, [isConnected, initialized, navigate]);
 
   // Load chats and friends from local storage on initial render
   useEffect(() => {
-    if (isConnected) {
+    // Load chats and friends even in guest mode
+    const hasWallet = localStorage.getItem('cryptoChat_wallet') !== null;
+    
+    if (isConnected || hasWallet) {
       loadChats();
       loadFriends();
+      
+      // Add demo data for testing in guest mode
+      if (!localStorage.getItem('cryptoChat_chats') || 
+          JSON.parse(localStorage.getItem('cryptoChat_chats') || '[]').length === 0) {
+        
+        // Create demo friend
+        const demoFriend = {
+          id: 'demo1',
+          address: '0xDemoAddress123',
+          ensName: 'demo.eth',
+          displayName: 'Demo User',
+          avatarColor: 'bg-primary',
+          isOnline: true,
+          isMutualFriend: true,
+          publicKey: 'demoPublicKey',
+          createdAt: Date.now()
+        };
+        
+        // Save to localStorage directly
+        localStorage.setItem('cryptoChat_friends', JSON.stringify([demoFriend]));
+        
+        // Create demo chat with messages
+        const demoChat = {
+          id: 'demo1',
+          address: '0xDemoAddress123',
+          ensName: 'demo.eth',
+          displayName: 'Demo User',
+          avatarColor: 'bg-primary',
+          isOnline: true,
+          messages: [
+            {
+              id: 'msg1',
+              chatId: 'demo1',
+              content: 'Welcome to CryptoChat! 👋',
+              senderId: 'demo1',
+              recipientId: 'self',
+              timestamp: Date.now() - 3600000,
+              status: 'read'
+            },
+            {
+              id: 'msg2',
+              chatId: 'demo1',
+              content: 'This is a demo conversation to showcase the application.',
+              senderId: 'demo1',
+              recipientId: 'self',
+              timestamp: Date.now() - 3500000,
+              status: 'read'
+            }
+          ],
+          lastRead: Date.now(),
+          publicKey: 'demoPublicKey',
+          createdAt: Date.now() - 86400000
+        };
+        
+        // Save to localStorage directly
+        localStorage.setItem('cryptoChat_chats', JSON.stringify([demoChat]));
+        
+        // Reload data
+        loadChats();
+        loadFriends();
+      }
     }
   }, [isConnected, loadChats, loadFriends]);
 
