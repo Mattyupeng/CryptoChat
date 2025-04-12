@@ -57,8 +57,23 @@ export function setupSocketConnection(): WebSocket {
   // Set up message handler
   socket.onmessage = (event) => {
     try {
-      const message = JSON.parse(event.data);
-      handleSocketMessage(message);
+      // Check if event.data is a string before parsing
+      if (typeof event.data === 'string') {
+        // Handle server pings specially to avoid warnings
+        if (event.data === 'ping') {
+          console.log('Received ping from server');
+          // Optionally send a pong back
+          if (socket.readyState === WebSocket.OPEN) {
+            socket.send('pong');
+          }
+          return;
+        }
+        
+        const message = JSON.parse(event.data);
+        handleSocketMessage(message);
+      } else {
+        console.warn('Received non-string message from WebSocket:', event.data);
+      }
     } catch (error) {
       console.error('Failed to parse socket message:', error);
     }

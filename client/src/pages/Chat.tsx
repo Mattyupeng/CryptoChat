@@ -33,7 +33,11 @@ export default function Chat() {
       const storedWallet = JSON.parse(localStorage.getItem('cryptoChat_wallet') || '{}');
       if (storedWallet.address) {
         console.log('Restoring session from localStorage');
-        // Could dispatch action to restore wallet state here if needed
+        // Force connect with guest mode if we have a demo wallet stored
+        if (storedWallet.chainType === 'demo') {
+          const { connectGuest } = useWalletStore.getState();
+          connectGuest();
+        }
       }
     }
   }, [isConnected, initialized, navigate]);

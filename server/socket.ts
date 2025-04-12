@@ -187,7 +187,8 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
   setInterval(() => {
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: 'ping' }));
+        // Just send 'ping' as raw text instead of JSON for simpler client handling
+        client.send('ping');
       }
     });
   }, 30000);
