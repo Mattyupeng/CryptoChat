@@ -1,0 +1,189 @@
+import { WebSocketServer, WebSocket } from "ws";
+import { IStorage } from "./storage";
+
+// Connected clients map: address -> WebSocket
+const clients = new Map<string, WebSocket>();
+
+// Track active connections
+const connectionCounter = {
+  count: 0,
+  increment() {
+    this.count++;
+    console.log(`Active connections: ${this.count}`);
+  },
+  decrement() {
+    this.count--;
+    console.log(`Active connections: ${this.count}`);
+  }
+};
+
+export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
+  wss.on('connection', (ws, req) => {
+    let userAddress: string | null = null;
+    connectionCounter.increment();
+    
+    // Handle client messages
+    ws.on('message', async (message: Buffer) => {
+      try {
+        const data = JSON.parse(message.toString());
+        
+        // Process based on message type
+        switch (data.type) {
+          case 'handshake':
+            // Register client when they connect
+            if (data.payload?.address) {
+              userAddress = data.payload.address;
+              clients.set(userAddress, ws);
+              
+              // Update user in storage or create if not exists
+              const existingUser = await storage.getUserByAddress(userAddress);
+              if (existingUser) {
+                await storage.updateUser(userAddress, {
+                  publicKey: data.payload.publicKey || existingUser.publicKey,
+                  lastSeen: Date.now()
+                });
+              } else {
+                await storage.createUser({
+                  address: userAddress,
+                  publicKey: data.payload.publicKey,
+                  ensName: null,
+                  lastSeen: Date.now()
+                });
+              }
+              
+              // Notify client of successful connection
+              ws.send(JSON.stringify({
+                type: 'handshake',
+                payload: { success: true }
+              }));
+              
+              // Broadcast online status to friends
+              broadcastPresence(userAddress, true);
+            }
+            break;
+            
+          case 'message':
+            // Process and relay messages between users
+            if (!userAddress || !data.payload) {
+              return;
+            }
+            
+            const { recipientId, content } = data.payload;
+            if (!recipientId || !content) {
+              return;
+            }
+            
+            // Get recipient socket
+            const recipient = await storage.getUserByAddress(recipientId);
+            const recipientWs = recipient ? clients.get(recipient.address) : null;
+            
+            // Forward message to recipient if online
+            if (recipientWs && recipientWs.readyState === WebSocket.OPEN) {
+              recipientWs.send(JSON.stringify({
+                type: 'message',
+                payload: {
+                  ...data.payload,
+                  status: 'delivered'
+                }
+              }));
+              
+              // Send delivery receipt back to sender
+              ws.send(JSON.stringify({
+                type: 'receipt',
+                payload: {
+                  messageId: data.payload.id,
+                  status: 'delivered',
+                  timestamp: Date.now()
+                }
+              }));
+            } else {
+              // Store message for offline delivery
+              // In a real app, this would be stored in the database
+              
+              // Send pending receipt back to sender
+              ws.send(JSON.stringify({
+                type: 'receipt',
+                payload: {
+                  messageId: data.payload.id,
+                  status: 'pending',
+                  timestamp: Date.now()
+                }
+              }));
+            }
+            break;
+            
+          case 'presence':
+            // Handle online/offline status updates
+            if (userAddress) {
+              broadcastPresence(userAddress, data.payload?.online === true);
+            }
+            break;
+        }
+      } catch (error) {
+        console.error('Error processing WebSocket message:', error);
+        
+        // Send error back to client
+        ws.send(JSON.stringify({
+          type: 'error',
+          payload: {
+            message: 'Error processing message',
+            error: error instanceof Error ? error.message : 'Unknown error'
+          }
+        }));
+      }
+    });
+    
+    // Handle disconnection
+    ws.on('close', async () => {
+      connectionCounter.decrement();
+      
+      if (userAddress) {
+        // Remove from connected clients
+        clients.delete(userAddress);
+        
+        // Update last seen timestamp
+        try {
+          await storage.updateUser(userAddress, { lastSeen: Date.now() });
+        } catch (error) {
+          console.error('Error updating user last seen:', error);
+        }
+        
+        // Broadcast offline status
+        broadcastPresence(userAddress, false);
+      }
+    });
+    
+    // Handle errors
+    ws.on('error', (error) => {
+      console.error('WebSocket error:', error);
+      ws.close();
+    });
+  });
+  
+  // Server heartbeat to keep connections alive
+  setInterval(() => {
+    wss.clients.forEach((client) => {
+      if (client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({ type: 'ping' }));
+      }
+    });
+  }, 30000);
+}
+
+// Broadcast presence (online/offline) to friends
+async function broadcastPresence(address: string, online: boolean) {
+  // In a real app, you would fetch friends list from database
+  // and only broadcast to them
+  clients.forEach((client, clientAddress) => {
+    if (clientAddress !== address && client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify({
+        type: 'presence',
+        payload: {
+          address,
+          online,
+          timestamp: Date.now()
+        }
+      }));
+    }
+  });
+}
