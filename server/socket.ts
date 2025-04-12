@@ -187,7 +187,11 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
   setInterval(() => {
     wss.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
-        client.send(JSON.stringify({ type: 'ping' }));
+        try {
+          client.send(JSON.stringify({ type: 'ping', timestamp: Date.now() }));
+        } catch (error) {
+          console.error('Error sending ping:', error);
+        }
       }
     });
   }, 30000);
