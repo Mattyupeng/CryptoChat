@@ -51,6 +51,56 @@ export default function WalletConnect() {
         description: "You are using a temporary wallet. Your data will not be saved between sessions.",
       });
       
+      // Initialize demo data
+      const demoFriend = {
+        id: 'demo1',
+        address: '0xDemoAddress123',
+        ensName: 'demo.eth',
+        displayName: 'Demo User',
+        avatarColor: 'bg-primary',
+        isOnline: true,
+        isMutualFriend: true,
+        publicKey: 'demoPublicKey',
+        createdAt: Date.now()
+      };
+      
+      // Create demo chat with messages
+      const demoChat = {
+        id: 'demo1',
+        address: '0xDemoAddress123',
+        ensName: 'demo.eth',
+        displayName: 'Demo User',
+        avatarColor: 'bg-primary',
+        isOnline: true,
+        messages: [
+          {
+            id: 'msg1',
+            chatId: 'demo1',
+            content: 'Welcome to CryptoChat! 👋',
+            senderId: 'demo1',
+            recipientId: 'self',
+            timestamp: Date.now() - 3600000,
+            status: 'read'
+          },
+          {
+            id: 'msg2',
+            chatId: 'demo1',
+            content: 'This is a demo conversation to showcase the application.',
+            senderId: 'demo1',
+            recipientId: 'self',
+            timestamp: Date.now() - 3500000,
+            status: 'read'
+          }
+        ],
+        lastRead: Date.now(),
+        publicKey: 'demoPublicKey',
+        createdAt: Date.now() - 86400000
+      };
+      
+      // Save demo data directly to localStorage
+      localStorage.setItem('cryptoChat_friends', JSON.stringify([demoFriend]));
+      localStorage.setItem('cryptoChat_chats', JSON.stringify([demoChat]));
+      
       // Small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 500));
       
