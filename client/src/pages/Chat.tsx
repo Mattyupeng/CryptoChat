@@ -136,52 +136,61 @@ export default function Chat() {
   return (
     <Layout>
       <div className="flex h-full w-full overflow-hidden bg-dark-bg text-slate-50">
-        {/* Desktop Sidebar */}
-        <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-        
-        {/* Chat List Column */}
-        <div className="w-full md:w-80 h-full bg-dark-surface flex-shrink-0 border-r border-dark-border flex flex-col">
-          {/* Header */}
-          <div className="p-4 border-b border-dark-border flex items-center justify-between">
-            <h1 className="text-xl font-semibold">
-              {activeTab === 'chats' ? 'Messages' : 
-              activeTab === 'contacts' ? 'Friends' : 
-              activeTab === 'wallet' ? 'Wallet' : 'Settings'}
-            </h1>
-            <div className="flex gap-2">
-              <button 
-                className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                onClick={() => {/* Implement search functionality */}}
-              >
-                <i className="ri-search-line text-xl text-slate-400"></i>
-              </button>
-              <button 
-                className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                onClick={() => setShowAddFriendModal(true)}
-              >
-                <i className="ri-add-line text-xl text-slate-400"></i>
-              </button>
-            </div>
+        {/* Left column: Sidebar + Chat List */}
+        <div className="flex flex-col h-full md:w-80 md:flex-shrink-0 md:border-r md:border-dark-border">
+          {/* Desktop Sidebar */}
+          <div className="hidden md:flex">
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
+          
+          {/* Chat List Column */}
+          <div className="w-full h-full bg-dark-surface flex-shrink-0 border-r border-dark-border flex flex-col">
+            {/* Header */}
+            <div className="p-4 border-b border-dark-border flex items-center justify-between">
+              <h1 className="text-xl font-semibold">
+                {activeTab === 'chats' ? 'Messages' : 
+                activeTab === 'contacts' ? 'Friends' : 
+                activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+              </h1>
+              <div className="flex gap-2">
+                <button 
+                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                  onClick={() => {/* Implement search functionality */}}
+                >
+                  <i className="ri-search-line text-xl text-slate-400"></i>
+                </button>
+                <button 
+                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                  onClick={() => setShowAddFriendModal(true)}
+                >
+                  <i className="ri-add-line text-xl text-slate-400"></i>
+                </button>
+              </div>
+            </div>
 
-          {/* Wallet Connection Banner */}
-          <WalletConnectionBanner />
+            {/* Wallet Connection Banner */}
+            <WalletConnectionBanner />
 
-          {/* Chat or Friends List based on active tab */}
-          <ChatList 
-            activeTab={activeTab} 
-            currentChatId={currentChatId} 
+            {/* Chat or Friends List based on active tab */}
+            <ChatList 
+              activeTab={activeTab} 
+              currentChatId={currentChatId} 
+            />
+          </div>
+        </div>
+
+        {/* Right column: Chat Area */}
+        <div className="chat-area-wrapper">
+          <ChatArea 
+            chatId={currentChatId} 
+            onTransfer={handleOpenTransfer} 
           />
         </div>
 
-        {/* Chat Area (only shown on desktop or when a chat is selected on mobile) */}
-        <ChatArea 
-          chatId={currentChatId} 
-          onTransfer={handleOpenTransfer} 
-        />
-
         {/* Mobile Navigation */}
-        <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        <div className="fixed bottom-0 left-0 right-0 md:hidden">
+          <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
 
         {/* Modals */}
         {showAddFriendModal && (

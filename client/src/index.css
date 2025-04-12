@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Specific layout fixes */
+.chat-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.chat-messages {
+  flex: 1;
+  width: 100%;
+  overflow-y: auto;
+}
+
+.chat-area-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+}
+
 :root {
   --dark-bg: #0c0f1d;
   --dark-card: #151a30;

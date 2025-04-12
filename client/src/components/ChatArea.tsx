@@ -108,7 +108,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="flex flex-1 h-full w-full bg-dark-bg flex-col">
+    <div className="chat-container bg-dark-bg">
       {/* Chat Header */}
       <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface w-full">
         <div className="flex items-center gap-3">
@@ -136,30 +136,37 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       </div>
 
       {/* Chat Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 w-full">
-        {Object.entries(messagesByDate).map(([date, messages]) => (
-          <div key={date} className="w-full">
-            {/* Date Header */}
-            <div className="flex justify-center mb-4 w-full">
-              <div className="bg-dark-surface px-4 py-2 rounded-full text-sm text-slate-400">
-                {date}
+      <div className="chat-messages p-4 space-y-4 w-full">
+        {Object.entries(messagesByDate).length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-full w-full">
+            <div className="text-4xl mb-4">💬</div>
+            <p className="text-slate-400">Start chatting with {currentChat.displayName || currentChat.ensName || 'this contact'}</p>
+          </div>
+        ) : (
+          Object.entries(messagesByDate).map(([date, messages]) => (
+            <div key={date} className="w-full">
+              {/* Date Header */}
+              <div className="flex justify-center mb-4 w-full">
+                <div className="bg-dark-surface px-4 py-2 rounded-full text-sm text-slate-400">
+                  {date}
+                </div>
+              </div>
+              
+              {/* Messages for this date */}
+              <div className="space-y-4 w-full">
+                {messages.map((message) => (
+                  <MessageItem 
+                    key={message.id}
+                    message={message}
+                    isSelf={message.senderId !== currentChat.id}
+                    senderName={message.senderId !== currentChat.id ? 'You' : currentChat.displayName || currentChat.ensName || ''}
+                    senderAvatar={currentChat.avatarColor || 'bg-accent'}
+                  />
+                ))}
               </div>
             </div>
-            
-            {/* Messages for this date */}
-            <div className="space-y-4 w-full">
-              {messages.map((message) => (
-                <MessageItem 
-                  key={message.id}
-                  message={message}
-                  isSelf={message.senderId !== currentChat.id}
-                  senderName={message.senderId !== currentChat.id ? 'You' : currentChat.displayName || currentChat.ensName || ''}
-                  senderAvatar={currentChat.avatarColor || 'bg-accent'}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
+          ))
+        )}
         
         {/* Typing indicator */}
         {isTyping && (

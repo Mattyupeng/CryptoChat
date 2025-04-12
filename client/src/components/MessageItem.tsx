@@ -88,9 +88,9 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
 
   if (isSelf) {
     return (
-      <div className="flex flex-row-reverse items-end gap-2 max-w-[75%] ml-auto">
-        <div className="flex flex-col items-end">
-          <div className="bg-primary/20 border border-primary/30 px-4 py-2.5 rounded-t-xl rounded-bl-xl">
+      <div className="flex flex-row-reverse items-end gap-2 w-full">
+        <div className="flex flex-col items-end max-w-[75%]">
+          <div className="bg-primary/20 border border-primary/30 px-4 py-2.5 rounded-t-xl rounded-bl-xl w-full">
             {renderContent()}
             {renderTransaction()}
           </div>
@@ -104,11 +104,11 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
   }
 
   return (
-    <div className="flex items-end gap-2 max-w-[75%]">
+    <div className="flex items-end gap-2 w-full">
       <div className={`w-8 h-8 rounded-full ${senderAvatar} flex items-center justify-center flex-shrink-0 font-medium text-sm`}>
         {senderName?.charAt(0).toUpperCase() || 'U'}
       </div>
-      <div>
+      <div className="max-w-[75%]">
         <div className="bg-dark-surface px-4 py-2.5 rounded-t-xl rounded-br-xl">
           {renderContent()}
           {renderTransaction()}
