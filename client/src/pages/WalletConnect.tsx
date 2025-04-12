@@ -65,11 +65,12 @@ export default function WalletConnect() {
     }
   };
 
-  // Redirect if already connected
-  if (isConnected && !connecting) {
-    navigate('/chat');
-    return null;
-  }
+  // Use useEffect to handle navigation instead of conditional rendering
+  useEffect(() => {
+    if (isConnected && !connecting) {
+      navigate('/chat');
+    }
+  }, [isConnected, connecting, navigate]);
 
   return (
     <div className="flex flex-col h-screen w-full bg-dark-bg text-slate-50">

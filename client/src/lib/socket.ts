@@ -73,10 +73,10 @@ export function closeSocketConnection(socket: WebSocket) {
   }
 }
 
+// Import at top level to avoid require in browser
+import { useChatStore } from '@/store/store';
+
 function handleSocketMessage(message: any) {
-  // Import dynamically to avoid circular dependencies
-  const { useChatStore } = require('@/store/store');
-  
   if (!message || !message.type) {
     console.error('Invalid message format:', message);
     return;
@@ -86,12 +86,18 @@ function handleSocketMessage(message: any) {
     case 'message':
       // Handle incoming chat message
       if (message.payload) {
-        useChatStore.getState().receiveMessage(message.payload);
+        try {
+          // Get the store state directly
+          useChatStore.getState().receiveMessage(message.payload);
+        } catch (error) {
+          console.error('Error processing incoming message:', error);
+        }
       }
       break;
     
     case 'presence':
       // Handle user presence updates (online/offline)
+      // Not implemented yet
       break;
     
     case 'error':
