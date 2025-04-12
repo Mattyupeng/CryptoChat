@@ -25,7 +25,15 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
     // Handle client messages
     ws.on('message', async (message: Buffer) => {
       try {
-        const data = JSON.parse(message.toString());
+        const messageStr = message.toString();
+        
+        // Handle special messages that aren't JSON first
+        if (messageStr === 'pong') {
+          // Client responding to our ping, no need to process further
+          return;
+        }
+        
+        const data = JSON.parse(messageStr);
         
         // Process based on message type
         switch (data.type) {

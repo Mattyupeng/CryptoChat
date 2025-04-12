@@ -59,27 +59,27 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     sendMessage(chatId, content);
   };
   
-  // Show empty state on mobile when no chat is selected
+  // Show simple placeholder to help with debugging
   if (!chatId) {
-    // Use the ChatPlaceholder component directly, imported at the top of the file
+    console.log("No chat ID selected yet.");
     return (
-      <div className="hidden md:flex md:flex-1 h-full">
-        <div className="h-full w-full flex flex-col items-center justify-center p-6 bg-dark-bg text-center">
-          <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
-            <div className="text-4xl text-primary">💬</div>
-          </div>
-          <h2 className="text-2xl font-semibold mb-2">CryptoChat</h2>
-          <p className="text-slate-400 max-w-md mb-8">
-            Select a conversation from the sidebar or start a new chat by adding a contact.
-          </p>
-        </div>
+      <div className="flex flex-col items-center justify-center h-full w-full bg-dark-bg p-8 text-center">
+        <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
+        <p className="text-lg text-slate-400 max-w-md mb-4">
+          Choose a conversation from the sidebar to start chatting
+        </p>
+        <div className="animate-pulse text-6xl mb-6">💬</div>
+        <p className="text-sm text-slate-500">
+          No chat selected (chatId is null)
+        </p>
       </div>
     );
   }
   
   if (!currentChat) {
+    console.log("Chat ID exists but chat not found:", chatId);
     return (
-      <div className="hidden md:flex md:flex-1 h-full bg-dark-bg flex-col items-center justify-center">
+      <div className="flex md:flex-1 h-full w-full bg-dark-bg flex-col items-center justify-center">
         <div className="text-center p-4">
           <h3 className="text-xl font-medium mb-2">Conversation Not Found</h3>
           <p className="text-slate-400">
@@ -106,8 +106,9 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     messagesByDate[date].push(message);
   });
   
+  console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="hidden md:flex md:flex-1 h-full bg-dark-bg flex-col">
+    <div className="flex flex-1 h-full bg-dark-bg flex-col">
       {/* Chat Header */}
       <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface">
         <div className="flex items-center gap-3">
