@@ -5,7 +5,7 @@ interface MobileNavigationProps {
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-dark-surface border-t border-dark-border z-50 md:hidden">
+    <div className="w-full bg-dark-surface border-t border-dark-border z-50 md:hidden">
       <div className="flex justify-around items-center h-16">
         <button 
           onClick={() => setActiveTab('chats')}

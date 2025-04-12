@@ -28,8 +28,16 @@
   overflow: hidden;
 }
 
-/* On mobile, only make chat area absolute when a chat is active */
+/* Mobile styles */
 @media (max-width: 767px) {
+  /* Ensure chat list takes full height */
+  .mobile-chat-list {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Make chat area fullscreen when active */
   .chat-area-wrapper.w-full {
     position: fixed;
     top: 0;
@@ -39,6 +47,11 @@
     height: 100vh;
     z-index: 50;
     background-color: var(--dark-bg);
+  }
+  
+  /* Fix chat messages scrolling on mobile */
+  .chat-messages {
+    height: calc(100vh - 120px); /* Account for header and input */
   }
 }
 

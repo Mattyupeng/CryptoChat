@@ -63,21 +63,24 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   if (!chatId) {
     console.log("No chat ID selected yet.");
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full bg-dark-bg p-8 text-center">
-        <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
-        <p className="text-lg text-slate-400 max-w-md mb-8">
-          Choose a conversation to start chatting
-        </p>
-        <div className="animate-pulse text-6xl mb-8">💬</div>
-        <button 
-          onClick={() => navigate('/chat/demo1')}
-          className="px-6 py-3 bg-primary text-white rounded-full font-medium mb-4 hover:bg-primary/90 transition"
-        >
-          Start Demo Chat
-        </button>
-        <p className="text-sm text-slate-500 mt-4">
-          Click the Demo User in the list or use the button above
-        </p>
+      <div className="flex flex-col items-center justify-center h-full w-full bg-dark-bg p-4 md:p-8 text-center">
+        {/* Desktop welcome screen - hidden on mobile */}
+        <div className="hidden md:block">
+          <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
+          <p className="text-lg text-slate-400 max-w-md mb-8">
+            Choose a conversation from the sidebar to start chatting
+          </p>
+          <div className="animate-pulse text-6xl mb-8">💬</div>
+          <button 
+            onClick={() => navigate('/chat/demo1')}
+            className="px-6 py-3 bg-primary text-white rounded-full font-medium mb-4 hover:bg-primary/90 transition"
+          >
+            Start Demo Chat
+          </button>
+          <p className="text-sm text-slate-500 mt-4">
+            Click the Demo User in the list or use the button above
+          </p>
+        </div>
       </div>
     );
   }
@@ -114,7 +117,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="chat-container bg-dark-bg">
+    <div className="flex flex-col h-full w-full bg-dark-bg">
       {/* Chat Header */}
       <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface w-full">
         <div className="flex items-center gap-3">
@@ -122,6 +125,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           <button 
             onClick={() => navigate('/chat')} 
             className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+            aria-label="Back"
           >
             <i className="ri-arrow-left-line text-xl text-slate-400"></i>
           </button>

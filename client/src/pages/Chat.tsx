@@ -136,60 +136,111 @@ export default function Chat() {
   return (
     <Layout>
       <div className="flex h-full w-full overflow-hidden bg-dark-bg text-slate-50">
-        {/* Left column: Sidebar + Chat List - hidden on mobile when chat is active */}
-        <div className={`flex-col h-full md:w-80 md:flex-shrink-0 md:border-r md:border-dark-border flex`}>
-          {/* Desktop Sidebar */}
-          <div className="hidden md:flex">
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
-          </div>
-          
-          {/* Chat List Column */}
-          <div className="w-full h-full bg-dark-surface flex-shrink-0 border-r border-dark-border flex flex-col">
-            {/* Header */}
-            <div className="p-4 border-b border-dark-border flex items-center justify-between">
-              <h1 className="text-xl font-semibold">
-                {activeTab === 'chats' ? 'Messages' : 
-                activeTab === 'contacts' ? 'Friends' : 
-                activeTab === 'wallet' ? 'Wallet' : 'Settings'}
-              </h1>
-              <div className="flex gap-2">
-                <button 
-                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                  onClick={() => {/* Implement search functionality */}}
-                >
-                  <i className="ri-search-line text-xl text-slate-400"></i>
-                </button>
-                <button 
-                  className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                  onClick={() => setShowAddFriendModal(true)}
-                >
-                  <i className="ri-add-line text-xl text-slate-400"></i>
-                </button>
+        {/* MOBILE DESIGN - Full page views that appear one at a time */}
+        <div className="md:hidden w-full h-full">
+          {/* MOBILE: Show chat list when no chat is selected */}
+          {!currentChatId && (
+            <div className="mobile-chat-list">
+              {/* Mobile Header */}
+              <div className="p-4 border-b border-dark-border flex items-center justify-between bg-dark-surface">
+                <h1 className="text-xl font-semibold">
+                  {activeTab === 'chats' ? 'Messages' : 
+                  activeTab === 'contacts' ? 'Friends' : 
+                  activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                </h1>
+                <div className="flex gap-2">
+                  <button 
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    onClick={() => {/* Implement search functionality */}}
+                  >
+                    <i className="ri-search-line text-xl text-slate-400"></i>
+                  </button>
+                  <button 
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    onClick={() => setShowAddFriendModal(true)}
+                  >
+                    <i className="ri-add-line text-xl text-slate-400"></i>
+                  </button>
+                </div>
               </div>
+
+              {/* Wallet Connection Banner */}
+              <WalletConnectionBanner />
+
+              {/* Chat or Friends List */}
+              <div className="flex-1 overflow-auto">
+                <ChatList 
+                  activeTab={activeTab} 
+                  currentChatId={currentChatId} 
+                />
+              </div>
+
+              {/* Bottom Navigation */}
+              <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
+          )}
 
-            {/* Wallet Connection Banner */}
-            <WalletConnectionBanner />
+          {/* MOBILE: Show chat area when a chat is selected */}
+          {currentChatId && (
+            <div className="flex flex-col h-full">
+              <ChatArea 
+                chatId={currentChatId} 
+                onTransfer={handleOpenTransfer} 
+              />
+            </div>
+          )}
+        </div>
 
-            {/* Chat or Friends List based on active tab */}
-            <ChatList 
-              activeTab={activeTab} 
-              currentChatId={currentChatId} 
+        {/* DESKTOP DESIGN - Side by side column layout */}
+        <div className="hidden md:flex h-full w-full">
+          {/* Left column: Sidebar + Chat List */}
+          <div className="flex-col h-full w-80 flex-shrink-0 border-r border-dark-border flex">
+            {/* Desktop Sidebar */}
+            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            
+            {/* Chat List Column */}
+            <div className="w-full h-full bg-dark-surface flex-shrink-0 border-r border-dark-border flex flex-col">
+              {/* Header */}
+              <div className="p-4 border-b border-dark-border flex items-center justify-between">
+                <h1 className="text-xl font-semibold">
+                  {activeTab === 'chats' ? 'Messages' : 
+                  activeTab === 'contacts' ? 'Friends' : 
+                  activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                </h1>
+                <div className="flex gap-2">
+                  <button 
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    onClick={() => {/* Implement search functionality */}}
+                  >
+                    <i className="ri-search-line text-xl text-slate-400"></i>
+                  </button>
+                  <button 
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    onClick={() => setShowAddFriendModal(true)}
+                  >
+                    <i className="ri-add-line text-xl text-slate-400"></i>
+                  </button>
+                </div>
+              </div>
+
+              {/* Wallet Connection Banner */}
+              <WalletConnectionBanner />
+
+              {/* Chat or Friends List based on active tab */}
+              <ChatList 
+                activeTab={activeTab} 
+                currentChatId={currentChatId} 
+              />
+            </div>
+          </div>
+
+          {/* Right column: Chat Area - shows welcome screen when no chat selected */}
+          <div className="flex-1 h-full">
+            <ChatArea 
+              chatId={currentChatId} 
+              onTransfer={handleOpenTransfer} 
             />
           </div>
-        </div>
-
-        {/* Right column: Chat Area - only shown when a chat is selected */}
-        <div className={`chat-area-wrapper ${currentChatId ? 'w-full' : 'hidden'}`}>
-          <ChatArea 
-            chatId={currentChatId} 
-            onTransfer={handleOpenTransfer} 
-          />
-        </div>
-
-        {/* Mobile Navigation - hide when chat is active */}
-        <div className={`fixed bottom-0 left-0 right-0 md:hidden ${currentChatId ? 'hidden' : 'block'}`}>
-          <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
         </div>
 
         {/* Modals */}
