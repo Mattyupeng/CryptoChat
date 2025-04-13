@@ -89,13 +89,6 @@ export default function Settings() {
     <div className="w-full h-full flex flex-col bg-dark-bg text-slate-50 overflow-y-auto">
       {/* Settings Header */}
       <div className="p-4 border-b border-dark-border flex items-center bg-dark-surface sticky top-0 z-10">
-        <button 
-          onClick={() => navigate('/chat')} 
-          className="mr-3 w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-          aria-label="Back to chat"
-        >
-          <ChevronLeft className="w-5 h-5 text-slate-400" />
-        </button>
         <h1 className="text-xl font-semibold">Settings</h1>
       </div>
       
