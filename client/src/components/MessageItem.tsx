@@ -19,14 +19,14 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
     const { amount, token, chain, status, txHash } = message.transaction;
     
     return (
-      <div className="bg-dark-bg rounded-lg p-3 border border-dark-border mt-2">
+      <div className="bg-app-bg rounded-lg p-3 border border-app-border mt-2">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full bg-purple-500 flex items-center justify-center flex-shrink-0">
             <i className="ri-send-plane-fill text-sm"></i>
           </div>
           <div className="flex-1">
             <div className="text-sm font-medium">{amount} {token}</div>
-            <div className="text-xs text-slate-400">Sent on {chain}</div>
+            <div className="text-xs text-app-muted">Sent on {chain}</div>
           </div>
           <div className={`text-xs font-mono px-2 py-1 ${
             status === 'confirmed' ? 'bg-green-500/20 text-green-400' : 
@@ -38,8 +38,8 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
           </div>
         </div>
         {txHash && (
-          <div className="mt-2 pt-2 border-t border-dark-border">
-            <div className="text-xs font-mono text-slate-400 truncate">
+          <div className="mt-2 pt-2 border-t border-app-border">
+            <div className="text-xs font-mono text-app-muted truncate">
               TX: {txHash.substring(0, 6)}...{txHash.substring(txHash.length - 4)}
             </div>
           </div>
@@ -74,7 +74,7 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
           if (isAddress) {
             const address = matches[matchIndex];
             return (
-              <span key={index} className="font-mono text-xs bg-dark-bg px-1.5 py-0.5 rounded">
+              <span key={index} className="font-mono text-xs bg-app-bg px-1.5 py-0.5 rounded">
                 {address.substring(0, 4)}...{address.substring(address.length - 4)}
               </span>
             );
@@ -95,7 +95,7 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
             {renderTransaction()}
           </div>
           <div className="flex items-center gap-1 mt-1 mr-2">
-            <span className="text-xs text-slate-400">{formatTime(message.timestamp)}</span>
+            <span className="text-xs text-app-muted">{formatTime(message.timestamp)}</span>
             <i className="ri-check-double-line text-xs text-primary"></i>
           </div>
         </div>
@@ -109,11 +109,11 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
         {senderName?.charAt(0).toUpperCase() || 'U'}
       </div>
       <div className="max-w-[75%]">
-        <div className="bg-dark-surface px-4 py-2.5 rounded-t-xl rounded-br-xl">
+        <div className="bg-app-surface px-4 py-2.5 rounded-t-xl rounded-br-xl">
           {renderContent()}
           {renderTransaction()}
         </div>
-        <span className="text-xs text-slate-400 ml-2 mt-1 inline-block">{formatTime(message.timestamp)}</span>
+        <span className="text-xs text-app-muted ml-2 mt-1 inline-block">{formatTime(message.timestamp)}</span>
       </div>
     </div>
   );

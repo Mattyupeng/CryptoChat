@@ -192,7 +192,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             <div className={`w-8 h-8 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium text-sm`}>
               {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
             </div>
-            <div className="bg-dark-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
+            <div className="bg-app-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
               <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse"></div>
               <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-100"></div>
               <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-200"></div>
