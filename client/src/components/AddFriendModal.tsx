@@ -87,8 +87,8 @@ export default function AddFriendModal({ onClose }: AddFriendModalProps) {
     <div className="fixed inset-0 z-50">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
       <div className="absolute inset-0 flex items-center justify-center p-4">
-        <div className="bg-dark-surface rounded-2xl w-full max-w-md overflow-hidden">
-          <div className="p-4 border-b border-dark-border flex items-center justify-between">
+        <div className="bg-app-surface rounded-2xl w-full max-w-md overflow-hidden">
+          <div className="p-4 border-b border-app-border flex items-center justify-between">
             <h3 className="font-semibold text-lg">Add Friend</h3>
             <button 
               onClick={onClose}

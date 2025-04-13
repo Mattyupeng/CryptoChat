@@ -20,7 +20,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         <button 
           onClick={() => setActiveTab('contacts')}
           className={`flex flex-col items-center justify-center w-1/4 py-2 ${
-            activeTab === 'contacts' ? 'text-primary' : 'text-slate-400 hover:text-primary'
+            activeTab === 'contacts' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >
           <i className="ri-user-line text-xl"></i>
@@ -30,7 +30,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         <button 
           onClick={() => setActiveTab('wallet')}
           className={`flex flex-col items-center justify-center w-1/4 py-2 ${
-            activeTab === 'wallet' ? 'text-primary' : 'text-slate-400 hover:text-primary'
+            activeTab === 'wallet' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >
           <i className="ri-wallet-3-line text-xl"></i>
@@ -40,7 +40,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         <button 
           onClick={() => setActiveTab('settings')}
           className={`flex flex-col items-center justify-center w-1/4 py-2 ${
-            activeTab === 'settings' ? 'text-primary' : 'text-slate-400 hover:text-primary'
+            activeTab === 'settings' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >
           <i className="ri-settings-3-line text-xl"></i>

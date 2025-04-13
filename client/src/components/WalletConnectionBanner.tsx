@@ -25,7 +25,7 @@ export default function WalletConnectionBanner() {
             <span className="font-medium">Not Connected</span>
             <span className="bg-yellow-500 rounded-full w-2 h-2"></span>
           </div>
-          <div className="text-xs text-slate-300">Connect your wallet to send messages and assets</div>
+          <div className="text-xs text-app-muted">Connect your wallet to send messages and assets</div>
         </div>
       </div>
     );
@@ -41,7 +41,7 @@ export default function WalletConnectionBanner() {
           <span className="font-medium">Connected</span>
           <span className="bg-green-500 rounded-full w-2 h-2"></span>
         </div>
-        <div className="text-xs font-mono text-slate-300 truncate">
+        <div className="text-xs font-mono text-app-muted truncate">
           {ensName || truncateAddress(address || '')}
         </div>
       </div>
