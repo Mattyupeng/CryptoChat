@@ -34,7 +34,7 @@ function App() {
     <ThemeProvider>
       <FontSizeProvider>
         <Router />
-        <Toaster position="bottom" />
+        <Toaster />
       </FontSizeProvider>
     </ThemeProvider>
   );

@@ -157,7 +157,7 @@ export default function Settings() {
                     : 'border-dark-border hover:bg-dark-hover'
                 } transition`}
               >
-                <span className="text-sm">Small</span>
+                <span className="font-size-small">Small</span>
               </button>
               
               <button 
@@ -168,7 +168,7 @@ export default function Settings() {
                     : 'border-dark-border hover:bg-dark-hover'
                 } transition`}
               >
-                <span className="text-base">Medium</span>
+                <span className="font-size-medium">Medium</span>
               </button>
               
               <button 
@@ -179,7 +179,7 @@ export default function Settings() {
                     : 'border-dark-border hover:bg-dark-hover'
                 } transition`}
               >
-                <span className="text-lg">Large</span>
+                <span className="font-size-large">Large</span>
               </button>
             </div>
           </div>
@@ -193,13 +193,13 @@ export default function Settings() {
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border">
             <div className="flex items-center gap-3">
               {notificationsEnabled ? (
-                <Bell className="w-5 h-5 text-slate-400" />
+                <Bell className="w-5 h-5 text-app-muted" />
               ) : (
-                <BellOff className="w-5 h-5 text-slate-400" />
+                <BellOff className="w-5 h-5 text-app-muted" />
               )}
               <div>
                 <h3 className="font-medium">Push Notifications</h3>
-                <p className="text-sm text-slate-400">Get notified when you receive messages</p>
+                <p className="text-sm text-app-muted">Get notified when you receive messages</p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
@@ -217,13 +217,13 @@ export default function Settings() {
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border">
             <div className="flex items-center gap-3">
               {soundsEnabled ? (
-                <Volume2 className="w-5 h-5 text-slate-400" />
+                <Volume2 className="w-5 h-5 text-app-muted" />
               ) : (
-                <VolumeX className="w-5 h-5 text-slate-400" />
+                <VolumeX className="w-5 h-5 text-app-muted" />
               )}
               <div>
                 <h3 className="font-medium">Message Sounds</h3>
-                <p className="text-sm text-slate-400">Play sounds for new messages</p>
+                <p className="text-sm text-app-muted">Play sounds for new messages</p>
               </div>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">

@@ -55,7 +55,26 @@
   }
 }
 
-/* Font size utility classes */
+/* Font size variables and utility classes */
+:root {
+  --base-font-size: 16px;
+  font-size: var(--base-font-size);
+}
+
+/* Text size classes for the root element */
+:root.text-size-small {
+  --base-font-size: 14px;
+}
+
+:root.text-size-medium {
+  --base-font-size: 16px;
+}
+
+:root.text-size-large {
+  --base-font-size: 18px;
+}
+
+/* Font size utility classes for individual elements */
 .font-size-small {
   font-size: 0.875rem;
   line-height: 1.25rem;
