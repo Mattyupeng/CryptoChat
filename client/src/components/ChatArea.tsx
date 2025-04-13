@@ -63,7 +63,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   if (!chatId) {
     console.log("No chat ID selected yet.");
     return (
-      <div className="flex flex-col items-center justify-center h-full w-full bg-dark-bg p-4 md:p-8 text-center">
+      <div className="flex flex-col items-center justify-center h-full w-full bg-app-bg p-4 md:p-8 text-center">
         {/* Desktop welcome screen - hidden on mobile */}
         <div className="hidden md:block">
           <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
@@ -88,7 +88,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   if (!currentChat) {
     console.log("Chat ID exists but chat not found:", chatId);
     return (
-      <div className="flex md:flex-1 h-full w-full bg-dark-bg flex-col items-center justify-center">
+      <div className="flex md:flex-1 h-full w-full bg-app-bg flex-col items-center justify-center">
         <div className="text-center p-4">
           <h3 className="text-xl font-medium mb-2">Conversation Not Found</h3>
           <p className="text-app-muted">
@@ -117,14 +117,14 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="flex flex-col h-full w-full bg-dark-bg">
+    <div className="flex flex-col h-full w-full bg-app-bg">
       {/* Chat Header */}
-      <div className="h-16 border-b border-dark-border flex items-center px-4 justify-between bg-dark-surface w-full">
+      <div className="h-16 border-b border-app-border flex items-center px-4 justify-between bg-app-surface w-full">
         <div className="flex items-center gap-3">
           {/* Back button for mobile - hidden on desktop */}
           <button 
             onClick={() => navigate('/chat')} 
-            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
             aria-label="Back"
           >
             <i className="ri-arrow-left-line text-xl text-app-muted"></i>
@@ -144,10 +144,10 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition">
+          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
             <i className="ri-search-line text-xl text-app-muted"></i>
           </button>
-          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition">
+          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
             <i className="ri-more-2-fill text-xl text-app-muted"></i>
           </button>
         </div>
@@ -165,7 +165,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             <div key={date} className="w-full">
               {/* Date Header */}
               <div className="flex justify-center mb-4 w-full">
-                <div className="bg-dark-surface px-4 py-2 rounded-full text-sm text-app-muted">
+                <div className="bg-app-surface px-4 py-2 rounded-full text-sm text-app-muted">
                   {date}
                 </div>
               </div>
@@ -193,9 +193,9 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
               {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
             </div>
             <div className="bg-dark-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
-              <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse delay-100"></div>
-              <div className="w-2 h-2 bg-slate-400 rounded-full animate-pulse delay-200"></div>
+              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-100"></div>
+              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-200"></div>
             </div>
           </div>
         )}
