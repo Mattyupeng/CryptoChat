@@ -46,13 +46,29 @@
     bottom: 0;
     height: 100vh;
     z-index: 50;
-    background-color: var(--dark-bg);
+    background-color: var(--bg, var(--dark-bg));
   }
   
   /* Fix chat messages scrolling on mobile */
   .chat-messages {
     height: calc(100vh - 120px); /* Account for header and input */
   }
+}
+
+/* Font size utility classes */
+.font-size-small {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+
+.font-size-medium {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+.font-size-large {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 
 :root {

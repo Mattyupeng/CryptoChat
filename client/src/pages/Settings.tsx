@@ -86,7 +86,7 @@ export default function Settings() {
   };
   
   return (
-    <div className="w-full h-full flex flex-col bg-dark-bg text-slate-50 overflow-y-auto">
+    <div className="w-full h-full flex flex-col bg-dark-bg text-app overflow-y-auto">
       {/* Settings Header */}
       <div className="p-4 border-b border-dark-border flex items-center bg-dark-surface sticky top-0 z-10">
         <h1 className="text-xl font-semibold">Settings</h1>
