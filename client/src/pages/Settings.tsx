@@ -243,10 +243,10 @@ export default function Settings() {
           <h2 className="text-lg font-medium border-b border-dark-border pb-2">Language</h2>
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
-              <Languages className="w-5 h-5 text-slate-400" />
+              <Languages className="w-5 h-5 text-app-muted" />
               <div>
                 <h3 className="font-medium">App Language</h3>
-                <p className="text-sm text-slate-400">Currently set to English</p>
+                <p className="text-sm text-app-muted">Currently set to English</p>
               </div>
             </div>
           </div>
@@ -257,10 +257,10 @@ export default function Settings() {
           <h2 className="text-lg font-medium border-b border-dark-border pb-2">Security</h2>
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
-              <Key className="w-5 h-5 text-slate-400" />
+              <Key className="w-5 h-5 text-app-muted" />
               <div>
                 <h3 className="font-medium">Encryption Keys</h3>
-                <p className="text-sm text-slate-400">Manage your encryption keys</p>
+                <p className="text-sm text-app-muted">Manage your encryption keys</p>
               </div>
             </div>
           </div>
@@ -272,10 +272,10 @@ export default function Settings() {
           
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
-              <User className="w-5 h-5 text-slate-400" />
+              <User className="w-5 h-5 text-app-muted" />
               <div>
                 <h3 className="font-medium">Profile</h3>
-                <p className="text-sm text-slate-400">Edit your profile information</p>
+                <p className="text-sm text-app-muted">Edit your profile information</p>
               </div>
             </div>
           </div>
@@ -296,8 +296,8 @@ export default function Settings() {
           <h2 className="text-lg font-medium border-b border-dark-border pb-2">About</h2>
           <div className="p-3">
             <h3 className="font-medium">CryptoChat</h3>
-            <p className="text-sm text-slate-400">Version 0.1.0</p>
-            <p className="text-sm text-slate-400 mt-2">
+            <p className="text-sm text-app-muted">Version 0.1.0</p>
+            <p className="text-sm text-app-muted mt-2">
               End-to-end encrypted messaging platform for crypto wallets.
             </p>
           </div>
