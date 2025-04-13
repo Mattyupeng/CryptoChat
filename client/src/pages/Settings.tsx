@@ -100,7 +100,7 @@ export default function Settings() {
           
           {/* Theme Selector */}
           <div>
-            <h3 className="text-sm text-slate-400 mb-2">Theme</h3>
+            <h3 className="text-sm text-app-muted mb-2">Theme</h3>
             <div className="flex gap-2">
               <button 
                 onClick={() => setTheme('light')}
@@ -147,7 +147,7 @@ export default function Settings() {
           
           {/* Font Size Setting */}
           <div>
-            <h3 className="text-sm text-slate-400 mb-2">Font Size</h3>
+            <h3 className="text-sm text-app-muted mb-2">Font Size</h3>
             <div className="flex gap-2">
               <button 
                 onClick={() => setFontSize('small')}
