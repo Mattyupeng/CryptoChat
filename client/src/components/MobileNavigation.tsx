@@ -5,12 +5,12 @@ interface MobileNavigationProps {
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
   return (
-    <div className="w-full bg-dark-surface border-t border-dark-border z-50 md:hidden">
+    <div className="w-full bg-app-surface border-t border-app-border z-50 md:hidden">
       <div className="flex justify-around items-center h-16">
         <button 
           onClick={() => setActiveTab('chats')}
           className={`flex flex-col items-center justify-center w-1/4 py-2 ${
-            activeTab === 'chats' ? 'text-primary' : 'text-slate-400 hover:text-primary'
+            activeTab === 'chats' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >
           <i className="ri-message-3-line text-xl"></i>
