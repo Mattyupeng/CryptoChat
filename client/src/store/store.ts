@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 import { nanoid } from 'nanoid';
 import { Chat, Friend, Message, Transaction } from '@/types';
 import { encryptMessage, decryptMessage, generateKeyPair } from '@/lib/encryption';
@@ -503,3 +504,39 @@ export const useChatStore = create<ChatState>((set, get) => ({
     localStorage.setItem('cryptoChat_chats', JSON.stringify(finalChats));
   }
 }));
+
+// Settings Store
+interface SettingsState {
+  theme: 'light' | 'dark' | 'system';
+  language: string;
+  notificationsEnabled: boolean; 
+  soundsEnabled: boolean;
+  fontSize: 'small' | 'medium' | 'large';
+  // Actions
+  setTheme: (theme: 'light' | 'dark' | 'system') => void;
+  setLanguage: (language: string) => void;
+  toggleNotifications: () => void;
+  toggleSounds: () => void;
+  setFontSize: (size: 'small' | 'medium' | 'large') => void;
+}
+
+export const useSettingsStore = create<SettingsState>()(
+  persist(
+    (set) => ({
+      theme: 'dark',
+      language: 'en',
+      notificationsEnabled: true,
+      soundsEnabled: true,
+      fontSize: 'medium',
+      
+      setTheme: (theme) => set({ theme }),
+      setLanguage: (language) => set({ language }),
+      toggleNotifications: () => set((state) => ({ notificationsEnabled: !state.notificationsEnabled })),
+      toggleSounds: () => set((state) => ({ soundsEnabled: !state.soundsEnabled })),
+      setFontSize: (fontSize) => set({ fontSize }),
+    }),
+    {
+      name: 'cryptoChat-settings',
+    }
+  )
+);

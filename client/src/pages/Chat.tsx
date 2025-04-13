@@ -9,6 +9,7 @@ import { useWalletStore, useChatStore } from '@/store/store';
 import WalletConnectionBanner from '@/components/WalletConnectionBanner';
 import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
+import Settings from '@/pages/Settings';
 
 export default function Chat() {
   const [, navigate] = useLocation();
@@ -138,42 +139,49 @@ export default function Chat() {
       <div className="flex h-full w-full overflow-hidden bg-dark-bg text-slate-50">
         {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">
-          {/* MOBILE: Show chat list when no chat is selected */}
+          {/* MOBILE: Show chat list or settings when no chat is selected */}
           {!currentChatId && (
             <div className="mobile-chat-list">
-              {/* Mobile Header */}
-              <div className="p-4 border-b border-dark-border flex items-center justify-between bg-dark-surface">
-                <h1 className="text-xl font-semibold">
-                  {activeTab === 'chats' ? 'Messages' : 
-                  activeTab === 'contacts' ? 'Friends' : 
-                  activeTab === 'wallet' ? 'Wallet' : 'Settings'}
-                </h1>
-                <div className="flex gap-2">
-                  <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                    onClick={() => {/* Implement search functionality */}}
-                  >
-                    <i className="ri-search-line text-xl text-slate-400"></i>
-                  </button>
-                  <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
-                    onClick={() => setShowAddFriendModal(true)}
-                  >
-                    <i className="ri-add-line text-xl text-slate-400"></i>
-                  </button>
-                </div>
-              </div>
+              {/* Show Settings page when settings tab is active */}
+              {activeTab === 'settings' ? (
+                <Settings />
+              ) : (
+                <>
+                  {/* Mobile Header */}
+                  <div className="p-4 border-b border-dark-border flex items-center justify-between bg-dark-surface">
+                    <h1 className="text-xl font-semibold">
+                      {activeTab === 'chats' ? 'Messages' : 
+                      activeTab === 'contacts' ? 'Friends' : 
+                      activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                    </h1>
+                    <div className="flex gap-2">
+                      <button 
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                        onClick={() => {/* Implement search functionality */}}
+                      >
+                        <i className="ri-search-line text-xl text-slate-400"></i>
+                      </button>
+                      <button 
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                        onClick={() => setShowAddFriendModal(true)}
+                      >
+                        <i className="ri-add-line text-xl text-slate-400"></i>
+                      </button>
+                    </div>
+                  </div>
 
-              {/* Wallet Connection Banner */}
-              <WalletConnectionBanner />
+                  {/* Wallet Connection Banner */}
+                  <WalletConnectionBanner />
 
-              {/* Chat or Friends List */}
-              <div className="flex-1 overflow-auto">
-                <ChatList 
-                  activeTab={activeTab} 
-                  currentChatId={currentChatId} 
-                />
-              </div>
+                  {/* Chat or Friends List */}
+                  <div className="flex-1 overflow-auto">
+                    <ChatList 
+                      activeTab={activeTab} 
+                      currentChatId={currentChatId} 
+                    />
+                  </div>
+                </>
+              )}
 
               {/* Bottom Navigation */}
               <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
@@ -234,12 +242,16 @@ export default function Chat() {
             </div>
           </div>
 
-          {/* Right column: Chat Area - shows welcome screen when no chat selected */}
+          {/* Right column: Chat Area or Settings - shows welcome screen when no chat selected */}
           <div className="flex-1 h-full">
-            <ChatArea 
-              chatId={currentChatId} 
-              onTransfer={handleOpenTransfer} 
-            />
+            {activeTab === 'settings' ? (
+              <Settings />
+            ) : (
+              <ChatArea 
+                chatId={currentChatId} 
+                onTransfer={handleOpenTransfer} 
+              />
+            )}
           </div>
         </div>
 

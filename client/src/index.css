@@ -56,10 +56,40 @@
 }
 
 :root {
-  --dark-bg: #0c0f1d;
-  --dark-card: #151a30;
-  --dark-hover: #212a42;
-  --dark-border: #2a3453;
+  --primary: #3b82f6;
+  --primary-hover: #2563eb;
+  --primary-focus: #1e40af;
+  --primary-content: #ffffff;
+}
+
+/* Dark theme variables */
+.dark-theme {
+  --bg: #0c0f1d;
+  --card: #151a30;
+  --hover: #212a42;
+  --border: #2a3453;
+  --text: #f8fafc;
+  --text-muted: #94a3b8;
+  --surface: #151a30;
+}
+
+/* Light theme variables */
+.light-theme {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --hover: #e2e8f0;
+  --border: #cbd5e1;
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --surface: #f1f5f9;
+}
+
+/* Using CSS variables with fallback to dark theme */
+:root {
+  --dark-bg: var(--bg, #0c0f1d);
+  --dark-card: var(--card, #151a30);
+  --dark-hover: var(--hover, #212a42);
+  --dark-border: var(--border, #2a3453);
 }
 
 @layer base {
