@@ -136,7 +136,7 @@ export default function Chat() {
 
   return (
     <Layout>
-      <div className="flex h-full w-full overflow-hidden bg-dark-bg text-app">
+      <div className="flex h-full w-full overflow-hidden bg-app-bg text-app">
         {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">
           {/* MOBILE: Show chat list or settings when no chat is selected */}
@@ -148,7 +148,7 @@ export default function Chat() {
               ) : (
                 <>
                   {/* Mobile Header */}
-                  <div className="p-4 border-b border-dark-border flex items-center justify-between bg-dark-surface">
+                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
                     <h1 className="text-xl font-semibold">
                       {activeTab === 'chats' ? 'Messages' : 
                       activeTab === 'contacts' ? 'Friends' : 
@@ -156,13 +156,13 @@ export default function Chat() {
                     </h1>
                     <div className="flex gap-2">
                       <button 
-                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                         onClick={() => {/* Implement search functionality */}}
                       >
                         <i className="ri-search-line text-xl text-app-muted"></i>
                       </button>
                       <button 
-                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                         onClick={() => setShowAddFriendModal(true)}
                       >
                         <i className="ri-add-line text-xl text-app-muted"></i>
@@ -207,9 +207,9 @@ export default function Chat() {
             <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
             
             {/* Chat List Column */}
-            <div className="w-full h-full bg-dark-surface flex-shrink-0 border-r border-dark-border flex flex-col">
+            <div className="w-full h-full bg-app-surface flex-shrink-0 border-r border-app-border flex flex-col">
               {/* Header */}
-              <div className="p-4 border-b border-dark-border flex items-center justify-between">
+              <div className="p-4 border-b border-app-border flex items-center justify-between">
                 <h1 className="text-xl font-semibold">
                   {activeTab === 'chats' ? 'Messages' : 
                   activeTab === 'contacts' ? 'Friends' : 
@@ -217,13 +217,13 @@ export default function Chat() {
                 </h1>
                 <div className="flex gap-2">
                   <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                     onClick={() => {/* Implement search functionality */}}
                   >
                     <i className="ri-search-line text-xl text-app-muted"></i>
                   </button>
                   <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                     onClick={() => setShowAddFriendModal(true)}
                   >
                     <i className="ri-add-line text-xl text-app-muted"></i>
