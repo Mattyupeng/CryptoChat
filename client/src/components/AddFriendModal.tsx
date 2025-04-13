@@ -107,12 +107,12 @@ export default function AddFriendModal({ onClose }: AddFriendModalProps) {
                   value={addressInput}
                   onChange={(e) => setAddressInput(e.target.value)}
                   placeholder="0x... or name.eth or name.sol" 
-                  className="w-full bg-dark-bg border border-dark-border rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 pr-10"
+                  className="w-full bg-app-bg border border-app-border rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-primary/50 pr-10"
                 />
                 <button 
                   onClick={handleSearch}
                   disabled={isSearching}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-app-muted"
                 >
                   <i className={`${isSearching ? 'ri-loader-4-line animate-spin' : 'ri-search-line'} text-lg`}></i>
                 </button>
@@ -123,14 +123,14 @@ export default function AddFriendModal({ onClose }: AddFriendModalProps) {
             </div>
             
             {foundUser && (
-              <div className="mb-6 p-4 bg-dark-bg rounded-lg border border-dark-border">
+              <div className="mb-6 p-4 bg-app-bg rounded-lg border border-app-border">
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full ${foundUser.avatarColor} flex items-center justify-center flex-shrink-0 font-medium`}>
                     {foundUser.ensName?.charAt(0).toUpperCase() || foundUser.address.substring(2, 3).toUpperCase()}
                   </div>
                   <div className="flex-1">
                     <div className="font-medium">{foundUser.ensName || truncateAddress(foundUser.address)}</div>
-                    <div className="text-xs font-mono text-slate-400 truncate">{truncateAddress(foundUser.address)}</div>
+                    <div className="text-xs font-mono text-app-muted truncate">{truncateAddress(foundUser.address)}</div>
                   </div>
                 </div>
               </div>
@@ -141,10 +141,10 @@ export default function AddFriendModal({ onClose }: AddFriendModalProps) {
               disabled={isSearching || (!foundUser && !addressInput)}
               className={`w-full ${
                 isSearching || (!foundUser && !addressInput)
-                  ? 'bg-dark-bg border border-dark-border text-slate-400 cursor-not-allowed'
+                  ? 'bg-app-bg border border-app-border text-app-muted cursor-not-allowed'
                   : foundUser
                     ? 'bg-primary hover:bg-primary-hover text-white'
-                    : 'bg-dark-bg border border-dark-border hover:bg-dark-hover text-slate-400 hover:text-white'
+                    : 'bg-app-bg border border-app-border hover:bg-app-hover text-app-muted hover:text-app'
               } py-3 px-4 rounded-xl font-medium transition`}
             >
               {isSearching ? 'Searching...' : foundUser ? 'Add Friend' : 'Search'}
