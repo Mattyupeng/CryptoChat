@@ -55,7 +55,7 @@ export default function Settings() {
     };
   }, []);
   
-  // Apply theme change to body element
+  // Apply theme change to document element
   useEffect(() => {
     const prefersDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
     
@@ -65,6 +65,15 @@ export default function Settings() {
     } else {
       document.documentElement.classList.add('light-theme');
       document.documentElement.classList.remove('dark-theme');
+    }
+    
+    // Set data-theme attribute for potential additional theming
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+    
+    // Update status bar color for mobile devices
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', prefersDark ? '#0c0f1d' : '#f8fafc');
     }
   }, [theme, systemTheme]);
   

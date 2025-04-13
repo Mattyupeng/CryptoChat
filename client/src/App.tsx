@@ -6,6 +6,7 @@ import Chat from "@/pages/Chat";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 import { useSocketStore } from "./store/store";
+import { ThemeProvider } from "@/lib/theme-provider";
 
 function Router() {
   const { connectSocket } = useSocketStore();
@@ -29,10 +30,10 @@ function Router() {
 
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <Router />
       <Toaster />
-    </>
+    </ThemeProvider>
   );
 }
 

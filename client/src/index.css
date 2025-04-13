@@ -98,27 +98,36 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
-    background-color: var(--dark-bg);
-    color: #fff;
+    @apply font-sans antialiased;
+    background-color: var(--bg, var(--dark-bg));
+    color: var(--text, #fff);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
 @layer utilities {
   .bg-dark-bg {
-    background-color: var(--dark-bg);
+    background-color: var(--bg, var(--dark-bg));
   }
   
-  .bg-dark-card {
-    background-color: var(--dark-card);
+  .bg-dark-surface, .bg-dark-card {
+    background-color: var(--surface, var(--dark-card));
   }
   
   .hover\:bg-dark-hover:hover {
-    background-color: var(--dark-hover);
+    background-color: var(--hover, var(--dark-hover));
   }
   
   .border-dark-border {
-    border-color: var(--dark-border);
+    border-color: var(--border, var(--dark-border));
+  }
+  
+  .text-app {
+    color: var(--text, #fff);
+  }
+  
+  .text-app-muted {
+    color: var(--text-muted, #94a3b8);
   }
   
   .animate-fadeIn {
