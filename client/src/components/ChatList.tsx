@@ -39,7 +39,7 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
         {activeTab === 'wallet' && (
           <div className="p-4 bg-dark-hover rounded-lg">
             <h3 className="font-medium mb-2">Your Wallet</h3>
-            <div className="text-sm font-mono text-slate-300 break-all">
+            <div className="text-sm font-mono text-app break-all">
               {address}
             </div>
             <div className="mt-4">
@@ -72,7 +72,7 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
         {activeTab === 'settings' && (
           <div className="p-4 bg-dark-hover rounded-lg">
             <h3 className="font-medium mb-2">Settings</h3>
-            <p className="text-sm text-slate-400">App settings will appear here.</p>
+            <p className="text-sm text-app-muted">App settings will appear here.</p>
           </div>
         )}
       </div>
@@ -82,7 +82,7 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
   // Show empty state if no chats or friends
   if (userList.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center p-4 text-slate-400">
+      <div className="flex-1 flex flex-col items-center justify-center p-4 text-app-muted">
         <i className={`${activeTab === 'chats' ? 'ri-message-3-line' : 'ri-user-line'} text-4xl mb-4`}></i>
         <p className="text-center">
           {activeTab === 'chats' 

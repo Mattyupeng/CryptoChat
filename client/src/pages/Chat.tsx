@@ -136,7 +136,7 @@ export default function Chat() {
 
   return (
     <Layout>
-      <div className="flex h-full w-full overflow-hidden bg-dark-bg text-slate-50">
+      <div className="flex h-full w-full overflow-hidden bg-dark-bg text-app">
         {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">
           {/* MOBILE: Show chat list or settings when no chat is selected */}
@@ -159,13 +159,13 @@ export default function Chat() {
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
                         onClick={() => {/* Implement search functionality */}}
                       >
-                        <i className="ri-search-line text-xl text-slate-400"></i>
+                        <i className="ri-search-line text-xl text-app-muted"></i>
                       </button>
                       <button 
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
                         onClick={() => setShowAddFriendModal(true)}
                       >
-                        <i className="ri-add-line text-xl text-slate-400"></i>
+                        <i className="ri-add-line text-xl text-app-muted"></i>
                       </button>
                     </div>
                   </div>
@@ -220,13 +220,13 @@ export default function Chat() {
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
                     onClick={() => {/* Implement search functionality */}}
                   >
-                    <i className="ri-search-line text-xl text-slate-400"></i>
+                    <i className="ri-search-line text-xl text-app-muted"></i>
                   </button>
                   <button 
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
                     onClick={() => setShowAddFriendModal(true)}
                   >
-                    <i className="ri-add-line text-xl text-slate-400"></i>
+                    <i className="ri-add-line text-xl text-app-muted"></i>
                   </button>
                 </div>
               </div>
