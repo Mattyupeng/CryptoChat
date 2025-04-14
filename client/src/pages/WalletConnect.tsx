@@ -168,7 +168,7 @@ export default function WalletConnect() {
           <Button
             onClick={handleGuestMode}
             disabled={connecting || isGuest}
-            className="w-full border border-slate-700 hover:bg-dark-hover py-3 px-4 rounded-xl font-medium text-slate-200 flex items-center justify-center gap-2"
+            className="w-full border border-app-border hover:bg-app-hover py-3 px-4 rounded-xl font-medium text-app flex items-center justify-center gap-2"
           >
             {isGuest ? 'Loading Guest Mode...' : 'Continue as Guest'}
           </Button>
