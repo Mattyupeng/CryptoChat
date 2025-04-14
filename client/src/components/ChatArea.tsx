@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
-import { useChatStore } from '@/store/store';
+import { useChatStore, useWalletStore } from '@/store/store';
 import MessageItem from './MessageItem';
 import MessageInput from './MessageInput';
+import FileUploadModal from './FileUploadModal';
+import CreateGroupChatModal from './CreateGroupChatModal';
 import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
 
@@ -14,8 +16,11 @@ interface ChatAreaProps {
 export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   const [, navigate] = useLocation();
   const { chats, getCurrentChat, sendMessage } = useChatStore();
+  const { publicKey } = useWalletStore();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
+  const [showFileModal, setShowFileModal] = useState(false);
+  const [showGroupModal, setShowGroupModal] = useState(false);
   
   const currentChat = chatId ? getCurrentChat(chatId) : null;
   
@@ -144,8 +149,19 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
-            <i className="ri-search-line text-xl text-app-muted"></i>
+          <button 
+            onClick={() => setShowFileModal(true)}
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+            title="Send File"
+          >
+            <i className="ri-file-upload-line text-xl text-app-muted"></i>
+          </button>
+          <button 
+            onClick={() => setShowGroupModal(true)} 
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+            title="Create Group"
+          >
+            <i className="ri-group-line text-xl text-app-muted"></i>
           </button>
           <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
             <i className="ri-more-2-fill text-xl text-app-muted"></i>
@@ -209,6 +225,25 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         onSendMessage={handleSendMessage} 
         onTransfer={() => onTransfer(chatId)} 
       />
+      
+      {/* Modals */}
+      {showFileModal && (
+        <FileUploadModal
+          chatId={chatId || ''}
+          publicKey={currentChat?.publicKey || ''}
+          onClose={() => setShowFileModal(false)}
+          onSend={(chatId, content, transaction) => {
+            sendMessage(chatId, content, transaction);
+            setShowFileModal(false);
+          }}
+        />
+      )}
+      
+      {showGroupModal && (
+        <CreateGroupChatModal 
+          onClose={() => setShowGroupModal(false)} 
+        />
+      )}
     </div>
   );
 }

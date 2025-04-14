@@ -1,7 +1,7 @@
 import { useState, KeyboardEvent } from 'react';
 
 interface MessageInputProps {
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string, metadata?: any) => void;
   onTransfer: () => void;
 }
 
