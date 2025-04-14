@@ -158,10 +158,10 @@ export default function WalletConnect() {
           
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-dark-border"></div>
+              <div className="w-full border-t border-app-border"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="px-2 bg-dark-bg text-slate-400 text-sm">or try demo</span>
+              <span className="px-2 bg-app-bg text-app-muted text-sm">or try demo</span>
             </div>
           </div>
           
@@ -175,13 +175,13 @@ export default function WalletConnect() {
         </div>
         
         {error && (
-          <div className="mt-4 p-3 bg-red-900/30 border border-red-900 rounded-md text-red-200 text-sm max-w-xs">
+          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-md text-red-500 text-sm max-w-xs">
             {error}
           </div>
         )}
       </div>
       
-      <div className="p-4 text-center text-xs text-slate-500">
+      <div className="p-4 text-center text-xs text-app-muted">
         By connecting, you agree to our Terms of Service and Privacy Policy
       </div>
     </div>
