@@ -161,14 +161,19 @@ export default function WalletConnect() {
               <div className="w-full border-t border-app-border"></div>
             </div>
             <div className="relative flex justify-center text-center">
-              <span className="px-4 bg-app-bg text-app-muted text-sm">or try demo</span>
+              <span className="px-4 text-sm" style={{ backgroundColor: 'var(--bg, #f8fafc)', color: 'var(--text-muted, #64748b)' }}>or try demo</span>
             </div>
           </div>
           
           <Button
             onClick={handleGuestMode}
             disabled={connecting || isGuest}
-            className="w-full border border-app-border hover:bg-app-hover py-3 px-4 rounded-xl font-medium text-app flex items-center justify-center gap-2"
+            className="w-full border py-3 px-4 rounded-xl font-medium flex items-center justify-center gap-2"
+            style={{ 
+              borderColor: 'var(--border, #cbd5e1)', 
+              color: 'var(--text, #0f172a)',
+              backgroundColor: 'transparent'
+            }}
           >
             {isGuest ? 'Loading Guest Mode...' : 'Continue as Guest'}
           </Button>

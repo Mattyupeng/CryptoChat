@@ -141,6 +141,22 @@
 }
 
 @layer utilities {
+  .bg-app-bg {
+    background-color: var(--bg, var(--dark-bg));
+  }
+  
+  .bg-app-surface {
+    background-color: var(--surface, var(--dark-card));
+  }
+  
+  .hover\:bg-app-hover:hover {
+    background-color: var(--hover, var(--dark-hover));
+  }
+  
+  .border-app-border {
+    border-color: var(--border, var(--dark-border));
+  }
+  
   .bg-dark-bg {
     background-color: var(--bg, var(--dark-bg));
   }
@@ -158,11 +174,11 @@
   }
   
   .text-app {
-    color: var(--text, #fff);
+    color: var(--text, #000) !important;
   }
   
   .text-app-muted {
-    color: var(--text-muted, #94a3b8);
+    color: var(--text-muted, #94a3b8) !important;
   }
   
   .animate-fadeIn {

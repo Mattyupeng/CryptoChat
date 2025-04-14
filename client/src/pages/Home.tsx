@@ -31,6 +31,7 @@ export default function Home() {
         <Button 
           onClick={() => navigate('/connect')} 
           className="w-full bg-primary hover:opacity-90 py-3 px-4 rounded-xl font-medium text-white transition-all duration-200 ease-in-out"
+          style={{ backgroundColor: 'var(--primary, #3b82f6)', color: '#ffffff' }}
         >
           Get Started
         </Button>
