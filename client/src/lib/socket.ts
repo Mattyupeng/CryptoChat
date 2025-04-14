@@ -13,7 +13,7 @@ export function setupSocketConnection(): WebSocket {
     console.log('WebSocket connection established');
     
     // Send handshake message with user's wallet address
-    const wallet = localStorage.getItem('cryptoChat_wallet');
+    const wallet = localStorage.getItem('hushline_wallet');
     if (wallet) {
       try {
         const walletData = JSON.parse(wallet);

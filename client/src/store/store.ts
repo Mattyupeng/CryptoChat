@@ -170,7 +170,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       chainType: null
     });
     
-    localStorage.removeItem('cryptoChat_wallet');
+    localStorage.removeItem('hushline_wallet');
   },
 
   resolveEns: async (name: string) => {
@@ -288,7 +288,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
   loadChats: () => {
     try {
-      const savedChats = localStorage.getItem('cryptoChat_chats');
+      const savedChats = localStorage.getItem('hushline_chats');
       if (savedChats) {
         set({ chats: JSON.parse(savedChats) });
       }
@@ -299,7 +299,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
 
   loadFriends: () => {
     try {
-      const savedFriends = localStorage.getItem('cryptoChat_friends');
+      const savedFriends = localStorage.getItem('hushline_friends');
       if (savedFriends) {
         set({ friends: JSON.parse(savedFriends) });
       }
@@ -329,7 +329,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     
     const updatedFriends = [...friends, newFriend];
     set({ friends: updatedFriends });
-    localStorage.setItem('cryptoChat_friends', JSON.stringify(updatedFriends));
+    localStorage.setItem('hushline_friends', JSON.stringify(updatedFriends));
     
     // Create a chat for this friend if it doesn't exist
     const existingChat = chats.find(c => c.address === address);
@@ -349,7 +349,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
       
       const updatedChats = [...chats, newChat];
       set({ chats: updatedChats });
-      localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+      localStorage.setItem('hushline_chats', JSON.stringify(updatedChats));
     }
   },
 
@@ -359,12 +359,12 @@ export const useChatStore = create<ChatState>((set, get) => ({
     // Remove friend
     const updatedFriends = friends.filter(f => f.id !== friendId);
     set({ friends: updatedFriends });
-    localStorage.setItem('cryptoChat_friends', JSON.stringify(updatedFriends));
+    localStorage.setItem('hushline_friends', JSON.stringify(updatedFriends));
     
     // Remove chat
     const updatedChats = chats.filter(c => c.id !== friendId);
     set({ chats: updatedChats });
-    localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+    localStorage.setItem('hushline_chats', JSON.stringify(updatedChats));
   },
 
   getCurrentChat: (chatId: string) => {
@@ -387,7 +387,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
         chats: updatedChats
       });
       
-      localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+      localStorage.setItem('hushline_chats', JSON.stringify(updatedChats));
     }
   },
   
@@ -402,7 +402,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     
     const updatedChats = [...chats, chat];
     set({ chats: updatedChats });
-    localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+    localStorage.setItem('hushline_chats', JSON.stringify(updatedChats));
     return chat;
   },
 
@@ -438,7 +438,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     });
     
     set({ chats: updatedChats });
-    localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+    localStorage.setItem('hushline_chats', JSON.stringify(updatedChats));
     
     // Send message over socket if connected
     if (socket && socket.readyState === WebSocket.OPEN && address) {
@@ -517,7 +517,7 @@ export const useChatStore = create<ChatState>((set, get) => ({
     );
     
     set({ chats: finalChats });
-    localStorage.setItem('cryptoChat_chats', JSON.stringify(finalChats));
+    localStorage.setItem('hushline_chats', JSON.stringify(finalChats));
   }
 }));
 
@@ -552,7 +552,7 @@ export const useSettingsStore = create<SettingsState>()(
       setFontSize: (fontSize) => set({ fontSize }),
     }),
     {
-      name: 'cryptoChat-settings',
+      name: 'hushline-settings',
     }
   )
 );
