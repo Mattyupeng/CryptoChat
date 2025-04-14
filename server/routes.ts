@@ -10,8 +10,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // API routes for user management
   app.get('/api/health', (req, res) => {
-    res.json({ status: 'ok' });
+    res.json({ status: 'ok', name: 'Hushline' });
   });
+  
+  // === USER APIS ===
   
   // Register user
   app.post('/api/users', async (req, res) => {
@@ -62,7 +64,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.patch('/api/users/:address', async (req, res) => {
     try {
       const { address } = req.params;
-      const { publicKey, ensName, lastSeen } = req.body;
+      const { publicKey, ensName, lastSeen, displayName } = req.body;
       
       const user = await storage.getUserByAddress(address);
       if (!user) {
@@ -72,6 +74,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const updatedUser = await storage.updateUser(address, {
         publicKey: publicKey || user.publicKey,
         ensName: ensName !== undefined ? ensName : user.ensName,
+        displayName: displayName !== undefined ? displayName : user.displayName,
         lastSeen: lastSeen ? new Date(lastSeen) : new Date()
       });
       
@@ -79,6 +82,243 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error updating user:", error);
       res.status(500).json({ error: "Failed to update user" });
+    }
+  });
+  
+  // === CHAT APIS ===
+  
+  // Get all chats for a user
+  app.get('/api/users/:userId/chats', async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      if (isNaN(userId)) {
+        return res.status(400).json({ error: "Invalid user ID" });
+      }
+      
+      const chats = await storage.getUserChats(userId);
+      res.json(chats);
+    } catch (error) {
+      console.error("Error fetching user chats:", error);
+      res.status(500).json({ error: "Failed to fetch chats" });
+    }
+  });
+  
+  // Create a new direct chat
+  app.post('/api/chats/direct', async (req, res) => {
+    try {
+      const { userId1, userId2 } = req.body;
+      
+      if (!userId1 || !userId2) {
+        return res.status(400).json({ error: "Both user IDs are required" });
+      }
+      
+      // Check if users exist
+      const user1 = await storage.getUser(userId1);
+      const user2 = await storage.getUser(userId2);
+      
+      if (!user1 || !user2) {
+        return res.status(404).json({ error: "One or both users not found" });
+      }
+      
+      // Check if they already have a direct chat
+      const existingChat = await storage.getChatByParticipants(userId1, userId2);
+      if (existingChat) {
+        return res.status(200).json(existingChat); // Return existing chat
+      }
+      
+      // Create a new chat
+      const chat = await storage.createChat({
+        isGroup: false,
+        createdById: userId1
+      }, [
+        { userId: userId1, isAdmin: true, chatId: 0 }, // chatId will be replaced in storage method
+        { userId: userId2, isAdmin: false, chatId: 0 }
+      ]);
+      
+      res.status(201).json(chat);
+    } catch (error) {
+      console.error("Error creating direct chat:", error);
+      res.status(500).json({ error: "Failed to create chat" });
+    }
+  });
+  
+  // Create a new group chat
+  app.post('/api/chats/group', async (req, res) => {
+    try {
+      const { name, createdById, participants, avatarColor } = req.body;
+      
+      if (!name || !createdById || !participants || !Array.isArray(participants) || participants.length < 1) {
+        return res.status(400).json({ error: "Name, creator ID, and at least one participant are required" });
+      }
+      
+      // Check if creator exists
+      const creator = await storage.getUser(createdById);
+      if (!creator) {
+        return res.status(404).json({ error: "Creator not found" });
+      }
+      
+      // Create participant objects
+      const chatParticipants = participants.map(pId => ({
+        userId: pId,
+        isAdmin: pId === createdById,
+        chatId: 0 // Will be replaced in storage method
+      }));
+      
+      // Add creator if not already in participants
+      if (!chatParticipants.some(p => p.userId === createdById)) {
+        chatParticipants.push({
+          userId: createdById,
+          isAdmin: true,
+          chatId: 0
+        });
+      }
+      
+      // Create the group chat
+      const chat = await storage.createChat({
+        name,
+        isGroup: true,
+        createdById,
+        avatarColor
+      }, chatParticipants);
+      
+      res.status(201).json(chat);
+    } catch (error) {
+      console.error("Error creating group chat:", error);
+      res.status(500).json({ error: "Failed to create group chat" });
+    }
+  });
+  
+  // Get chat messages
+  app.get('/api/chats/:chatId/messages', async (req, res) => {
+    try {
+      const chatId = parseInt(req.params.chatId);
+      const limit = parseInt(req.query.limit as string || '50');
+      const offset = parseInt(req.query.offset as string || '0');
+      
+      if (isNaN(chatId)) {
+        return res.status(400).json({ error: "Invalid chat ID" });
+      }
+      
+      const messages = await storage.getChatMessages(chatId, limit, offset);
+      res.json(messages);
+    } catch (error) {
+      console.error("Error fetching chat messages:", error);
+      res.status(500).json({ error: "Failed to fetch messages" });
+    }
+  });
+  
+  // Add user to group chat
+  app.post('/api/chats/:chatId/participants', async (req, res) => {
+    try {
+      const chatId = parseInt(req.params.chatId);
+      const { userId, isAdmin = false } = req.body;
+      
+      if (isNaN(chatId) || !userId) {
+        return res.status(400).json({ error: "Valid chat ID and user ID are required" });
+      }
+      
+      // Check if chat exists and is a group
+      const chat = await storage.getChat(chatId);
+      if (!chat) {
+        return res.status(404).json({ error: "Chat not found" });
+      }
+      
+      if (!chat.isGroup) {
+        return res.status(400).json({ error: "Cannot add participants to direct chats" });
+      }
+      
+      // Check if user exists
+      const user = await storage.getUser(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+      
+      // Add participant
+      const participant = await storage.addChatParticipant({
+        chatId,
+        userId,
+        isAdmin
+      });
+      
+      res.status(201).json(participant);
+    } catch (error) {
+      console.error("Error adding participant:", error);
+      res.status(500).json({ error: "Failed to add participant" });
+    }
+  });
+  
+  // Remove user from group chat
+  app.delete('/api/chats/:chatId/participants/:userId', async (req, res) => {
+    try {
+      const chatId = parseInt(req.params.chatId);
+      const userId = parseInt(req.params.userId);
+      
+      if (isNaN(chatId) || isNaN(userId)) {
+        return res.status(400).json({ error: "Valid chat ID and user ID are required" });
+      }
+      
+      // Check if chat exists and is a group
+      const chat = await storage.getChat(chatId);
+      if (!chat) {
+        return res.status(404).json({ error: "Chat not found" });
+      }
+      
+      if (!chat.isGroup) {
+        return res.status(400).json({ error: "Cannot remove participants from direct chats" });
+      }
+      
+      // Remove participant
+      await storage.removeChatParticipant(chatId, userId);
+      
+      res.status(204).send();
+    } catch (error) {
+      console.error("Error removing participant:", error);
+      res.status(500).json({ error: "Failed to remove participant" });
+    }
+  });
+  
+  // === FILE APIS ===
+  
+  // Upload file metadata (the actual file content will be handled separately)
+  app.post('/api/files', async (req, res) => {
+    try {
+      const { messageId, uploaderId, fileHash, encryptionKey, fileName, fileSize, fileType } = req.body;
+      
+      if (!messageId || !uploaderId || !fileHash || !fileName || !fileSize || !fileType) {
+        return res.status(400).json({ error: "Missing required file metadata" });
+      }
+      
+      const file = await storage.createFile({
+        messageId,
+        uploaderId,
+        fileHash,
+        encryptionKey,
+        fileName,
+        fileSize,
+        fileType
+      });
+      
+      res.status(201).json(file);
+    } catch (error) {
+      console.error("Error creating file metadata:", error);
+      res.status(500).json({ error: "Failed to create file metadata" });
+    }
+  });
+  
+  // Get file metadata by hash
+  app.get('/api/files/:fileHash', async (req, res) => {
+    try {
+      const { fileHash } = req.params;
+      
+      const file = await storage.getFileByHash(fileHash);
+      if (!file) {
+        return res.status(404).json({ error: "File not found" });
+      }
+      
+      res.json(file);
+    } catch (error) {
+      console.error("Error fetching file metadata:", error);
+      res.status(500).json({ error: "Failed to fetch file metadata" });
     }
   });
   

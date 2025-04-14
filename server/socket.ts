@@ -1,8 +1,8 @@
 import { WebSocketServer, WebSocket } from "ws";
 import { IStorage } from "./storage";
 
-// Connected clients map: address -> WebSocket
-const clients = new Map<string, WebSocket>();
+// Connected clients map: address -> { ws: WebSocket, userId: number }
+const clients = new Map<string, { ws: WebSocket, userId: number }>();
 
 // Track active connections
 const connectionCounter = {
@@ -41,7 +41,6 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
             // Register client when they connect
             if (data.payload?.address) {
               userAddress = data.payload.address;
-              clients.set(userAddress, ws);
               
               // Check if this is a guest user
               const isGuest = data.payload.isGuest === true;
@@ -50,6 +49,7 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
                 console.log(`Guest user connected with address: ${userAddress}`);
                 // For guest users, we don't persist them in storage
                 // Just keep them in the client map for the session
+                clients.set(userAddress, { ws, userId: -1 }); // Use -1 for guest IDs
               } else {
                 // Update user in storage or create if not exists
                 try {
@@ -59,19 +59,22 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
                       publicKey: data.payload.publicKey || existingUser.publicKey,
                       lastSeen: new Date()
                     });
+                    clients.set(userAddress, { ws, userId: existingUser.id });
                   } else {
                     // Create new user
-                    await storage.createUser({
+                    const newUser = await storage.createUser({
                       address: userAddress,
                       publicKey: data.payload.publicKey,
-                      ensName: data.payload.ensName || '', // Empty string instead of null
-                      displayName: '', // Initialize display name
+                      ensName: data.payload.ensName || null,
+                      displayName: data.payload.displayName || null,
                       lastSeen: new Date()
                     });
+                    clients.set(userAddress, { ws, userId: newUser.id });
                   }
                 } catch (error) {
                   console.error(`Error updating/creating user ${userAddress}:`, error);
                   // Continue anyway - don't prevent connection due to storage errors
+                  clients.set(userAddress, { ws, userId: -1 }); // Use -1 as fallback
                 }
               }
               
@@ -92,45 +95,142 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
               return;
             }
             
-            const { recipientId, content } = data.payload;
-            if (!recipientId || !content) {
+            // Extract message data
+            const { chatId, content, messageType, metadata } = data.payload;
+            if (!chatId || !content) {
               return;
             }
             
-            // Get recipient socket
-            const recipient = await storage.getUserByAddress(recipientId);
-            const recipientWs = recipient ? clients.get(recipient.address) : null;
-            
-            // Forward message to recipient if online
-            if (recipientWs && recipientWs.readyState === WebSocket.OPEN) {
-              recipientWs.send(JSON.stringify({
-                type: 'message',
-                payload: {
-                  ...data.payload,
-                  status: 'delivered'
-                }
-              }));
+            try {
+              // Check if this is a direct message or group message
+              const chat = await storage.getChat(parseInt(chatId));
+              if (!chat) {
+                throw new Error("Chat not found");
+              }
               
-              // Send delivery receipt back to sender
+              // Get the client connection info
+              const clientInfo = clients.get(userAddress);
+              if (!clientInfo || clientInfo.userId < 0) {
+                throw new Error("User not authenticated");
+              }
+              
+              // Store message in database
+              const message = await storage.createMessage({
+                chatId: parseInt(chatId),
+                senderId: clientInfo.userId,
+                messageType: messageType || 'text',
+                metadata: metadata || undefined,
+                timestamp: new Date(),
+                encrypted: true
+              });
+              
+              // For group chats, broadcast to all participants
+              if (chat.isGroup) {
+                // Get all chat participants
+                const participants = await storage.getChatParticipants(parseInt(chatId));
+                
+                // Broadcast to all participants except sender
+                for (const participant of participants) {
+                  if (participant.userId === clientInfo.userId) continue;
+                  
+                  // Find participant by user ID
+                  const participantUser = await storage.getUser(participant.userId);
+                  if (!participantUser) continue;
+                  
+                  // Get connection info
+                  const participantClient = participantUser ? 
+                    Array.from(clients.entries())
+                      .find(([_, info]) => info.userId === participantUser.id)?.[1] : null;
+                  
+                  if (participantClient && participantClient.ws.readyState === WebSocket.OPEN) {
+                    participantClient.ws.send(JSON.stringify({
+                      type: 'message',
+                      payload: {
+                        ...data.payload,
+                        id: message.id,
+                        status: 'delivered',
+                        senderId: clientInfo.userId,
+                        timestamp: message.timestamp
+                      }
+                    }));
+                  }
+                }
+                
+                // Send delivery receipt back to sender for group message
+                ws.send(JSON.stringify({
+                  type: 'receipt',
+                  payload: {
+                    messageId: message.id,
+                    chatId: chatId,
+                    status: 'delivered',
+                    timestamp: Date.now()
+                  }
+                }));
+              } else {
+                // This is a direct message
+                // Get the other participant in the direct chat
+                const participants = await storage.getChatParticipants(parseInt(chatId));
+                const otherParticipant = participants.find(p => p.userId !== clientInfo.userId);
+                
+                if (!otherParticipant) {
+                  throw new Error("Recipient not found in chat");
+                }
+                
+                // Get user info
+                const recipientUser = await storage.getUser(otherParticipant.userId);
+                if (!recipientUser) {
+                  throw new Error("Recipient user not found");
+                }
+                
+                // Find if recipient is online
+                const recipientClient = Array.from(clients.entries())
+                  .find(([_, info]) => info.userId === recipientUser.id)?.[1];
+                
+                // Forward message to recipient if online
+                if (recipientClient && recipientClient.ws.readyState === WebSocket.OPEN) {
+                  recipientClient.ws.send(JSON.stringify({
+                    type: 'message',
+                    payload: {
+                      ...data.payload,
+                      id: message.id,
+                      status: 'delivered',
+                      senderId: clientInfo.userId,
+                      timestamp: message.timestamp
+                    }
+                  }));
+                  
+                  // Send delivery receipt back to sender
+                  ws.send(JSON.stringify({
+                    type: 'receipt',
+                    payload: {
+                      messageId: message.id,
+                      chatId: chatId,
+                      status: 'delivered',
+                      timestamp: Date.now()
+                    }
+                  }));
+                } else {
+                  // Recipient is offline - will get message when they come online
+                  
+                  // Send pending receipt back to sender
+                  ws.send(JSON.stringify({
+                    type: 'receipt',
+                    payload: {
+                      messageId: message.id,
+                      chatId: chatId,
+                      status: 'pending',
+                      timestamp: Date.now()
+                    }
+                  }));
+                }
+              }
+            } catch (error) {
+              console.error('Error processing message:', error);
               ws.send(JSON.stringify({
-                type: 'receipt',
+                type: 'error',
                 payload: {
                   messageId: data.payload.id,
-                  status: 'delivered',
-                  timestamp: Date.now()
-                }
-              }));
-            } else {
-              // Store message for offline delivery
-              // In a real app, this would be stored in the database
-              
-              // Send pending receipt back to sender
-              ws.send(JSON.stringify({
-                type: 'receipt',
-                payload: {
-                  messageId: data.payload.id,
-                  status: 'pending',
-                  timestamp: Date.now()
+                  error: error instanceof Error ? error.message : 'Error processing message'
                 }
               }));
             }
@@ -206,9 +306,9 @@ export function setupSocketHandlers(wss: WebSocketServer, storage: IStorage) {
 async function broadcastPresence(address: string, online: boolean) {
   // In a real app, you would fetch friends list from database
   // and only broadcast to them
-  clients.forEach((client, clientAddress) => {
-    if (clientAddress !== address && client.readyState === WebSocket.OPEN) {
-      client.send(JSON.stringify({
+  clients.forEach((clientInfo, clientAddress) => {
+    if (clientAddress !== address && clientInfo.ws.readyState === WebSocket.OPEN) {
+      clientInfo.ws.send(JSON.stringify({
         type: 'presence',
         payload: {
           address,
