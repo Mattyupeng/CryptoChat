@@ -92,7 +92,7 @@ export default function AddFriendModal({ onClose }: AddFriendModalProps) {
             <h3 className="font-semibold text-lg">Add Friend</h3>
             <button 
               onClick={onClose}
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-dark-hover transition"
+              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition"
             >
               <i className="ri-close-line text-xl"></i>
             </button>
