@@ -84,7 +84,7 @@ export default function Chat() {
             {
               id: 'msg1',
               chatId: 'demo1',
-              content: 'Welcome to CryptoChat! 👋',
+              content: 'Welcome to Hushline! 👋',
               senderId: 'demo1',
               recipientId: 'self',
               timestamp: Date.now() - 3600000,
@@ -106,7 +106,7 @@ export default function Chat() {
         };
         
         // Save to localStorage directly
-        localStorage.setItem('cryptoChat_chats', JSON.stringify([demoChat]));
+        localStorage.setItem('hushline_chats', JSON.stringify([demoChat]));
         
         // Reload data
         loadChats();

@@ -295,7 +295,7 @@ export default function Settings() {
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-dark-border pb-2">About</h2>
           <div className="p-3">
-            <h3 className="font-medium">CryptoChat</h3>
+            <h3 className="font-medium">Hushline</h3>
             <p className="text-sm text-app-muted">Version 0.1.0</p>
             <p className="text-sm text-app-muted mt-2">
               End-to-end encrypted messaging platform for crypto wallets.

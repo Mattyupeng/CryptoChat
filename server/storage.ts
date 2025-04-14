@@ -52,7 +52,7 @@ export interface IStorage {
   createFile(file: InsertFile): Promise<File>;
   
   // Session store for authentication
-  sessionStore: session.SessionStore;
+  sessionStore: any; // Using any for now to avoid TypeScript errors
 }
 
 // Database implementation of our storage interface

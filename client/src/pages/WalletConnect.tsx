@@ -76,7 +76,7 @@ export default function WalletConnect() {
           {
             id: 'msg1',
             chatId: 'demo1',
-            content: 'Welcome to CryptoChat! 👋',
+            content: 'Welcome to Hushline! 👋',
             senderId: 'demo1',
             recipientId: 'self',
             timestamp: Date.now() - 3600000,
@@ -98,8 +98,8 @@ export default function WalletConnect() {
       };
       
       // Save demo data directly to localStorage
-      localStorage.setItem('cryptoChat_friends', JSON.stringify([demoFriend]));
-      localStorage.setItem('cryptoChat_chats', JSON.stringify([demoChat]));
+      localStorage.setItem('hushline_friends', JSON.stringify([demoFriend]));
+      localStorage.setItem('hushline_chats', JSON.stringify([demoChat]));
       
       // Small delay for better UX
       await new Promise(resolve => setTimeout(resolve, 500));

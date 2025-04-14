@@ -66,7 +66,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       <div className="flex flex-col items-center justify-center h-full w-full bg-app-bg p-4 md:p-8 text-center">
         {/* Desktop welcome screen - hidden on mobile */}
         <div className="hidden md:block">
-          <h2 className="text-2xl font-bold mb-4">Welcome to CryptoChat</h2>
+          <h2 className="text-2xl font-bold mb-4">Welcome to Hushline</h2>
           <p className="text-lg text-app-muted max-w-md mb-8">
             Choose a conversation from the sidebar to start chatting
           </p>

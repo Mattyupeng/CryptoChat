@@ -24,7 +24,7 @@ export default function Home() {
         <div className="w-24 h-24 mx-auto rounded-full bg-primary/20 flex items-center justify-center mb-6">
           <div className="text-5xl">💬</div>
         </div>
-        <h1 className="text-3xl font-semibold mb-4">CryptoChat</h1>
+        <h1 className="text-3xl font-semibold mb-4">Hushline</h1>
         <p className="text-app-muted mb-8">
           A decentralized messaging platform with wallet-based authentication and crypto transfer capabilities.
         </p>
