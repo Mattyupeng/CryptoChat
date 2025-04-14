@@ -163,18 +163,10 @@ export default function Chat() {
                       >
                         <i className="ri-search-line text-xl text-app-muted"></i>
                       </button>
-                      {activeTab === 'chats' && (
-                        <button
-                          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-                          onClick={() => setShowGroupChatModal(true)}
-                          title="Create Group"
-                        >
-                          <i className="ri-group-line text-xl text-app-muted"></i>
-                        </button>
-                      )}
                       <button 
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-                        onClick={() => setShowAddFriendModal(true)}
+                        onClick={() => activeTab === 'chats' ? setShowGroupChatModal(true) : setShowAddFriendModal(true)}
+                        title={activeTab === 'chats' ? "Create Group" : "Add Friend"}
                       >
                         <i className="ri-add-line text-xl text-app-muted"></i>
                       </button>
@@ -233,18 +225,10 @@ export default function Chat() {
                   >
                     <i className="ri-search-line text-xl"></i>
                   </button>
-                  {activeTab === 'chats' && (
-                    <button
-                      className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-                      onClick={() => setShowGroupChatModal(true)}
-                      title="Create Group"
-                    >
-                      <i className="ri-group-line text-xl"></i>
-                    </button>
-                  )}
                   <button 
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-                    onClick={() => setShowAddFriendModal(true)}
+                    onClick={() => activeTab === 'chats' ? setShowGroupChatModal(true) : setShowAddFriendModal(true)}
+                    title={activeTab === 'chats' ? "Create Group" : "Add Friend"}
                   >
                     <i className="ri-add-line text-xl"></i>
                   </button>
