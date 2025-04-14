@@ -8,7 +8,7 @@ interface AssetTransferModalProps {
   onClose: () => void;
 }
 
-type ChainType = 'evm' | 'solana';
+type ChainType = 'evm' | 'solana' | 'demo';
 type Token = {
   symbol: string;
   name: string;

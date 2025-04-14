@@ -277,7 +277,65 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
+  // Client-side group creation endpoint
+  app.post('/api/groups', async (req, res) => {
+    try {
+      const { name, avatarColor, participants } = req.body;
+      
+      if (!name || !participants || !Array.isArray(participants)) {
+        return res.status(400).json({ error: "Name and participants array are required" });
+      }
+      
+      // For MVP, we'll create a simplified group record
+      // In production, this would properly validate participants and use real user IDs
+      
+      const groupId = `group_${Date.now()}`;
+      
+      res.status(201).json({
+        id: groupId,
+        name,
+        avatarColor,
+        isGroup: true,
+        createdAt: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Error creating simplified group:", error);
+      res.status(500).json({ error: "Failed to create group" });
+    }
+  });
+  
   // === FILE APIS ===
+  
+  // Simulate file upload (for MVP)
+  app.post('/api/upload', async (req, res) => {
+    try {
+      const { name, type, size, chatId, senderId } = req.body;
+      
+      if (!name || !chatId) {
+        return res.status(400).json({ error: "File name and chat ID are required" });
+      }
+      
+      // Generate a mock hash for the file
+      const fileHash = `file_${Date.now()}_${Math.floor(Math.random() * 1000)}`;
+      
+      // In a real implementation, we would:
+      // 1. Upload the encrypted file to storage
+      // 2. Store metadata in the database
+      // 3. Create a message referencing the file
+      
+      // For MVP, we'll just return the mock file info
+      res.status(200).json({
+        fileHash,
+        fileName: name,
+        fileSize: size || 0,
+        fileType: type || 'application/octet-stream',
+        uploadTime: new Date().toISOString()
+      });
+    } catch (error) {
+      console.error("Error handling file upload:", error);
+      res.status(500).json({ error: "Failed to process file upload" });
+    }
+  });
   
   // Upload file metadata (the actual file content will be handled separately)
   app.post('/api/files', async (req, res) => {

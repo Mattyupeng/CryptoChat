@@ -96,7 +96,8 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
   return (
     <div className="flex-1 overflow-y-auto">
       {userList.map((user) => {
-        const lastMessage = activeTab === 'chats' && user.messages.length > 0
+        // Only retrieve last message for Chat objects (not Friend objects)
+        const lastMessage = activeTab === 'chats' && 'messages' in user && user.messages.length > 0
           ? user.messages[user.messages.length - 1]
           : null;
         

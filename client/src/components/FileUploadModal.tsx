@@ -47,19 +47,49 @@ export default function FileUploadModal({ chatId, publicKey, onClose, onSend }: 
       const encryptionKey = Math.random().toString(36).substring(2, 15) + 
                             Math.random().toString(36).substring(2, 15);
       
-      // In a real app, this would encrypt the file with the key
-      // For demo purposes, we're just simulating encryption
-      
-      // Simulate encryption and upload progress
+      // Start progress animation
       let progress = 0;
-      const simulateProgress = setInterval(() => {
-        progress += 10;
-        setUploadProgress(progress);
-        if (progress >= 100) {
-          clearInterval(simulateProgress);
-          completeUpload(encryptionKey);
+      const progressInterval = setInterval(() => {
+        progress += 5;
+        if (progress < 90) { // Go to 90%, then wait for actual completion
+          setUploadProgress(progress);
         }
-      }, 300);
+      }, 150);
+      
+      // In a real app, we'd encrypt the file here
+      
+      // Send to server
+      const formData = new FormData();
+      formData.append('name', file.name);
+      formData.append('type', file.type);
+      formData.append('size', file.size.toString());
+      formData.append('chatId', chatId);
+      
+      // Send upload request to the server
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          chatId: chatId,
+        }),
+      });
+      
+      clearInterval(progressInterval);
+      
+      if (!response.ok) {
+        throw new Error('File upload failed');
+      }
+      
+      const result = await response.json();
+      
+      // Complete upload with 100%
+      setUploadProgress(100);
+      completeUpload(encryptionKey, result.fileHash);
       
     } catch (error) {
       console.error("Error uploading file:", error);
@@ -72,7 +102,7 @@ export default function FileUploadModal({ chatId, publicKey, onClose, onSend }: 
     }
   };
   
-  const completeUpload = (encryptionKey: string) => {
+  const completeUpload = (encryptionKey: string, fileHash?: string) => {
     if (!file) return;
     
     // Create file metadata
@@ -81,7 +111,7 @@ export default function FileUploadModal({ chatId, publicKey, onClose, onSend }: 
       size: file.size,
       type: file.type,
       encryptionKey: encryptionKey, // In production, encrypt this with recipient's public key
-      fileHash: `file_${Date.now()}` // In production, use actual file hash
+      fileHash: fileHash || `file_${Date.now()}` // Use server-provided hash or generate fallback
     };
     
     // Send message with file attachment
