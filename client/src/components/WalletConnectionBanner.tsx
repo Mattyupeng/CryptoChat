@@ -1,8 +1,10 @@
 import { useWalletStore } from '@/store/store';
 import { truncateAddress } from '@/lib/utils';
+import { useLocation } from 'wouter';
 
 export default function WalletConnectionBanner() {
   const { isConnected, address, chainType, ensName, disconnect } = useWalletStore();
+  const [, navigate] = useLocation();
 
   // Determine the appropriate wallet icon
   const getWalletIcon = () => {
@@ -27,6 +29,12 @@ export default function WalletConnectionBanner() {
           </div>
           <div className="text-xs text-app-muted">Connect your wallet to send messages and assets</div>
         </div>
+        <button 
+          onClick={() => navigate('/')}
+          className="px-2 py-1 text-xs rounded-full border border-yellow-500/30 text-yellow-600 hover:bg-yellow-500/10 transition"
+        >
+          Connect
+        </button>
       </div>
     );
   }
@@ -46,7 +54,10 @@ export default function WalletConnectionBanner() {
         </div>
       </div>
       <button 
-        onClick={disconnect}
+        onClick={() => {
+          disconnect();
+          navigate('/');
+        }}
         className="px-2 py-1 text-xs rounded-full border border-primary/30 text-primary hover:bg-primary/10 transition"
       >
         Switch
