@@ -156,13 +156,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           >
             <i className="ri-file-upload-line text-xl text-app-muted"></i>
           </button>
-          <button 
-            onClick={() => setShowGroupModal(true)} 
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-            title="Create Group"
-          >
-            <i className="ri-group-line text-xl text-app-muted"></i>
-          </button>
+
           <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
             <i className="ri-more-2-fill text-xl text-app-muted"></i>
           </button>
