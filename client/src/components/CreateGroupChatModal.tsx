@@ -50,12 +50,31 @@ export default function CreateGroupChatModal({ onClose }: CreateGroupChatModalPr
     setIsSubmitting(true);
 
     try {
-      // In a real app, this would call the backend API
       const avatarColor = getAvatarColor(groupName);
       
-      // Create a new group chat object
+      // Create backend API request for creating a group
+      const response = await fetch('/api/groups', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: groupName,
+          avatarColor,
+          participants: selectedFriends,
+        }),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to create group on the server');
+      }
+      
+      // If API request is successful, create local group chat
+      const result = await response.json();
+      
+      // Alternatively, create a client-side group if server is not available
       const groupChat = {
-        id: `group_${Date.now()}`,
+        id: result?.id || `group_${Date.now()}`,
         name: groupName,
         isGroup: true,
         avatarColor,
@@ -91,11 +110,53 @@ export default function CreateGroupChatModal({ onClose }: CreateGroupChatModalPr
       onClose();
     } catch (error) {
       console.error("Error creating group chat:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create group chat. Please try again.",
-        variant: "destructive"
-      });
+      
+      // Fallback to client-side group creation if backend fails
+      try {
+        const avatarColor = getAvatarColor(groupName);
+        
+        const groupChat = {
+          id: `group_${Date.now()}`,
+          name: groupName,
+          isGroup: true,
+          avatarColor,
+          participants: [
+            { id: 'self', address: address || '', isAdmin: true },
+            ...selectedFriends.map(friendId => {
+              const friend = friends.find(f => f.id === friendId);
+              return {
+                id: friendId,
+                address: friend?.address || '',
+                isAdmin: false
+              };
+            })
+          ],
+          address: '',
+          ensName: null,
+          displayName: groupName,
+          isOnline: true,
+          messages: [],
+          lastRead: Date.now(),
+          publicKey: '',
+          createdAt: Date.now()
+        };
+        
+        // Add chat to store
+        addChat(groupChat);
+        
+        toast({
+          title: "Success",
+          description: `Group "${groupName}" has been created (offline mode)`,
+        });
+        
+        onClose();
+      } catch (fallbackError) {
+        toast({
+          title: "Error",
+          description: "Failed to create group chat. Please try again.",
+          variant: "destructive"
+        });
+      }
     } finally {
       setIsSubmitting(false);
     }

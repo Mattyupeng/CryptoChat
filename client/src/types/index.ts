@@ -48,13 +48,23 @@ export interface Message {
   transaction?: Transaction;
 }
 
-// Transaction info for crypto transfers
+// Transaction info for crypto transfers or file sharing
 export interface Transaction {
-  amount: string;
-  token: string; // ETH, SOL, USDC, etc.
-  chain: string; // ethereum, solana, etc.
-  status: 'pending' | 'confirmed' | 'failed';
-  txHash: string;
+  // Crypto transaction fields
+  amount?: string;
+  token?: string; // ETH, SOL, USDC, etc.
+  chain?: string; // ethereum, solana, etc.
+  status?: 'pending' | 'confirmed' | 'failed';
+  txHash?: string;
+  
+  // File transaction fields
+  file?: {
+    name: string;
+    size: number;
+    type: string;
+    encryptionKey?: string;
+    fileHash: string;
+  };
 }
 
 // Socket message types
