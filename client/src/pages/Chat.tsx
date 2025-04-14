@@ -217,16 +217,16 @@ export default function Chat() {
                 </h1>
                 <div className="flex gap-2">
                   <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                     onClick={() => {/* Implement search functionality */}}
                   >
-                    <i className="ri-search-line text-xl text-app-muted"></i>
+                    <i className="ri-search-line text-xl"></i>
                   </button>
                   <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                     onClick={() => setShowAddFriendModal(true)}
                   >
-                    <i className="ri-add-line text-xl text-app-muted"></i>
+                    <i className="ri-add-line text-xl"></i>
                   </button>
                 </div>
               </div>
