@@ -89,7 +89,9 @@ export default function FileUploadModal({ chatId, publicKey, onClose, onSend }: 
       
       // Complete upload with 100%
       setUploadProgress(100);
-      completeUpload(encryptionKey, result.fileHash);
+      setTimeout(() => {
+        completeUpload(encryptionKey, result.fileHash);
+      }, 500); // small delay to show 100% progress
       
     } catch (error) {
       console.error("Error uploading file:", error);
