@@ -64,7 +64,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       });
       
       // Save to localStorage
-      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
+      localStorage.setItem('hushline_wallet', JSON.stringify({
         address, ensName, publicKey, privateKey, chainType: 'evm'
       }));
     } catch (error) {
@@ -98,7 +98,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       });
       
       // Save to localStorage
-      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
+      localStorage.setItem('hushline_wallet', JSON.stringify({
         address, publicKey, privateKey, chainType: 'solana'
       }));
     } catch (error) {
@@ -134,7 +134,7 @@ export const useWalletStore = create<WalletState>((set, get) => ({
       });
       
       // Save to localStorage
-      localStorage.setItem('cryptoChat_wallet', JSON.stringify({
+      localStorage.setItem('hushline_wallet', JSON.stringify({
         address: randomAddress, 
         ensName: 'guest.eth', 
         publicKey, 
@@ -276,6 +276,7 @@ interface ChatState {
   removeFriend: (friendId: string) => void;
   getCurrentChat: (chatId: string) => Chat | null;
   setCurrentChat: (chatId: string) => void;
+  addChat: (chat: Chat) => Chat;
   sendMessage: (chatId: string, content: string, transaction?: Transaction) => void;
   receiveMessage: (message: Message) => void;
 }
@@ -388,6 +389,21 @@ export const useChatStore = create<ChatState>((set, get) => ({
       
       localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
     }
+  },
+  
+  addChat: (chat: Chat) => {
+    const { chats } = get();
+    
+    // Check if chat already exists
+    const existingChat = chats.find(c => c.id === chat.id);
+    if (existingChat) {
+      throw new Error('Chat already exists');
+    }
+    
+    const updatedChats = [...chats, chat];
+    set({ chats: updatedChats });
+    localStorage.setItem('cryptoChat_chats', JSON.stringify(updatedChats));
+    return chat;
   },
 
   sendMessage: (chatId: string, content: string, transaction?: Transaction) => {
