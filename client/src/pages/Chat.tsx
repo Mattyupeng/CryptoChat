@@ -9,6 +9,7 @@ import { useWalletStore, useChatStore } from '@/store/store';
 import WalletConnectionBanner from '@/components/WalletConnectionBanner';
 import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
+import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/pages/Settings';
 
 export default function Chat() {

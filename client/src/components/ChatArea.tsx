@@ -4,7 +4,6 @@ import { useChatStore, useWalletStore } from '@/store/store';
 import MessageItem from './MessageItem';
 import MessageInput from './MessageInput';
 import FileUploadModal from './FileUploadModal';
-import CreateGroupChatModal from './CreateGroupChatModal';
 import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
 
@@ -20,7 +19,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
-  const [showGroupModal, setShowGroupModal] = useState(false);
   
   const currentChat = chatId ? getCurrentChat(chatId) : null;
   
@@ -230,12 +228,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             sendMessage(chatId, content, transaction);
             setShowFileModal(false);
           }}
-        />
-      )}
-      
-      {showGroupModal && (
-        <CreateGroupChatModal 
-          onClose={() => setShowGroupModal(false)} 
         />
       )}
     </div>
