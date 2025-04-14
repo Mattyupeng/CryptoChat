@@ -20,6 +20,7 @@ export default function Chat() {
   const [activeTab, setActiveTab] = useState<'chats' | 'contacts' | 'wallet' | 'settings'>('chats');
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
+  const [showGroupChatModal, setShowGroupChatModal] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<string | null>(null);
 
   // Check if user is authenticated, redirect if not
@@ -162,6 +163,15 @@ export default function Chat() {
                       >
                         <i className="ri-search-line text-xl text-app-muted"></i>
                       </button>
+                      {activeTab === 'chats' && (
+                        <button
+                          className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+                          onClick={() => setShowGroupChatModal(true)}
+                          title="Create Group"
+                        >
+                          <i className="ri-group-line text-xl text-app-muted"></i>
+                        </button>
+                      )}
                       <button 
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                         onClick={() => setShowAddFriendModal(true)}
@@ -223,6 +233,15 @@ export default function Chat() {
                   >
                     <i className="ri-search-line text-xl"></i>
                   </button>
+                  {activeTab === 'chats' && (
+                    <button
+                      className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
+                      onClick={() => setShowGroupChatModal(true)}
+                      title="Create Group"
+                    >
+                      <i className="ri-group-line text-xl"></i>
+                    </button>
+                  )}
                   <button 
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                     onClick={() => setShowAddFriendModal(true)}
@@ -269,6 +288,10 @@ export default function Chat() {
               setSelectedRecipient(null);
             }} 
           />
+        )}
+        
+        {showGroupChatModal && (
+          <CreateGroupChatModal onClose={() => setShowGroupChatModal(false)} />
         )}
       </div>
     </Layout>
