@@ -123,13 +123,13 @@ export default function WalletConnect() {
   }, [isConnected, connecting, navigate]);
 
   return (
-    <div className="flex flex-col h-screen w-full bg-dark-bg text-slate-50">
+    <div className="flex flex-col h-screen w-full bg-app-bg text-app">
       <div className="flex-1 flex flex-col items-center justify-center p-6">
         <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mb-6">
           <div className="text-4xl text-primary">🔐</div>
         </div>
         <h1 className="text-2xl font-semibold mb-2">Connect Your Wallet</h1>
-        <p className="text-slate-400 text-center mb-8">Connect your wallet to start sending encrypted messages and assets</p>
+        <p className="text-app-muted text-center mb-8">Connect your wallet to start sending encrypted messages and assets</p>
         
         <div className="w-full space-y-3 max-w-xs">
           <Button
@@ -158,17 +158,17 @@ export default function WalletConnect() {
           
           <div className="relative my-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-dark-border"></div>
+              <div className="w-full border-t border-app-border"></div>
             </div>
             <div className="relative flex justify-center">
-              <span className="px-2 bg-dark-bg text-slate-400 text-sm">or try demo</span>
+              <span className="px-2 bg-app-bg text-app-muted text-sm">or try demo</span>
             </div>
           </div>
           
           <Button
             onClick={handleGuestMode}
             disabled={connecting || isGuest}
-            className="w-full border border-slate-700 hover:bg-dark-hover py-3 px-4 rounded-xl font-medium text-slate-200 flex items-center justify-center gap-2"
+            className="w-full border border-app-border hover:bg-app-hover py-3 px-4 rounded-xl font-medium text-app flex items-center justify-center gap-2"
           >
             {isGuest ? 'Loading Guest Mode...' : 'Continue as Guest'}
           </Button>
@@ -181,7 +181,7 @@ export default function WalletConnect() {
         )}
       </div>
       
-      <div className="p-4 text-center text-xs text-slate-500">
+      <div className="p-4 text-center text-xs text-app-muted">
         By connecting, you agree to our Terms of Service and Privacy Policy
       </div>
     </div>
