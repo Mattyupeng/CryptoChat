@@ -123,7 +123,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     <div className="flex flex-col h-full w-full bg-app-bg">
       {/* Chat Header */}
       <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 h-9">
           {/* Back button for mobile - hidden on desktop */}
           <button 
             onClick={() => navigate('/chat')} 
@@ -133,10 +133,10 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             <i className="ri-arrow-left-line text-xl text-app-muted"></i>
           </button>
           
-          <div className={`w-10 h-10 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
+          <div className={`w-9 h-9 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
             {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div className="flex flex-col justify-center h-10">
+          <div className="flex flex-col justify-center h-9">
             <h2 className="font-medium leading-none mb-1">
               {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
             </h2>
@@ -146,7 +146,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 h-9">
           <button 
             onClick={() => setShowFileModal(true)}
             className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
