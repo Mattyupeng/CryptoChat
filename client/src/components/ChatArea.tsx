@@ -172,14 +172,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       <div className="flex flex-col h-full w-full bg-app-bg relative">
         {/* Chat Header */}
         <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full relative">
-          {/* Quick access button for MiniApps slide panel - more prominent */}
-          <button 
-            onClick={() => setShowMiniAppSlidePanel(true)}
-            className="absolute right-3 top-0 text-xs flex items-center gap-1 bg-primary text-white py-1.5 px-3 rounded-b-md shadow-sm"
-          >
-            <i className="ri-apps-line"></i>
-            <span>MiniApps</span>
-          </button>
           
           <div className="flex items-center gap-3 h-9">
             {/* Back button for mobile - hidden on desktop */}
@@ -226,14 +218,14 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         <div 
           className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1"
         >
-          {/* Pull-to-access-MiniApps hint instead of gesture */}
+          {/* Access Apps hint */}
           <div className="sticky top-0 left-0 right-0 flex justify-center mb-2 z-10">
             <button
               onClick={() => setShowMiniAppSlidePanel(true)}
               className="flex items-center gap-1.5 bg-app-surface/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface/100 transition-colors"
             >
               <i className="ri-apps-line text-base text-primary"></i>
-              <span className="text-app-foreground font-medium">Access MiniApps</span>
+              <span className="text-app-foreground font-medium">Access Apps</span>
             </button>
           </div>
           
