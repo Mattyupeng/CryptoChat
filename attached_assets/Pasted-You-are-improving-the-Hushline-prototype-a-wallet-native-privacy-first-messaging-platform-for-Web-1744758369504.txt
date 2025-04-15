@@ -1,0 +1,54 @@
+You are improving the Hushline prototype — a wallet-native, privacy-first messaging platform for Web3. The current version includes:
+
+- Wallet login (Solana wallet connect)
+- Encrypted 1:1 chat interface
+- Working MiniApp launcher (slide-down)
+- Embedded MiniApps (via iframe) like Jupiter, Mints.live
+
+Now we need to polish the experience and prepare for next-phase features. Focus on improving **usability, visual consistency, and extensibility** for MiniApps, bots, and social metadata.
+
+---
+
+✅ Maintain:
+- Clean, wallet-only login  
+- End-to-end encrypted chat as foundation  
+- Working MiniApp launcher (don’t remove)  
+- Wallet-to-wallet identity UX  
+
+---
+
+🎯 Improvements to Focus On:
+
+1. **UI/UX Polishing**
+   - Refine chat bubble styles: left/right alignment, distinguish sender/recipient colors  
+   - Add ENS/wallet preview on hover or inside message meta  
+   - Improve spacing: more consistent padding (`px-4 py-3`), line height, font weight (`text-base font-medium`)
+
+2. **MiniApp Tray Enhancements**
+   - Add labels/descriptions for each MiniApp (not just icons)  
+   - Support scrollable categories: “Trending,” “Tools,” “Bots”  
+   - Add pin/favorite button to save most-used apps  
+   - Show loading states or fallback message if iframe fails
+
+3. **Input Area Refinement**
+   - Add emoji button and `/` command system for Copilot, bots, future features  
+   - Show placeholder text like “Type a message or /command…”  
+   - Add send icon with hover animation
+
+4. **Header Bar & Navigation**
+   - Add top bar showing chat title (ENS or address), with avatar preview  
+   - Include quick buttons: Settings, MiniApp toggle, “My Reputation” (placeholder for social metadata)
+
+5. **Performance & Accessibility**
+   - Improve mobile responsiveness: check layout wrap, safe input area  
+   - Add transitions for MiniApp open/close  
+   - Ensure iframe sandboxing is consistent and secure
+
+---
+
+🛠️ Optional Next Steps:
+- Add mock “Bot message card” (e.g. Copilot response or airdrop link)
+- Create an early **"Reputation Score" panel** that updates with # of messages
+- Prep a structure for **MiniApp reviews/ratings** to support ecosystem expansion
+
+Please improve and modularize the UI to prepare for onboarding groups, bots, and early campaigns.
