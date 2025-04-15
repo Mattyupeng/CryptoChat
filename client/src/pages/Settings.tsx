@@ -88,8 +88,15 @@ export default function Settings() {
   return (
     <div className="w-full h-full flex flex-col bg-app-bg text-app overflow-y-auto">
       {/* Settings Header */}
-      <div className="p-4 h-16 border-b border-app-border flex items-center bg-app-surface sticky top-0 z-10">
-        <h1 className="text-xl font-semibold">Settings</h1>
+      <div className="h-16 border-b border-app-border flex items-center justify-between bg-app-surface sticky top-0 z-10 px-4">
+        <div className="flex items-center">
+          {isMobile && (
+            <button onClick={() => navigate('/chat')} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover mr-2">
+              <ChevronLeft className="w-5 h-5 text-app-muted" />
+            </button>
+          )}
+          <h1 className="text-xl font-semibold">Settings</h1>
+        </div>
       </div>
       
       {/* Settings Content */}
