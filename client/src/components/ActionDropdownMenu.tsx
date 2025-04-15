@@ -58,38 +58,38 @@ export function ActionDropdownMenu({
       {isOpen && (
         <div 
           ref={menuRef}
-          className="absolute right-0 top-full mt-2 w-56 bg-app-surface rounded-lg shadow-lg overflow-hidden border border-app-border z-50"
+          className="absolute right-0 top-full mt-1 w-60 bg-app-surface/95 backdrop-blur-md rounded-lg shadow-lg overflow-hidden border border-app-border z-50"
         >
-          <div className="py-1">
+          <div className="divide-y divide-app-border">
             <button
               onClick={() => handleMenuItemClick(onCreateGroup)}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
+              className="w-full px-4 py-4 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
             >
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <Users size={20} />
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900">
+                <Users size={22} />
               </div>
-              <span className="font-medium">Create Group Chat</span>
+              <span className="font-medium text-base">Create Group Chat</span>
             </button>
             
             <button
               onClick={() => handleMenuItemClick(onAddFriend)}
-              className="w-full px-4 py-3 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
+              className="w-full px-4 py-4 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
             >
-              <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                <UserPlus size={20} />
+              <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900">
+                <UserPlus size={22} />
               </div>
-              <span className="font-medium">Add Friend</span>
+              <span className="font-medium text-base">Add Friend</span>
             </button>
             
             {onScan && (
               <button
                 onClick={() => handleMenuItemClick(onScan)}
-                className="w-full px-4 py-3 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
+                className="w-full px-4 py-4 flex items-center gap-3 hover:bg-app-hover transition-colors text-left"
               >
-                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                  <QrCode size={20} />
+                <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center text-gray-900">
+                  <QrCode size={22} />
                 </div>
-                <span className="font-medium">Scan QR Code</span>
+                <span className="font-medium text-base">Scan QR Code</span>
               </button>
             )}
           </div>
