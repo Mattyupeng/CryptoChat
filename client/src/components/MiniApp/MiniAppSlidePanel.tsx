@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useMiniApp } from './MiniAppContext';
-import { ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X, Grip } from 'lucide-react';
 import { MiniApp } from './MiniAppData';
 
 interface MiniAppSlidePanelProps {
