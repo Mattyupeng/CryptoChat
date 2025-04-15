@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, TouchEvent } from 'react';
 import { useLocation } from 'wouter';
 import { useChatStore, useWalletStore } from '@/store/store';
 import MessageItem from './MessageItem';
@@ -14,10 +14,6 @@ import {
   MiniAppSlidePanel,
   useMiniApp
 } from '@/components/MiniApp';
-// Import new components
-import ChatBubble from './ChatBubble';
-import ChatHeader from './ChatHeader';
-import MessageInputPanel from './MessageInputPanel';
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -174,27 +170,67 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   return (
     <MiniAppProvider>
       <div className="flex flex-col h-full w-full bg-app-bg relative">
-        {/* Chat Header - Using our new component */}
-        <ChatHeader 
-          chatId={chatId}
-          displayName={currentChat.displayName || ''}
-          ensName={currentChat.ensName}
-          address={currentChat.address}
-          isOnline={currentChat.isOnline}
-          avatarColor={currentChat.avatarColor || 'bg-primary/20'}
-          onUploadFile={() => setShowFileModal(true)}
-          onOpenMiniApps={() => setShowMiniAppSlidePanel(true)}
-        />
+        {/* Chat Header */}
+        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full relative">
+          {/* Quick access button for MiniApps slide panel - more prominent */}
+          <button 
+            onClick={() => setShowMiniAppSlidePanel(true)}
+            className="absolute right-3 top-0 text-xs flex items-center gap-1 bg-primary text-white py-1.5 px-3 rounded-b-md shadow-sm"
+          >
+            <i className="ri-apps-line"></i>
+            <span>MiniApps</span>
+          </button>
+          
+          <div className="flex items-center gap-3 h-9">
+            {/* Back button for mobile - hidden on desktop */}
+            <button 
+              onClick={() => navigate('/chat')} 
+              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+              aria-label="Back"
+            >
+              <i className="ri-arrow-left-line text-xl text-app-muted"></i>
+            </button>
+            
+            <div className={`w-9 h-9 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
+              {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
+            </div>
+            <div className="flex flex-col justify-center h-9">
+              <h2 className="font-medium leading-none mb-1">
+                {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full ${currentChat.isOnline ? 'bg-green-500' : 'bg-slate-400'}`}></span>
+                <span className="text-xs text-app-muted leading-none">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
+              </div>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 h-9">
+            <button 
+              onClick={() => setShowFileModal(true)}
+              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+              title="Send File"
+            >
+              <i className="ri-file-upload-line text-xl text-app-muted"></i>
+            </button>
+            
+            {/* MiniApp button */}
+            <MiniAppLauncherButton onClick={() => setShowMiniAppLauncher(true)} />
+
+            <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
+              <i className="ri-more-2-fill text-xl text-app-muted"></i>
+            </button>
+          </div>
+        </div>
 
         {/* Chat Messages */}
         <div 
-          className="chat-messages px-4 py-6 space-y-6 w-full overflow-y-auto flex-1 bg-app-bg"
+          className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1"
         >
-          {/* MiniApps access button - sticky top */}
-          <div className="sticky top-0 left-0 right-0 flex justify-center mb-6 z-10">
+          {/* Pull-to-access-MiniApps hint instead of gesture */}
+          <div className="sticky top-0 left-0 right-0 flex justify-center mb-2 z-10">
             <button
               onClick={() => setShowMiniAppSlidePanel(true)}
-              className="flex items-center gap-1.5 bg-app-surface/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface transition-colors"
+              className="flex items-center gap-1.5 bg-app-surface/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface/100 transition-colors"
             >
               <i className="ri-apps-line text-base text-primary"></i>
               <span className="text-app-foreground font-medium">Access MiniApps</span>
@@ -202,38 +238,29 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           </div>
           
           {Object.entries(messagesByDate).length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full w-full min-h-[300px]">
-              <div className="text-4xl mb-4 opacity-60">💬</div>
-              <p className="text-app-muted">
-                Start chatting with {currentChat.displayName || currentChat.ensName || 'this contact'}
-              </p>
-              <button
-                onClick={() => setShowMiniAppSlidePanel(true)}
-                className="mt-6 flex items-center gap-2 bg-app-surface/90 px-4 py-2 rounded-md shadow-sm text-sm hover:bg-app-surface transition-colors border border-app-border"
-              >
-                <i className="ri-apps-line text-primary"></i>
-                <span>Share a MiniApp</span>
-              </button>
+            <div className="flex flex-col items-center justify-center h-full w-full">
+              <div className="text-4xl mb-4">💬</div>
+              <p className="text-app-muted">Start chatting with {currentChat.displayName || currentChat.ensName || 'this contact'}</p>
             </div>
           ) : (
             Object.entries(messagesByDate).map(([date, messages]) => (
-              <div key={date} className="w-full mb-8">
+              <div key={date} className="w-full">
                 {/* Date Header */}
-                <div className="flex justify-center mb-6 w-full">
-                  <div className="bg-app-surface/80 backdrop-blur-sm px-4 py-1.5 rounded-full text-xs text-app-muted border border-app-border/30">
+                <div className="flex justify-center mb-4 w-full">
+                  <div className="bg-app-surface px-4 py-2 rounded-full text-sm text-app-muted">
                     {date}
                   </div>
                 </div>
                 
                 {/* Messages for this date */}
-                <div className="space-y-6 w-full">
+                <div className="space-y-4 w-full">
                   {messages.map((message) => (
-                    <ChatBubble 
+                    <MessageItem 
                       key={message.id}
                       message={message}
                       isSelf={message.senderId !== currentChat.id}
                       senderName={message.senderId !== currentChat.id ? 'You' : currentChat.displayName || currentChat.ensName || ''}
-                      senderAvatar={currentChat.avatarColor || 'bg-primary/20'}
+                      senderAvatar={currentChat.avatarColor || 'bg-accent'}
                     />
                   ))}
                 </div>
@@ -243,14 +270,14 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           
           {/* Typing indicator */}
           {isTyping && (
-            <div className="flex items-end gap-2 max-w-[75%] animate-pulse">
-              <div className={`w-8 h-8 rounded-full ${currentChat.avatarColor || 'bg-primary/20'} flex items-center justify-center flex-shrink-0 font-medium text-sm text-white`}>
+            <div className="flex items-end gap-2 max-w-[75%]">
+              <div className={`w-8 h-8 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium text-sm`}>
                 {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
               </div>
-              <div className="bg-app-bubble-receiver px-4 py-3 rounded-2xl rounded-tl-none shadow-sm flex items-center gap-1.5">
-                <div className="w-2 h-2 bg-app-muted rounded-full"></div>
-                <div className="w-2 h-2 bg-app-muted rounded-full"></div>
-                <div className="w-2 h-2 bg-app-muted rounded-full"></div>
+              <div className="bg-app-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-100"></div>
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-200"></div>
               </div>
             </div>
           )}
@@ -259,11 +286,10 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Message Input - Using our new component */}
-        <MessageInputPanel
-          onSendMessage={handleSendMessage}
-          onAttach={() => setShowFileModal(true)}
-          onTransfer={() => onTransfer(chatId)}
+        {/* Message Input */}
+        <MessageInput 
+          onSendMessage={handleSendMessage} 
+          onTransfer={() => onTransfer(chatId)} 
         />
         
         {/* MiniApp Components */}
