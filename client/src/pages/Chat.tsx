@@ -12,6 +12,8 @@ import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/pages/Settings';
 import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
+import { ActionDropdownMenu } from '@/components/ActionDropdownMenu';
+import QrCodeScannerModal from '@/components/QrCodeScannerModal';
 
 export default function Chat() {
   const [, navigate] = useLocation();
@@ -27,6 +29,7 @@ export default function Chat() {
   // MiniApp state
   const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
   const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
+  const [showQrScanner, setShowQrScanner] = useState(false);
 
   // Check if user is authenticated, redirect if not
   useEffect(() => {
@@ -220,13 +223,13 @@ export default function Chat() {
                       >
                         <i className="ri-search-line text-xl text-app-muted"></i>
                       </button>
-                      <button 
-                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-                        onClick={() => activeTab === 'chats' ? setShowGroupChatModal(true) : setShowAddFriendModal(true)}
-                        title={activeTab === 'chats' ? "Create Group" : "Add Friend"}
-                      >
-                        <i className="ri-add-line text-xl text-app-muted"></i>
-                      </button>
+                      
+                      {/* Action Menu with WeChat-style dropdown */}
+                      <ActionDropdownMenu 
+                        onCreateGroup={() => setShowGroupChatModal(true)}
+                        onAddFriend={() => setShowAddFriendModal(true)}
+                        onScan={() => setShowQrScanner(true)}
+                      />
                     </div>
                   </div>
 
@@ -290,13 +293,13 @@ export default function Chat() {
                   >
                     <i className="ri-search-line text-xl"></i>
                   </button>
-                  <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-                    onClick={() => activeTab === 'chats' ? setShowGroupChatModal(true) : setShowAddFriendModal(true)}
-                    title={activeTab === 'chats' ? "Create Group" : "Add Friend"}
-                  >
-                    <i className="ri-add-line text-xl"></i>
-                  </button>
+                  
+                  {/* Desktop Action Menu with WeChat-style dropdown */}
+                  <ActionDropdownMenu 
+                    onCreateGroup={() => setShowGroupChatModal(true)}
+                    onAddFriend={() => setShowAddFriendModal(true)}
+                    onScan={() => setShowQrScanner(true)}
+                  />
                 </div>
               </div>
 
@@ -341,6 +344,11 @@ export default function Chat() {
         
         {showGroupChatModal && (
           <CreateGroupChatModal onClose={() => setShowGroupChatModal(false)} />
+        )}
+        
+        {/* QR Scanner Modal */}
+        {showQrScanner && (
+          <QrCodeScannerModal onClose={() => setShowQrScanner(false)} />
         )}
       </div>
       </MiniAppProvider>
