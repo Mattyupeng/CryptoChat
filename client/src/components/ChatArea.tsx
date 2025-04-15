@@ -97,7 +97,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
               onClick={() => setShowMiniAppSlidePanel(true)}
               className="px-6 py-3 bg-app-surface border border-app-border text-app-foreground rounded-full font-medium hover:bg-app-hover transition flex items-center gap-2"
             >
-              <i className="ri-apps-line"></i>
+              <i className="ri-layout-grid-line"></i>
               <span>Explore MiniApps</span>
             </button>
           </div>
@@ -222,7 +222,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
               onClick={() => setShowMiniAppSlidePanel(true)}
               className="flex items-center gap-1.5 bg-app-surface/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface/100 transition-colors"
             >
-              <i className="ri-apps-line text-base text-primary"></i>
+              <i className="ri-layout-grid-line text-base text-primary"></i>
               <span className="text-app-foreground font-medium">Access MiniApps</span>
             </button>
           </div>

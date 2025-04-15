@@ -99,7 +99,7 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
         <div className="px-4 pb-2 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
-              <i className="ri-apps-line text-lg text-primary"></i>
+              <i className="ri-layout-grid-line text-lg text-primary"></i>
             </div>
             <h2 className="text-base font-medium">MiniApps</h2>
           </div>
