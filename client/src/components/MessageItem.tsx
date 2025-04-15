@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { formatTime } from '@/lib/utils';
 import { Message } from '@/types';
+import { MiniAppCardComponent } from '@/components/MiniApp';
 
 interface MessageItemProps {
   message: Message;
@@ -16,7 +17,12 @@ export default function MessageItem({ message, isSelf, senderName, senderAvatar 
   const renderTransaction = () => {
     if (!message.transaction) return null;
     
-    if (message.transaction.file) {
+    if (message.transaction.miniAppCard) {
+      // Handle MiniApp card
+      return (
+        <MiniAppCardComponent card={message.transaction.miniAppCard} isSelf={isSelf} />
+      );
+    } else if (message.transaction.file) {
       // Handle file transaction
       const { name, size, type, fileHash } = message.transaction.file;
       

@@ -48,7 +48,7 @@ export interface Message {
   transaction?: Transaction;
 }
 
-// Transaction info for crypto transfers or file sharing
+// Transaction info for crypto transfers, file sharing, or miniapps
 export interface Transaction {
   // Crypto transaction fields
   amount?: string;
@@ -64,6 +64,16 @@ export interface Transaction {
     type: string;
     encryptionKey?: string;
     fileHash: string;
+  };
+  
+  // MiniApp card fields
+  miniAppCard?: {
+    appId: string;
+    title: string;
+    description: string;
+    thumbnail: string;
+    ctaText: string;
+    metadata?: Record<string, any>;
   };
 }
 

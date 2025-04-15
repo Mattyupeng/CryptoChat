@@ -6,6 +6,7 @@ import MessageInput from './MessageInput';
 import FileUploadModal from './FileUploadModal';
 import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
+import { MiniAppLauncherButton, MiniAppLauncher, MiniAppViewer, MiniAppProvider } from '@/components/MiniApp';
 
 interface ChatAreaProps {
   chatId: string | null;

@@ -6,7 +6,7 @@ interface MiniAppCardProps {
   isSelf: boolean;
 }
 
-export function MiniAppCard({ card, isSelf }: MiniAppCardProps) {
+export function MiniAppCardComponent({ card, isSelf }: MiniAppCardProps) {
   const { openMiniApp } = useMiniApp();
   
   const handleOpenApp = () => {

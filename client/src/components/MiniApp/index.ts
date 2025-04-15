@@ -1,6 +1,7 @@
 export * from './MiniAppContext';
 export * from './MiniAppLauncher';
 export * from './MiniAppViewer';
-export * from './MiniAppCard';
+export { MiniAppCardComponent } from './MiniAppCard';
 export * from './MiniAppLauncherButton';
-export * from './MiniAppData';
+export type { MiniApp, MiniAppCard } from './MiniAppData';
+export { miniApps } from './MiniAppData';
