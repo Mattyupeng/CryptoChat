@@ -103,7 +103,7 @@ export default function MessageInputPanel({
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             placeholder={placeholder}
-            className="w-full resize-none rounded-2xl bg-app-input-bg px-4 py-2 text-app-foreground placeholder:text-app-muted/70 outline-none border border-app-border focus:border-app-border/80 min-h-[40px] max-h-[120px] transition-colors"
+            className="w-full resize-none rounded-2xl bg-app-input-bg px-4 py-3 text-app-foreground placeholder:text-app-muted/70 outline-none border border-app-border focus:border-app-border/80 min-h-[48px] max-h-[120px] transition-colors"
             disabled={disabled}
             rows={1}
             onKeyDown={(e) => {
