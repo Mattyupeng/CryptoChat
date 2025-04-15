@@ -1,12 +1,24 @@
 import { useMiniApp } from './MiniAppContext';
 import { Grid3x3 } from 'lucide-react';
 
-export function MiniAppLauncherButton() {
+interface MiniAppLauncherButtonProps {
+  onClick?: () => void;
+}
+
+export function MiniAppLauncherButton({ onClick }: MiniAppLauncherButtonProps) {
   const { toggleLauncher } = useMiniApp();
+  
+  const handleClick = () => {
+    if (onClick) {
+      onClick();
+    } else {
+      toggleLauncher();
+    }
+  };
   
   return (
     <button
-      onClick={toggleLauncher}
+      onClick={handleClick}
       className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
       title="Open MiniApps"
     >

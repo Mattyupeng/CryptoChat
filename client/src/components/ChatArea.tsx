@@ -14,6 +14,8 @@ interface ChatAreaProps {
 }
 
 export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
+  // State for MiniApp launcher
+  const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
   const [, navigate] = useLocation();
   const { chats, getCurrentChat, sendMessage } = useChatStore();
   const { publicKey } = useWalletStore();
@@ -119,118 +121,158 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     messagesByDate[date].push(message);
   });
   
+  // Handle sending a MiniApp card
+  const handleShareMiniApp = (appId: string, card: { 
+    title: string; 
+    description: string; 
+    thumbnail: string;
+    ctaText?: string;
+    metadata?: Record<string, any>;
+  }) => {
+    if (!chatId) return;
+    
+    const transaction = {
+      miniAppCard: {
+        appId,
+        title: card.title,
+        description: card.description,
+        thumbnail: card.thumbnail,
+        ctaText: card.ctaText || 'Open App',
+        metadata: card.metadata || {}
+      }
+    };
+    
+    sendMessage(chatId, `Shared ${card.title} app`, transaction);
+    setShowMiniAppLauncher(false);
+  };
+
   console.log("Chat found, rendering chat UI:", currentChat.id);
   return (
-    <div className="flex flex-col h-full w-full bg-app-bg">
-      {/* Chat Header */}
-      <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full">
-        <div className="flex items-center gap-3 h-9">
-          {/* Back button for mobile - hidden on desktop */}
-          <button 
-            onClick={() => navigate('/chat')} 
-            className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-            aria-label="Back"
-          >
-            <i className="ri-arrow-left-line text-xl text-app-muted"></i>
-          </button>
-          
-          <div className={`w-9 h-9 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
-            {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
-          </div>
-          <div className="flex flex-col justify-center h-9">
-            <h2 className="font-medium leading-none mb-1">
-              {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
-            </h2>
-            <div className="flex items-center gap-2">
-              <span className={`w-2 h-2 rounded-full ${currentChat.isOnline ? 'bg-green-500' : 'bg-slate-400'}`}></span>
-              <span className="text-xs text-app-muted leading-none">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
-            </div>
-          </div>
-        </div>
-        <div className="flex items-center gap-2 h-9">
-          <button 
-            onClick={() => setShowFileModal(true)}
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-            title="Send File"
-          >
-            <i className="ri-file-upload-line text-xl text-app-muted"></i>
-          </button>
-
-          <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
-            <i className="ri-more-2-fill text-xl text-app-muted"></i>
-          </button>
-        </div>
-      </div>
-
-      {/* Chat Messages */}
-      <div className="chat-messages p-4 space-y-4 w-full">
-        {Object.entries(messagesByDate).length === 0 ? (
-          <div className="flex flex-col items-center justify-center h-full w-full">
-            <div className="text-4xl mb-4">💬</div>
-            <p className="text-app-muted">Start chatting with {currentChat.displayName || currentChat.ensName || 'this contact'}</p>
-          </div>
-        ) : (
-          Object.entries(messagesByDate).map(([date, messages]) => (
-            <div key={date} className="w-full">
-              {/* Date Header */}
-              <div className="flex justify-center mb-4 w-full">
-                <div className="bg-app-surface px-4 py-2 rounded-full text-sm text-app-muted">
-                  {date}
-                </div>
-              </div>
-              
-              {/* Messages for this date */}
-              <div className="space-y-4 w-full">
-                {messages.map((message) => (
-                  <MessageItem 
-                    key={message.id}
-                    message={message}
-                    isSelf={message.senderId !== currentChat.id}
-                    senderName={message.senderId !== currentChat.id ? 'You' : currentChat.displayName || currentChat.ensName || ''}
-                    senderAvatar={currentChat.avatarColor || 'bg-accent'}
-                  />
-                ))}
-              </div>
-            </div>
-          ))
-        )}
-        
-        {/* Typing indicator */}
-        {isTyping && (
-          <div className="flex items-end gap-2 max-w-[75%]">
-            <div className={`w-8 h-8 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium text-sm`}>
+    <MiniAppProvider>
+      <div className="flex flex-col h-full w-full bg-app-bg relative">
+        {/* Chat Header */}
+        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full">
+          <div className="flex items-center gap-3 h-9">
+            {/* Back button for mobile - hidden on desktop */}
+            <button 
+              onClick={() => navigate('/chat')} 
+              className="md:hidden w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+              aria-label="Back"
+            >
+              <i className="ri-arrow-left-line text-xl text-app-muted"></i>
+            </button>
+            
+            <div className={`w-9 h-9 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
               {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
             </div>
-            <div className="bg-app-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
-              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-100"></div>
-              <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-200"></div>
+            <div className="flex flex-col justify-center h-9">
+              <h2 className="font-medium leading-none mb-1">
+                {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
+              </h2>
+              <div className="flex items-center gap-2">
+                <span className={`w-2 h-2 rounded-full ${currentChat.isOnline ? 'bg-green-500' : 'bg-slate-400'}`}></span>
+                <span className="text-xs text-app-muted leading-none">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
+              </div>
             </div>
           </div>
+          <div className="flex items-center gap-2 h-9">
+            <button 
+              onClick={() => setShowFileModal(true)}
+              className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+              title="Send File"
+            >
+              <i className="ri-file-upload-line text-xl text-app-muted"></i>
+            </button>
+            
+            {/* MiniApp button */}
+            <MiniAppLauncherButton onClick={() => setShowMiniAppLauncher(true)} />
+
+            <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
+              <i className="ri-more-2-fill text-xl text-app-muted"></i>
+            </button>
+          </div>
+        </div>
+
+        {/* Chat Messages */}
+        <div className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1">
+          {Object.entries(messagesByDate).length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full w-full">
+              <div className="text-4xl mb-4">💬</div>
+              <p className="text-app-muted">Start chatting with {currentChat.displayName || currentChat.ensName || 'this contact'}</p>
+            </div>
+          ) : (
+            Object.entries(messagesByDate).map(([date, messages]) => (
+              <div key={date} className="w-full">
+                {/* Date Header */}
+                <div className="flex justify-center mb-4 w-full">
+                  <div className="bg-app-surface px-4 py-2 rounded-full text-sm text-app-muted">
+                    {date}
+                  </div>
+                </div>
+                
+                {/* Messages for this date */}
+                <div className="space-y-4 w-full">
+                  {messages.map((message) => (
+                    <MessageItem 
+                      key={message.id}
+                      message={message}
+                      isSelf={message.senderId !== currentChat.id}
+                      senderName={message.senderId !== currentChat.id ? 'You' : currentChat.displayName || currentChat.ensName || ''}
+                      senderAvatar={currentChat.avatarColor || 'bg-accent'}
+                    />
+                  ))}
+                </div>
+              </div>
+            ))
+          )}
+          
+          {/* Typing indicator */}
+          {isTyping && (
+            <div className="flex items-end gap-2 max-w-[75%]">
+              <div className={`w-8 h-8 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium text-sm`}>
+                {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              <div className="bg-app-surface px-4 py-3 rounded-t-xl rounded-br-xl flex items-center gap-1">
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-100"></div>
+                <div className="w-2 h-2 bg-app-muted rounded-full animate-pulse delay-200"></div>
+              </div>
+            </div>
+          )}
+          
+          {/* Auto-scroll reference point */}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Message Input */}
+        <MessageInput 
+          onSendMessage={handleSendMessage} 
+          onTransfer={() => onTransfer(chatId)} 
+        />
+        
+        {/* MiniApp Components */}
+        {showMiniAppLauncher && (
+          <MiniAppLauncher 
+            onClose={() => setShowMiniAppLauncher(false)}
+            onShareApp={handleShareMiniApp}
+          />
         )}
         
-        {/* Auto-scroll reference point */}
-        <div ref={messagesEndRef} />
+        <MiniAppViewer recipientId={currentChat.id} />
+        
+        {/* Modals */}
+        {showFileModal && (
+          <FileUploadModal
+            chatId={chatId || ''}
+            publicKey={currentChat?.publicKey || ''}
+            onClose={() => setShowFileModal(false)}
+            onSend={(chatId, content, transaction) => {
+              sendMessage(chatId, content, transaction);
+              setShowFileModal(false);
+            }}
+          />
+        )}
       </div>
-
-      {/* Message Input */}
-      <MessageInput 
-        onSendMessage={handleSendMessage} 
-        onTransfer={() => onTransfer(chatId)} 
-      />
-      
-      {/* Modals */}
-      {showFileModal && (
-        <FileUploadModal
-          chatId={chatId || ''}
-          publicKey={currentChat?.publicKey || ''}
-          onClose={() => setShowFileModal(false)}
-          onSend={(chatId, content, transaction) => {
-            sendMessage(chatId, content, transaction);
-            setShowFileModal(false);
-          }}
-        />
-      )}
-    </div>
+    </MiniAppProvider>
   );
 }

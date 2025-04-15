@@ -1,15 +1,48 @@
 import { useMiniApp } from './MiniAppContext';
-import { ChevronDown, X } from 'lucide-react';
+import { ChevronDown, X, Send } from 'lucide-react';
+import { MiniApp } from './MiniAppData';
 
-export function MiniAppLauncher() {
+interface MiniAppLauncherProps {
+  onClose?: () => void;
+  onShareApp?: (appId: string, card: {
+    title: string;
+    description: string;
+    thumbnail: string;
+    ctaText?: string;
+    metadata?: Record<string, any>;
+  }) => void;
+}
+
+export function MiniAppLauncher({ onClose, onShareApp }: MiniAppLauncherProps) {
   const { 
     isLauncherOpen, 
     closeLauncher, 
     availableMiniApps, 
     openMiniApp 
   } = useMiniApp();
-
-  if (!isLauncherOpen) return null;
+  
+  const handleClose = () => {
+    if (onClose) {
+      onClose();
+    } else {
+      closeLauncher();
+    }
+  };
+  
+  const handleOpenApp = (app: MiniApp) => {
+    openMiniApp(app.id);
+  };
+  
+  const handleShareApp = (app: MiniApp) => {
+    if (onShareApp) {
+      onShareApp(app.id, {
+        title: app.title,
+        description: app.description,
+        thumbnail: app.icon,
+        ctaText: 'Open App'
+      });
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col items-center justify-end">
