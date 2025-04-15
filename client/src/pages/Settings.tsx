@@ -89,27 +89,11 @@ export default function Settings() {
     <div className="w-full h-full flex flex-col bg-app-bg text-app overflow-y-auto">
       {/* Settings Header */}
       <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface sticky top-0 z-10">
-        <div className="flex items-center">
-          {isMobile && (
-            <button onClick={() => navigate('/chat')} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover mr-2">
-              <ChevronLeft className="w-5 h-5 text-app-muted" />
-            </button>
-          )}
+        <div className="flex items-center h-9">
           <h1 className="text-xl font-semibold">Settings</h1>
         </div>
-        <div className="flex gap-2">
-          {/* These buttons are here for consistent header height, but they are disabled */}
-          <button 
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted/30 cursor-default"
-          >
-            <i className="ri-search-line text-xl"></i>
-          </button>
-          <button 
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted/30 cursor-default"
-          >
-            <i className="ri-add-line text-xl"></i>
-          </button>
-        </div>
+        {/* Intentionally empty div to maintain the flex layout and justify-between spacing */}
+        <div className="h-9"></div>
       </div>
       
       {/* Settings Content */}
