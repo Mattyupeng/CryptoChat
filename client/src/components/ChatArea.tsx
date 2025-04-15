@@ -136,13 +136,13 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           <div className={`w-10 h-10 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
             {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div className="flex flex-col justify-center">
-            <h2 className="font-medium leading-tight">
+          <div className="flex flex-col justify-center h-10">
+            <h2 className="font-medium leading-none mb-1">
               {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
             </h2>
-            <div className="flex items-center gap-2 mt-1">
+            <div className="flex items-center gap-2">
               <span className={`w-2 h-2 rounded-full ${currentChat.isOnline ? 'bg-green-500' : 'bg-slate-400'}`}></span>
-              <span className="text-xs text-app-muted">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
+              <span className="text-xs text-app-muted leading-none">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
             </div>
           </div>
         </div>
