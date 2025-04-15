@@ -200,7 +200,20 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     <MiniAppProvider>
       <div className="flex flex-col h-full w-full bg-app-bg relative">
         {/* Chat Header */}
-        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full">
+        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full relative">
+          {/* Pull-down hint - shown briefly and then fades out */}
+          <div className="absolute top-0 left-0 right-0 flex justify-center animate-fade-out text-xs text-primary/70 py-1 bg-primary/5">
+            <i className="ri-arrow-down-line mr-1"></i> Pull down for MiniApps
+          </div>
+          
+          {/* Quick access button for MiniApps slide panel */}
+          <button 
+            onClick={() => setShowMiniAppSlidePanel(true)}
+            className="absolute right-3 top-0 text-xs text-primary bg-primary/10 py-1 px-2 rounded-b-md"
+          >
+            <i className="ri-apps-line mr-1"></i> MiniApps
+          </button>
+          
           <div className="flex items-center gap-3 h-9">
             {/* Back button for mobile - hidden on desktop */}
             <button 
