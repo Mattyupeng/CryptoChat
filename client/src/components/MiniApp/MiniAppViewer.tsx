@@ -2,7 +2,11 @@ import { useState, useEffect } from 'react';
 import { useMiniApp } from './MiniAppContext';
 import { X, Send, ExternalLink, Maximize2, Minimize2 } from 'lucide-react';
 
-export function MiniAppViewer() {
+interface MiniAppViewerProps {
+  recipientId?: string;
+}
+
+export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   const { activeMiniApp, closeMiniApp, walletInfo, sendMiniAppCard } = useMiniApp();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -22,11 +26,11 @@ export function MiniAppViewer() {
   };
 
   const handleSendCard = () => {
-    if (activeMiniApp) {
+    if (activeMiniApp && recipientId) {
       // For demo purposes, we're simulating sending a card with preset data
       // In a real implementation, the MiniApp would communicate with the host app
       // to provide custom card data
-      sendMiniAppCard(activeMiniApp.id, 'current-chat-id', {
+      sendMiniAppCard(activeMiniApp.id, recipientId, {
         title: activeMiniApp.title,
         description: `Check out this ${activeMiniApp.title} app!`,
         ctaText: 'Open App',
