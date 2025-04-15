@@ -119,7 +119,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   theme === 'dark' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition flex items-center justify-center gap-2`}
               >
                 <Moon className="w-5 h-5" />
@@ -131,7 +131,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   theme === 'system' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition flex items-center justify-center gap-2`}
               >
                 <Monitor className="w-5 h-5" />
@@ -154,7 +154,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   fontSize === 'small' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition`}
               >
                 <span className="font-size-small">Small</span>
@@ -165,7 +165,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   fontSize === 'medium' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition`}
               >
                 <span className="font-size-medium">Medium</span>
@@ -176,7 +176,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   fontSize === 'large' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition`}
               >
                 <span className="font-size-large">Large</span>
@@ -190,7 +190,7 @@ export default function Settings() {
           <h2 className="text-lg font-medium border-b border-app-border pb-2">Notifications</h2>
           
           {/* Notification Setting */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-app-border">
             <div className="flex items-center gap-3">
               {notificationsEnabled ? (
                 <Bell className="w-5 h-5 text-app-muted" />
@@ -209,12 +209,12 @@ export default function Settings() {
                 checked={notificationsEnabled} 
                 onChange={toggleNotifications} 
               />
-              <div className="w-11 h-6 bg-dark-border rounded-full peer-checked:bg-primary peer-focus:ring-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-dark-bg after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+              <div className="w-11 h-6 bg-app-border rounded-full peer-checked:bg-primary peer-focus:ring-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-app-bg after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
             </label>
           </div>
           
           {/* Sound Setting */}
-          <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-app-border">
             <div className="flex items-center gap-3">
               {soundsEnabled ? (
                 <Volume2 className="w-5 h-5 text-app-muted" />
@@ -233,7 +233,7 @@ export default function Settings() {
                 checked={soundsEnabled} 
                 onChange={toggleSounds} 
               />
-              <div className="w-11 h-6 bg-dark-border rounded-full peer-checked:bg-primary peer-focus:ring-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-dark-bg after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+              <div className="w-11 h-6 bg-app-border rounded-full peer-checked:bg-primary peer-focus:ring-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-app-bg after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
             </label>
           </div>
         </div>
@@ -241,7 +241,7 @@ export default function Settings() {
         {/* Language Section - Placeholder for now */}
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-app-border pb-2">Language</h2>
-          <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-app-border hover:bg-app-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
               <Languages className="w-5 h-5 text-app-muted" />
               <div>
@@ -255,7 +255,7 @@ export default function Settings() {
         {/* Security Section */}
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-app-border pb-2">Security</h2>
-          <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-app-border hover:bg-app-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
               <Key className="w-5 h-5 text-app-muted" />
               <div>
@@ -270,7 +270,7 @@ export default function Settings() {
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-app-border pb-2">Account</h2>
           
-          <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
+          <div className="flex items-center justify-between p-3 rounded-lg border border-app-border hover:bg-app-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
               <User className="w-5 h-5 text-app-muted" />
               <div>
