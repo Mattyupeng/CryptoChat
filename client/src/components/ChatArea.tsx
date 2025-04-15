@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, TouchEvent } from 'react';
 import { useLocation } from 'wouter';
 import { useChatStore, useWalletStore } from '@/store/store';
 import MessageItem from './MessageItem';
@@ -6,7 +6,14 @@ import MessageInput from './MessageInput';
 import FileUploadModal from './FileUploadModal';
 import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
-import { MiniAppLauncherButton, MiniAppLauncher, MiniAppViewer, MiniAppProvider } from '@/components/MiniApp';
+import { 
+  MiniAppLauncherButton, 
+  MiniAppLauncher, 
+  MiniAppViewer, 
+  MiniAppProvider,
+  MiniAppSlidePanel,
+  useMiniApp
+} from '@/components/MiniApp';
 
 interface ChatAreaProps {
   chatId: string | null;
@@ -14,14 +21,57 @@ interface ChatAreaProps {
 }
 
 export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
-  // State for MiniApp launcher
+  // State for MiniApp components
   const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
+  const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
   const [, navigate] = useLocation();
   const { chats, getCurrentChat, sendMessage } = useChatStore();
   const { publicKey } = useWalletStore();
+  const { openMiniApp } = useMiniApp();
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const chatHeaderRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
+  
+  // For pull-down gesture
+  const [touchStartY, setTouchStartY] = useState(0);
+  const [touchCurrentY, setTouchCurrentY] = useState(0);
+  const [isPullingDown, setIsPullingDown] = useState(false);
+  
+  // Handle touch start on chat area
+  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1) {
+      setTouchStartY(e.touches[0].clientY);
+      setTouchCurrentY(e.touches[0].clientY);
+    }
+  };
+  
+  // Handle touch move on chat area
+  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1) {
+      const currentY = e.touches[0].clientY;
+      setTouchCurrentY(currentY);
+      
+      // Check if we're at the top of the chat area and pulling down
+      const scrollTop = (e.currentTarget as HTMLDivElement).scrollTop;
+      if (scrollTop === 0 && currentY > touchStartY + 10) {
+        setIsPullingDown(true);
+        // Prevent default to disable native pull-to-refresh
+        e.preventDefault();
+      } else {
+        setIsPullingDown(false);
+      }
+    }
+  };
+  
+  // Handle touch end on chat area
+  const handleTouchEnd = () => {
+    if (isPullingDown && touchCurrentY > touchStartY + 60) {
+      // Threshold to trigger slide panel
+      setShowMiniAppSlidePanel(true);
+    }
+    setIsPullingDown(false);
+  };
   
   const currentChat = chatId ? getCurrentChat(chatId) : null;
   
@@ -194,7 +244,22 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         </div>
 
         {/* Chat Messages */}
-        <div className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1">
+        <div 
+          className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1"
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
+        >
+          {/* Pull-down indicator - only shown when pulling down */}
+          {isPullingDown && (
+            <div className="sticky top-0 left-0 right-0 flex justify-center items-center h-12 mb-2">
+              <div className="flex flex-col items-center">
+                <i className="ri-arrow-down-line text-lg text-primary animate-bounce"></i>
+                <span className="text-xs text-app-muted">Pull down for MiniApps</span>
+              </div>
+            </div>
+          )}
+          
           {Object.entries(messagesByDate).length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full w-full">
               <div className="text-4xl mb-4">💬</div>
@@ -254,6 +319,18 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         {showMiniAppLauncher && (
           <MiniAppLauncher 
             onClose={() => setShowMiniAppLauncher(false)}
+            onShareApp={handleShareMiniApp}
+          />
+        )}
+        
+        {/* MiniApp slide-down panel (WeChat style) */}
+        {showMiniAppSlidePanel && (
+          <MiniAppSlidePanel 
+            onClose={() => setShowMiniAppSlidePanel(false)}
+            onOpenApp={(appId) => {
+              openMiniApp(appId);
+              setShowMiniAppSlidePanel(false);
+            }}
             onShareApp={handleShareMiniApp}
           />
         )}
