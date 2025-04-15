@@ -122,7 +122,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   return (
     <div className="flex flex-col h-full w-full bg-app-bg">
       {/* Chat Header */}
-      <div className="h-16 border-b border-app-border flex items-center px-4 justify-between bg-app-surface w-full">
+      <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full">
         <div className="flex items-center gap-3">
           {/* Back button for mobile - hidden on desktop */}
           <button 
@@ -136,11 +136,11 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           <div className={`w-10 h-10 rounded-full ${currentChat.avatarColor || 'bg-accent'} flex items-center justify-center flex-shrink-0 font-medium`}>
             {currentChat.displayName?.charAt(0).toUpperCase() || currentChat.ensName?.charAt(0).toUpperCase() || 'U'}
           </div>
-          <div>
-            <h2 className="font-medium">
+          <div className="flex flex-col justify-center">
+            <h2 className="font-medium leading-tight">
               {currentChat.displayName || currentChat.ensName || currentChat.address.substring(0, 10) + '...'}
             </h2>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 mt-1">
               <span className={`w-2 h-2 rounded-full ${currentChat.isOnline ? 'bg-green-500' : 'bg-slate-400'}`}></span>
               <span className="text-xs text-app-muted">{currentChat.isOnline ? 'Online' : 'Offline'}</span>
             </div>
