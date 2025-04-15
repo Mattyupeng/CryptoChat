@@ -86,9 +86,9 @@ export default function Settings() {
   };
   
   return (
-    <div className="w-full h-full flex flex-col bg-dark-bg text-app overflow-y-auto">
+    <div className="w-full h-full flex flex-col bg-app-bg text-app overflow-y-auto">
       {/* Settings Header */}
-      <div className="p-4 border-b border-dark-border flex items-center bg-dark-surface sticky top-0 z-10">
+      <div className="p-4 h-16 border-b border-app-border flex items-center bg-app-surface sticky top-0 z-10">
         <h1 className="text-xl font-semibold">Settings</h1>
       </div>
       
@@ -96,7 +96,7 @@ export default function Settings() {
       <div className="p-4 space-y-6">
         {/* Appearance Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">Appearance</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">Appearance</h2>
           
           {/* Theme Selector */}
           <div>
@@ -107,7 +107,7 @@ export default function Settings() {
                 className={`flex-1 p-3 rounded-lg border ${
                   theme === 'light' 
                     ? 'border-primary bg-primary/10 text-primary' 
-                    : 'border-dark-border hover:bg-dark-hover'
+                    : 'border-app-border hover:bg-app-hover'
                 } transition flex items-center justify-center gap-2`}
               >
                 <Sun className="w-5 h-5" />
@@ -187,7 +187,7 @@ export default function Settings() {
         
         {/* Notifications Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">Notifications</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">Notifications</h2>
           
           {/* Notification Setting */}
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border">
@@ -240,7 +240,7 @@ export default function Settings() {
         
         {/* Language Section - Placeholder for now */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">Language</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">Language</h2>
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
               <Languages className="w-5 h-5 text-app-muted" />
@@ -254,7 +254,7 @@ export default function Settings() {
 
         {/* Security Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">Security</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">Security</h2>
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
               <Key className="w-5 h-5 text-app-muted" />
@@ -268,7 +268,7 @@ export default function Settings() {
         
         {/* Account Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">Account</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">Account</h2>
           
           <div className="flex items-center justify-between p-3 rounded-lg border border-dark-border hover:bg-dark-hover transition cursor-pointer">
             <div className="flex items-center gap-3">
@@ -293,7 +293,7 @@ export default function Settings() {
         
         {/* App Info Section */}
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-dark-border pb-2">About</h2>
+          <h2 className="text-lg font-medium border-b border-app-border pb-2">About</h2>
           <div className="p-3">
             <h3 className="font-medium">Hushline</h3>
             <p className="text-sm text-app-muted">Version 0.1.0</p>
