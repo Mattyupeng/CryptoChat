@@ -101,7 +101,7 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
             <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
               <i className="ri-apps-line text-lg text-primary"></i>
             </div>
-            <h2 className="text-base font-medium">Apps</h2>
+            <h2 className="text-base font-medium">MiniApps</h2>
           </div>
           <button 
             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover"
@@ -111,7 +111,7 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
           </button>
         </div>
         
-        {/* Apps Grid with categories */}
+        {/* MiniApps Grid with categories */}
         <div className="px-4 pb-6 overflow-y-auto" style={{ maxHeight: 'calc(70vh - 60px)' }}>
           {/* Favorites section */}
           <div className="mb-6">
@@ -145,9 +145,9 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
             </div>
           </div>
           
-          {/* All Apps section */}
+          {/* All MiniApps section */}
           <div>
-            <h3 className="text-xs font-medium text-app-muted mb-3 px-1">All Apps</h3>
+            <h3 className="text-xs font-medium text-app-muted mb-3 px-1">All MiniApps</h3>
             <div className="grid grid-cols-4 sm:grid-cols-5 gap-4 w-full max-w-md mx-auto">
               {availableMiniApps.map((app) => (
                 <div
