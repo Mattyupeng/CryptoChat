@@ -98,11 +98,11 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
               className="px-6 py-3 bg-app-surface border border-app-border text-app-foreground rounded-full font-medium hover:bg-app-hover transition flex items-center gap-2"
             >
               <i className="ri-apps-line"></i>
-              <span>Explore Apps</span>
+              <span>Explore MiniApps</span>
             </button>
           </div>
           <p className="text-sm text-app-muted mt-4">
-            Click the Demo User in the list or try out the Apps
+            Click the Demo User in the list or try out the MiniApps
           </p>
         </div>
       </div>
@@ -155,12 +155,12 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         title: card.title,
         description: card.description,
         thumbnail: card.thumbnail,
-        ctaText: card.ctaText || 'Open App',
+        ctaText: card.ctaText || 'Open MiniApp',
         metadata: card.metadata || {}
       }
     };
     
-    sendMessage(chatId, `Shared ${card.title} app`, transaction);
+    sendMessage(chatId, `Shared ${card.title} MiniApp`, transaction);
     setShowMiniAppSlidePanel(false);
   };
 
@@ -216,14 +216,14 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         <div 
           className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1"
         >
-          {/* Access Apps hint */}
+          {/* Access MiniApps hint */}
           <div className="sticky top-0 left-0 right-0 flex justify-center mb-2 z-10">
             <button
               onClick={() => setShowMiniAppSlidePanel(true)}
               className="flex items-center gap-1.5 bg-app-surface/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface/100 transition-colors"
             >
               <i className="ri-apps-line text-base text-primary"></i>
-              <span className="text-app-foreground font-medium">Access Apps</span>
+              <span className="text-app-foreground font-medium">Access MiniApps</span>
             </button>
           </div>
           
