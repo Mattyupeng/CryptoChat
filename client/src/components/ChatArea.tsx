@@ -8,7 +8,6 @@ import { formatMessageDate } from '@/lib/utils';
 import { Message } from '@/types';
 import { 
   MiniAppLauncherButton, 
-  MiniAppLauncher, 
   MiniAppViewer, 
   MiniAppProvider,
   MiniAppSlidePanel,
@@ -22,7 +21,6 @@ interface ChatAreaProps {
 
 export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   // State for MiniApp components
-  const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
   const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
   const [, navigate] = useLocation();
   const { chats, getCurrentChat, sendMessage } = useChatStore();
@@ -100,11 +98,11 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
               className="px-6 py-3 bg-app-surface border border-app-border text-app-foreground rounded-full font-medium hover:bg-app-hover transition flex items-center gap-2"
             >
               <i className="ri-apps-line"></i>
-              <span>Explore MiniApps</span>
+              <span>Explore Apps</span>
             </button>
           </div>
           <p className="text-sm text-app-muted mt-4">
-            Click the Demo User in the list or try out the MiniApps
+            Click the Demo User in the list or try out the Apps
           </p>
         </div>
       </div>
@@ -163,7 +161,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
     };
     
     sendMessage(chatId, `Shared ${card.title} app`, transaction);
-    setShowMiniAppLauncher(false);
+    setShowMiniAppSlidePanel(false);
   };
 
   console.log("Chat found, rendering chat UI:", currentChat.id);
@@ -206,7 +204,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             </button>
             
             {/* MiniApp button */}
-            <MiniAppLauncherButton onClick={() => setShowMiniAppLauncher(true)} />
+            <MiniAppLauncherButton onClick={() => setShowMiniAppSlidePanel(true)} />
 
             <button className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition">
               <i className="ri-more-2-fill text-xl text-app-muted"></i>
@@ -285,12 +283,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         />
         
         {/* MiniApp Components */}
-        {showMiniAppLauncher && (
-          <MiniAppLauncher 
-            onClose={() => setShowMiniAppLauncher(false)}
-            onShareApp={handleShareMiniApp}
-          />
-        )}
         
         {/* MiniApp slide-down panel (WeChat style) */}
         {showMiniAppSlidePanel && (
