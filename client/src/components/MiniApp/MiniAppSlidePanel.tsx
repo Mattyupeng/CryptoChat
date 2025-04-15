@@ -52,9 +52,11 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
     }, 300); // Match the transition duration
   };
   
+  // Get the openMiniApp function from context at component level
+  const { openMiniApp } = useMiniApp();
+  
   // Handle opening an app
   const handleOpenApp = (app: MiniApp) => {
-    const { openMiniApp } = useMiniApp();
     openMiniApp(app.id);
     onOpenApp(app.id);
   };

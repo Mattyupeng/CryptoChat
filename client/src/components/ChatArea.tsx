@@ -32,52 +32,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   const [isTyping, setIsTyping] = useState(false);
   const [showFileModal, setShowFileModal] = useState(false);
   
-  // For pull-down gesture
-  const [touchStartY, setTouchStartY] = useState(0);
-  const [touchCurrentY, setTouchCurrentY] = useState(0);
-  const [isPullingDown, setIsPullingDown] = useState(false);
-  
-  // Simplified pull-down detection
-  const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    // Only proceed if we're at the top of the chat area
-    const scrollTop = e.currentTarget.scrollTop;
-    if (scrollTop === 0 && e.touches.length === 1) {
-      setTouchStartY(e.touches[0].clientY);
-    }
-  };
-  
-  // Handle touch move on chat area
-  const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    if (touchStartY > 0 && e.touches.length === 1) {
-      const currentY = e.touches[0].clientY;
-      const scrollTop = e.currentTarget.scrollTop;
-      
-      // Only activate pull-down when we're at the top and pulling down
-      if (scrollTop === 0 && currentY > touchStartY + 10) {
-        setTouchCurrentY(currentY);
-        setIsPullingDown(true);
-        e.preventDefault(); // Prevent scrolling
-      } else {
-        setIsPullingDown(false);
-      }
-    }
-  };
-  
-  // Handle touch end on chat area
-  const handleTouchEnd = () => {
-    if (isPullingDown) {
-      const pullDistance = touchCurrentY - touchStartY;
-      // Only trigger if pull was between 60px and 150px to avoid infinite loading
-      if (pullDistance > 60 && pullDistance < 150) {
-        setShowMiniAppSlidePanel(true);
-      }
-    }
-    
-    // Reset all states
-    setIsPullingDown(false);
-    setTouchStartY(0);
-    setTouchCurrentY(0);
-  };
+  // We removed the pull-down gesture to prevent conflicts with scrolling and focus on button interaction instead
   
   const currentChat = chatId ? getCurrentChat(chatId) : null;
   
@@ -208,11 +163,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
       <div className="flex flex-col h-full w-full bg-app-bg relative">
         {/* Chat Header */}
         <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface w-full relative">
-          {/* Pull-down hint - shown briefly and then fades out */}
-          <div className="absolute top-0 left-0 right-0 flex justify-center animate-fade-out text-xs text-primary/70 py-1 bg-primary/5">
-            <i className="ri-arrow-down-line mr-1"></i> Pull down for MiniApps
-          </div>
-          
           {/* Quick access button for MiniApps slide panel - more prominent */}
           <button 
             onClick={() => setShowMiniAppSlidePanel(true)}
@@ -266,29 +216,17 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         {/* Chat Messages */}
         <div 
           className="chat-messages p-4 space-y-4 w-full overflow-y-auto flex-1"
-          onTouchStart={handleTouchStart}
-          onTouchMove={handleTouchMove}
-          onTouchEnd={handleTouchEnd}
         >
-          {/* Pull-down indicator - only shown when pulling down */}
-          {isPullingDown && (
-            <div className="sticky top-0 left-0 right-0 flex justify-center items-center h-16 mb-2 z-10">
-              <div className="flex flex-col items-center gap-1 bg-app-surface/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
-                <div className="flex items-center gap-1.5">
-                  <i className="ri-arrow-down-line text-base text-primary"></i>
-                  <span className="text-xs text-app-foreground font-medium">Pull to access MiniApps</span>
-                </div>
-                <div className="w-16 h-1 bg-app-muted/20 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-primary rounded-full" 
-                    style={{ 
-                      width: `${Math.min(100, (touchCurrentY - touchStartY) / 60 * 100)}%` 
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Pull-to-access-MiniApps hint instead of gesture */}
+          <div className="sticky top-0 left-0 right-0 flex justify-center mb-2 z-10">
+            <button
+              onClick={() => setShowMiniAppSlidePanel(true)}
+              className="flex items-center gap-1.5 bg-app-surface/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-xs hover:bg-app-surface/100 transition-colors"
+            >
+              <i className="ri-apps-line text-base text-primary"></i>
+              <span className="text-app-foreground font-medium">Access MiniApps</span>
+            </button>
+          </div>
           
           {Object.entries(messagesByDate).length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full w-full">
