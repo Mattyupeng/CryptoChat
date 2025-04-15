@@ -56,7 +56,7 @@ export function MiniAppLauncher({ onClose, onShareApp }: MiniAppLauncherProps) {
       <div className="relative w-full max-w-md bg-app-surface rounded-t-xl shadow-lg border border-app-border border-b-0 z-10 h-[70vh] max-h-[500px] flex flex-col overflow-hidden">
         {/* Header */}
         <div className="p-4 border-b border-app-border flex items-center justify-between">
-          <h2 className="text-lg font-semibold">MiniApps</h2>
+          <h2 className="text-lg font-semibold">Apps</h2>
           <div className="flex gap-2">
             <button 
               className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
@@ -68,7 +68,7 @@ export function MiniAppLauncher({ onClose, onShareApp }: MiniAppLauncherProps) {
           </div>
         </div>
         
-        {/* MiniApps Grid */}
+        {/* Apps Grid */}
         <div className="flex-1 overflow-y-auto p-4">
           <div className="grid grid-cols-3 gap-4">
             {availableMiniApps.map((app) => (
