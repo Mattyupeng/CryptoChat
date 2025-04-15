@@ -61,6 +61,19 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        // Custom colors for the refined chat UI
+        app: {
+          bg: "#0d1117",
+          surface: "#1a1f27",
+          foreground: "#e5eaf0",
+          muted: "#8b949e",
+          border: "#2e3a4a",
+          hover: "#2a313d",
+          // Chat message bubbles
+          'bubble-sender': "#1e242d",
+          'bubble-receiver': "#2a313d",
+          'input-bg': "#1a1f27",
+        },
       },
       keyframes: {
         "accordion-down": {
