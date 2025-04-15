@@ -276,6 +276,14 @@ export default function Chat() {
                   activeTab === 'wallet' ? 'Wallet' : 'Settings'}
                 </h1>
                 <div className="flex gap-2">
+                  {/* MiniApps button */}
+                  <button 
+                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
+                    onClick={() => setShowMiniAppSlidePanel(true)}
+                    title="MiniApps"
+                  >
+                    <i className="ri-apps-line text-xl"></i>
+                  </button>
                   <button 
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                     onClick={() => {/* Implement search functionality */}}

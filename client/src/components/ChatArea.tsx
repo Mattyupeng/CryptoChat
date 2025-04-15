@@ -88,14 +88,23 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             Choose a conversation from the sidebar to start chatting
           </p>
           <div className="animate-pulse text-6xl mb-8">💬</div>
-          <button 
-            onClick={() => navigate('/chat/demo1')}
-            className="px-6 py-3 bg-primary text-white rounded-full font-medium mb-4 hover:bg-primary/90 transition"
-          >
-            Start Demo Chat
-          </button>
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <button 
+              onClick={() => navigate('/chat/demo1')}
+              className="px-6 py-3 bg-primary text-white rounded-full font-medium hover:bg-primary/90 transition"
+            >
+              Start Demo Chat
+            </button>
+            <button 
+              onClick={() => setShowMiniAppSlidePanel(true)}
+              className="px-6 py-3 bg-app-surface border border-app-border text-app-foreground rounded-full font-medium hover:bg-app-hover transition flex items-center gap-2"
+            >
+              <i className="ri-apps-line"></i>
+              <span>Explore MiniApps</span>
+            </button>
+          </div>
           <p className="text-sm text-app-muted mt-4">
-            Click the Demo User in the list or use the button above
+            Click the Demo User in the list or try out the MiniApps
           </p>
         </div>
       </div>
