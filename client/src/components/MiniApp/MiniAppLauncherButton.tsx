@@ -1,5 +1,5 @@
 import { useMiniApp } from './MiniAppContext';
-import React from 'react';
+import { LayoutGrid } from 'lucide-react';
 
 interface MiniAppLauncherButtonProps {
   onClick?: () => void;
@@ -22,12 +22,7 @@ export function MiniAppLauncherButton({ onClick }: MiniAppLauncherButtonProps) {
       className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
       title="Apps"
     >
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-app-muted">
-        <rect x="4" y="4" width="6.5" height="6.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="13.5" y="4" width="6.5" height="6.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="4" y="13.5" width="6.5" height="6.5" stroke="currentColor" strokeWidth="1.5" />
-        <rect x="13.5" y="13.5" width="6.5" height="6.5" stroke="currentColor" strokeWidth="1.5" />
-      </svg>
+      <LayoutGrid className="w-5 h-5 text-app-muted" />
     </button>
   );
 }
