@@ -97,6 +97,19 @@ export default function Settings() {
           )}
           <h1 className="text-xl font-semibold">Settings</h1>
         </div>
+        <div className="flex gap-2">
+          {/* These buttons are here for consistent header height, but they are disabled */}
+          <button 
+            className="w-9 h-9 rounded-full flex items-center justify-center text-app-muted/30 cursor-default"
+          >
+            <i className="ri-search-line text-xl"></i>
+          </button>
+          <button 
+            className="w-9 h-9 rounded-full flex items-center justify-center text-app-muted/30 cursor-default"
+          >
+            <i className="ri-add-line text-xl"></i>
+          </button>
+        </div>
       </div>
       
       {/* Settings Content */}
