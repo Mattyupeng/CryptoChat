@@ -62,11 +62,11 @@ export default function Settings() {
     const prefersDark = theme === 'dark' || (theme === 'system' && systemTheme === 'dark');
     
     if (prefersDark) {
-      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.add('app-theme');
       document.documentElement.classList.remove('light-theme');
     } else {
       document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
+      document.documentElement.classList.remove('app-theme');
     }
     
     // Set data-theme attribute for potential additional theming
@@ -88,7 +88,7 @@ export default function Settings() {
   return (
     <div className="w-full h-full flex flex-col bg-app-bg text-app overflow-y-auto">
       {/* Settings Header */}
-      <div className="h-16 border-b border-app-border flex items-center justify-between bg-app-surface sticky top-0 z-10 px-4">
+      <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface sticky top-0 z-10">
         <div className="flex items-center">
           {isMobile && (
             <button onClick={() => navigate('/chat')} className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover mr-2">
@@ -100,12 +100,12 @@ export default function Settings() {
         <div className="flex gap-2">
           {/* These buttons are here for consistent header height, but they are disabled */}
           <button 
-            className="w-9 h-9 rounded-full flex items-center justify-center text-app-muted/30 cursor-default"
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted/30 cursor-default"
           >
             <i className="ri-search-line text-xl"></i>
           </button>
           <button 
-            className="w-9 h-9 rounded-full flex items-center justify-center text-app-muted/30 cursor-default"
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted/30 cursor-default"
           >
             <i className="ri-add-line text-xl"></i>
           </button>
