@@ -37,26 +37,26 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   const [touchCurrentY, setTouchCurrentY] = useState(0);
   const [isPullingDown, setIsPullingDown] = useState(false);
   
-  // Handle touch start on chat area
+  // Simplified pull-down detection
   const handleTouchStart = (e: TouchEvent<HTMLDivElement>) => {
-    if (e.touches.length === 1) {
+    // Only proceed if we're at the top of the chat area
+    const scrollTop = e.currentTarget.scrollTop;
+    if (scrollTop === 0 && e.touches.length === 1) {
       setTouchStartY(e.touches[0].clientY);
-      setTouchCurrentY(e.touches[0].clientY);
     }
   };
   
   // Handle touch move on chat area
   const handleTouchMove = (e: TouchEvent<HTMLDivElement>) => {
-    if (e.touches.length === 1) {
+    if (touchStartY > 0 && e.touches.length === 1) {
       const currentY = e.touches[0].clientY;
-      setTouchCurrentY(currentY);
+      const scrollTop = e.currentTarget.scrollTop;
       
-      // Check if we're at the top of the chat area and pulling down
-      const scrollTop = (e.currentTarget as HTMLDivElement).scrollTop;
+      // Only activate pull-down when we're at the top and pulling down
       if (scrollTop === 0 && currentY > touchStartY + 10) {
+        setTouchCurrentY(currentY);
         setIsPullingDown(true);
-        // Prevent default to disable native pull-to-refresh
-        e.preventDefault();
+        e.preventDefault(); // Prevent scrolling
       } else {
         setIsPullingDown(false);
       }
@@ -65,11 +65,18 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   
   // Handle touch end on chat area
   const handleTouchEnd = () => {
-    if (isPullingDown && touchCurrentY > touchStartY + 60) {
-      // Threshold to trigger slide panel
-      setShowMiniAppSlidePanel(true);
+    if (isPullingDown) {
+      const pullDistance = touchCurrentY - touchStartY;
+      // Only trigger if pull was between 60px and 150px to avoid infinite loading
+      if (pullDistance > 60 && pullDistance < 150) {
+        setShowMiniAppSlidePanel(true);
+      }
     }
+    
+    // Reset all states
     setIsPullingDown(false);
+    setTouchStartY(0);
+    setTouchCurrentY(0);
   };
   
   const currentChat = chatId ? getCurrentChat(chatId) : null;
@@ -206,12 +213,13 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
             <i className="ri-arrow-down-line mr-1"></i> Pull down for MiniApps
           </div>
           
-          {/* Quick access button for MiniApps slide panel */}
+          {/* Quick access button for MiniApps slide panel - more prominent */}
           <button 
             onClick={() => setShowMiniAppSlidePanel(true)}
-            className="absolute right-3 top-0 text-xs text-primary bg-primary/10 py-1 px-2 rounded-b-md"
+            className="absolute right-3 top-0 text-xs flex items-center gap-1 bg-primary text-white py-1.5 px-3 rounded-b-md shadow-sm"
           >
-            <i className="ri-apps-line mr-1"></i> MiniApps
+            <i className="ri-apps-line"></i>
+            <span>MiniApps</span>
           </button>
           
           <div className="flex items-center gap-3 h-9">
