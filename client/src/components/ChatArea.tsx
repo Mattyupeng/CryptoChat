@@ -27,7 +27,6 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
   const [, navigate] = useLocation();
   const { chats, getCurrentChat, sendMessage } = useChatStore();
   const { publicKey } = useWalletStore();
-  const { openMiniApp } = useMiniApp();
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatHeaderRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
@@ -252,10 +251,20 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
         >
           {/* Pull-down indicator - only shown when pulling down */}
           {isPullingDown && (
-            <div className="sticky top-0 left-0 right-0 flex justify-center items-center h-12 mb-2">
-              <div className="flex flex-col items-center">
-                <i className="ri-arrow-down-line text-lg text-primary animate-bounce"></i>
-                <span className="text-xs text-app-muted">Pull down for MiniApps</span>
+            <div className="sticky top-0 left-0 right-0 flex justify-center items-center h-16 mb-2 z-10">
+              <div className="flex flex-col items-center gap-1 bg-app-surface/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                <div className="flex items-center gap-1.5">
+                  <i className="ri-arrow-down-line text-base text-primary"></i>
+                  <span className="text-xs text-app-foreground font-medium">Pull to access MiniApps</span>
+                </div>
+                <div className="w-16 h-1 bg-app-muted/20 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-primary rounded-full" 
+                    style={{ 
+                      width: `${Math.min(100, (touchCurrentY - touchStartY) / 60 * 100)}%` 
+                    }}
+                  ></div>
+                </div>
               </div>
             </div>
           )}
@@ -328,7 +337,7 @@ export default function ChatArea({ chatId, onTransfer }: ChatAreaProps) {
           <MiniAppSlidePanel 
             onClose={() => setShowMiniAppSlidePanel(false)}
             onOpenApp={(appId) => {
-              openMiniApp(appId);
+              // Access MiniApp context through hook inside the component
               setShowMiniAppSlidePanel(false);
             }}
             onShareApp={handleShareMiniApp}

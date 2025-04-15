@@ -54,6 +54,8 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
   
   // Handle opening an app
   const handleOpenApp = (app: MiniApp) => {
+    const { openMiniApp } = useMiniApp();
+    openMiniApp(app.id);
     onOpenApp(app.id);
   };
   
@@ -82,8 +84,9 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
       <div 
         ref={panelRef}
         className={`absolute top-0 left-0 right-0 bg-app-surface border-b border-app-border shadow-lg
-          transition-transform duration-300 ease-out pointer-events-auto
+          transition-transform duration-300 ease-out pointer-events-auto overflow-hidden
           ${isVisible ? 'translate-y-0' : '-translate-y-full'}`}
+        style={{ maxHeight: 'min(70vh, 500px)' }}
       >
         {/* Handle bar */}
         <div className="flex justify-center py-2">
@@ -92,7 +95,12 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
         
         {/* Header */}
         <div className="px-4 pb-2 flex items-center justify-between">
-          <h2 className="text-base font-medium">MiniApps</h2>
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
+              <i className="ri-apps-line text-lg text-primary"></i>
+            </div>
+            <h2 className="text-base font-medium">MiniApps</h2>
+          </div>
           <button 
             className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover"
             onClick={handleClose}
@@ -101,34 +109,70 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
           </button>
         </div>
         
-        {/* MiniApps Grid */}
-        <div className="px-4 pb-6 overflow-x-auto">
-          <div className="flex gap-4 pb-2">
-            {availableMiniApps.map((app) => (
-              <div
-                key={app.id}
-                className="flex flex-col items-center w-16"
-              >
-                <button
-                  className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/20 
-                    flex items-center justify-center mb-1 hover:shadow-md transition-shadow"
-                  onClick={() => handleOpenApp(app)}
+        {/* MiniApps Grid with categories */}
+        <div className="px-4 pb-6 overflow-y-auto" style={{ maxHeight: 'calc(70vh - 60px)' }}>
+          {/* Favorites section */}
+          <div className="mb-6">
+            <h3 className="text-xs font-medium text-app-muted mb-3 px-1">Favorites</h3>
+            <div className="grid grid-cols-4 sm:grid-cols-5 gap-4 w-full max-w-md mx-auto">
+              {availableMiniApps.slice(0, 4).map((app) => (
+                <div
+                  key={app.id}
+                  className="flex flex-col items-center"
                 >
-                  <i className={`${app.icon} text-2xl text-primary`}></i>
-                </button>
-                <span className="text-xs text-center truncate w-full">{app.title}</span>
-                
-                {/* Share button - only if onShareApp is provided */}
-                {onShareApp && (
                   <button
-                    className="mt-1 text-xs text-primary/70 hover:text-primary"
-                    onClick={() => handleShareApp(app)}
+                    className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 
+                      flex items-center justify-center mb-1.5 hover:shadow-md transition-shadow"
+                    onClick={() => handleOpenApp(app)}
                   >
-                    Share
+                    <i className={`${app.icon} text-2xl text-primary`}></i>
                   </button>
-                )}
-              </div>
-            ))}
+                  <span className="text-xs text-center truncate w-full leading-tight">{app.title}</span>
+                  
+                  {/* Share button - only if onShareApp is provided */}
+                  {onShareApp && (
+                    <button
+                      className="mt-1 text-[10px] text-primary/70 hover:text-primary"
+                      onClick={() => handleShareApp(app)}
+                    >
+                      Share
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* All MiniApps section */}
+          <div>
+            <h3 className="text-xs font-medium text-app-muted mb-3 px-1">All MiniApps</h3>
+            <div className="grid grid-cols-4 sm:grid-cols-5 gap-4 w-full max-w-md mx-auto">
+              {availableMiniApps.map((app) => (
+                <div
+                  key={app.id}
+                  className="flex flex-col items-center"
+                >
+                  <button
+                    className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 
+                      flex items-center justify-center mb-1.5 hover:shadow-md transition-shadow"
+                    onClick={() => handleOpenApp(app)}
+                  >
+                    <i className={`${app.icon} text-2xl text-primary`}></i>
+                  </button>
+                  <span className="text-xs text-center truncate w-full leading-tight">{app.title}</span>
+                  
+                  {/* Share button - only if onShareApp is provided */}
+                  {onShareApp && (
+                    <button
+                      className="mt-1 text-[10px] text-primary/70 hover:text-primary"
+                      onClick={() => handleShareApp(app)}
+                    >
+                      Share
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
