@@ -11,6 +11,7 @@ import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/pages/Settings';
+import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
 
 export default function Chat() {
   const [, navigate] = useLocation();
@@ -22,6 +23,10 @@ export default function Chat() {
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showGroupChatModal, setShowGroupChatModal] = useState(false);
   const [selectedRecipient, setSelectedRecipient] = useState<string | null>(null);
+  
+  // MiniApp state
+  const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
+  const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
 
   // Check if user is authenticated, redirect if not
   useEffect(() => {
@@ -124,6 +129,26 @@ export default function Chat() {
     }
     setShowTransferModal(true);
   };
+  
+  // Handle sharing a MiniApp card
+  const handleShareMiniApp = (appId: string, card: { 
+    title: string; 
+    description: string; 
+    thumbnail: string;
+    ctaText?: string;
+    metadata?: Record<string, any>;
+  }) => {
+    // In the chat page, we can't send message directly since no chat is selected
+    // Instead just show the MiniApp that was selected
+    setShowMiniAppLauncher(false);
+    setShowMiniAppSlidePanel(false);
+    
+    // If we have a current chat, navigate to it
+    if (currentChatId) {
+      // In a real implementation, this would send the card to the chat
+      console.log("Would share MiniApp card:", appId, card);
+    }
+  };
 
   // Get current chat ID from URL params
   const currentChatId = match && params?.id ? params.id : null;
@@ -138,8 +163,32 @@ export default function Chat() {
 
   return (
     <Layout>
-      <div className="flex h-full w-full overflow-hidden bg-app-bg text-app">
-        {/* MOBILE DESIGN - Full page views that appear one at a time */}
+      <MiniAppProvider>
+        <div className="flex h-full w-full overflow-hidden bg-app-bg text-app relative">
+          {/* MiniApp Components */}
+          {showMiniAppLauncher && (
+            <MiniAppLauncher 
+              onClose={() => setShowMiniAppLauncher(false)}
+              onShareApp={handleShareMiniApp}
+            />
+          )}
+          
+          {/* MiniApp slide-down panel (WeChat style) */}
+          {showMiniAppSlidePanel && (
+            <MiniAppSlidePanel 
+              onClose={() => setShowMiniAppSlidePanel(false)}
+              onOpenApp={(appId) => {
+                // Just close the panel when an app is opened
+                setShowMiniAppSlidePanel(false);
+              }}
+              onShareApp={handleShareMiniApp}
+            />
+          )}
+          
+          {/* MiniApp Viewer (overlaid on the entire UI) */}
+          <MiniAppViewer recipientId={currentChatId || ''} />
+          
+          {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">
           {/* MOBILE: Show chat list or settings when no chat is selected */}
           {!currentChatId && (
@@ -157,6 +206,14 @@ export default function Chat() {
                       activeTab === 'wallet' ? 'Wallet' : 'Settings'}
                     </h1>
                     <div className="flex gap-2">
+                      {/* MiniApps button */}
+                      <button 
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+                        onClick={() => setShowMiniAppSlidePanel(true)}
+                        title="MiniApps"
+                      >
+                        <i className="ri-apps-line text-xl text-app-muted"></i>
+                      </button>
                       <button 
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                         onClick={() => {/* Implement search functionality */}}
@@ -278,6 +335,7 @@ export default function Chat() {
           <CreateGroupChatModal onClose={() => setShowGroupChatModal(false)} />
         )}
       </div>
+      </MiniAppProvider>
     </Layout>
   );
 }
