@@ -1,6 +1,6 @@
 interface SidebarProps {
-  activeTab: 'chats' | 'contacts' | 'wallet' | 'settings';
-  setActiveTab: (tab: 'chats' | 'contacts' | 'wallet' | 'settings') => void;
+  activeTab: 'chats' | 'wallet' | 'settings';
+  setActiveTab: (tab: 'chats' | 'wallet' | 'settings') => void;
 }
 
 export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {

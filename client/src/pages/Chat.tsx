@@ -20,7 +20,7 @@ export default function Chat() {
   const { isConnected, initialized } = useWalletStore();
   const { loadChats, loadFriends } = useChatStore();
   const [match, params] = useRoute('/chat/:id?');
-  const [activeTab, setActiveTab] = useState<'chats' | 'contacts' | 'wallet' | 'settings'>('chats');
+  const [activeTab, setActiveTab] = useState<'chats' | 'wallet' | 'settings'>('chats');
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showGroupChatModal, setShowGroupChatModal] = useState(false);
@@ -259,16 +259,6 @@ export default function Chat() {
                                 <i className="ri-message-3-line mr-2"></i>
                                 Messages
                               </button>
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
-                                onClick={() => {
-                                  setActiveTab('contacts');
-                                  setShowTabsDropdown(false);
-                                }}
-                              >
-                                <i className="ri-user-3-line mr-2"></i>
-                                Friends
-                              </button>
                               <div className="border-t border-app-border my-1"></div>
                               <button 
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
@@ -286,8 +276,7 @@ export default function Chat() {
                       </div>
                     ) : (
                       <h1 className="text-xl font-semibold">
-                        {activeTab === 'contacts' ? 'Friends' : 
-                        activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                        {activeTab === 'wallet' ? 'Wallet' : 'Settings'}
                       </h1>
                     )}
                     
@@ -380,16 +369,6 @@ export default function Chat() {
                             <i className="ri-message-3-line mr-2"></i>
                             Messages
                           </button>
-                          <button 
-                            className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
-                            onClick={() => {
-                              setActiveTab('contacts');
-                              setShowDesktopTabsDropdown(false);
-                            }}
-                          >
-                            <i className="ri-user-3-line mr-2"></i>
-                            Friends
-                          </button>
                           <div className="border-t border-app-border my-1"></div>
                           <button 
                             className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
@@ -407,8 +386,7 @@ export default function Chat() {
                   </div>
                 ) : (
                   <h1 className="text-xl font-semibold">
-                    {activeTab === 'contacts' ? 'Friends' : 
-                    activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                    {activeTab === 'wallet' ? 'Wallet' : 'Settings'}
                   </h1>
                 )}
                 
