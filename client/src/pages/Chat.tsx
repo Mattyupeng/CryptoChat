@@ -326,7 +326,8 @@ export default function Chat() {
                   <div className="flex-1 overflow-auto">
                     <ChatList 
                       activeTab={activeTab} 
-                      currentChatId={currentChatId} 
+                      currentChatId={currentChatId}
+                      showContacts={showContacts}
                     />
                   </div>
                 </>
@@ -448,7 +449,8 @@ export default function Chat() {
               {/* Chat or Friends List based on active tab */}
               <ChatList 
                 activeTab={activeTab} 
-                currentChatId={currentChatId} 
+                currentChatId={currentChatId}
+                showContacts={showContacts}
               />
             </div>
           </div>

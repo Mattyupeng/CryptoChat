@@ -6,9 +6,10 @@ import { formatTime } from '@/lib/utils';
 interface ChatListProps {
   activeTab: 'chats' | 'wallet' | 'settings';
   currentChatId: string | null;
+  showContacts?: boolean;
 }
 
-export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
+export default function ChatList({ activeTab, currentChatId, showContacts = false }: ChatListProps) {
   const [, navigate] = useLocation();
   const { chats, friends, setCurrentChat } = useChatStore();
   const { address } = useWalletStore();
@@ -24,8 +25,8 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
     return bTime - aTime;
   });
 
-  // Only show chats in chat list now
-  const userList = sortedChats;
+  // Choose between showing chats or contacts based on the showContacts prop
+  const userList = showContacts ? friends : sortedChats;
 
   // Handle selecting a chat
   const handleSelectUser = (id: string) => {
@@ -79,14 +80,25 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
     );
   }
 
-  // Show empty state if no chats
+  // Show empty state if no chats or contacts
   if (userList.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-4 text-app-muted">
-        <i className="ri-message-3-line text-4xl mb-4"></i>
-        <p className="text-center">
-          No conversations yet. Add a friend to start chatting.
-        </p>
+        {showContacts ? (
+          <>
+            <i className="ri-user-3-line text-4xl mb-4"></i>
+            <p className="text-center">
+              No contacts yet. Add a friend to see them here.
+            </p>
+          </>
+        ) : (
+          <>
+            <i className="ri-message-3-line text-4xl mb-4"></i>
+            <p className="text-center">
+              No conversations yet. Add a friend to start chatting.
+            </p>
+          </>
+        )}
       </div>
     );
   }
@@ -94,22 +106,43 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
   return (
     <div className="flex-1 overflow-y-auto">
       {userList.map((user) => {
-        // Retrieve last message
-        const lastMessage = user.messages.length > 0 ? user.messages[user.messages.length - 1] : null;
-        
-        return (
-          <ConversationItem
-            key={user.id}
-            id={user.id}
-            name={user.displayName || user.ensName || ''}
-            address={user.address}
-            lastMessage={lastMessage?.content || ''}
-            lastMessageTime={lastMessage ? formatTime(lastMessage.timestamp) : ''}
-            isOnline={user.isOnline}
-            isActive={currentChatId === user.id}
-            onClick={() => handleSelectUser(user.id)}
-          />
-        );
+        // Display differently based on whether we're showing contacts or chats
+        if (showContacts) {
+          // This is a Friend object
+          const friend = user as typeof friends[0];
+          return (
+            <ConversationItem
+              key={friend.id}
+              id={friend.id}
+              name={friend.displayName || friend.ensName || ''}
+              address={friend.address}
+              lastMessage={friend.status || 'Friend'}
+              lastMessageTime={''}
+              isOnline={friend.isOnline}
+              isActive={currentChatId === friend.id}
+              onClick={() => handleSelectUser(friend.id)}
+            />
+          );
+        } else {
+          // This is a Chat object
+          const chat = user as typeof chats[0];
+          // Retrieve last message
+          const lastMessage = chat.messages.length > 0 ? chat.messages[chat.messages.length - 1] : null;
+          
+          return (
+            <ConversationItem
+              key={chat.id}
+              id={chat.id}
+              name={chat.displayName || chat.ensName || ''}
+              address={chat.address}
+              lastMessage={lastMessage?.content || ''}
+              lastMessageTime={lastMessage ? formatTime(lastMessage.timestamp) : ''}
+              isOnline={chat.isOnline}
+              isActive={currentChatId === chat.id}
+              onClick={() => handleSelectUser(chat.id)}
+            />
+          );
+        }
       })}
     </div>
   );
