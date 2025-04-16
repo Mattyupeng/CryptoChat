@@ -25,17 +25,6 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         </button>
         
         <button 
-          onClick={() => setActiveTab('contacts')}
-          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-            activeTab === 'contacts' 
-              ? 'text-app bg-app-hover' 
-              : 'text-app-muted hover:bg-app-hover hover:text-app'
-          } transition`}
-        >
-          <i className="ri-user-line text-xl"></i>
-        </button>
-        
-        <button 
           onClick={() => setActiveTab('wallet')}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
             activeTab === 'wallet' 

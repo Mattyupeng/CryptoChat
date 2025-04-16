@@ -4,7 +4,7 @@ import ConversationItem from './ConversationItem';
 import { formatTime } from '@/lib/utils';
 
 interface ChatListProps {
-  activeTab: 'chats' | 'contacts' | 'wallet' | 'settings';
+  activeTab: 'chats' | 'wallet' | 'settings';
   currentChatId: string | null;
 }
 
@@ -24,16 +24,16 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
     return bTime - aTime;
   });
 
-  // Filter friends based on active tab
-  const userList = activeTab === 'chats' ? sortedChats : friends;
+  // Only show chats in chat list now
+  const userList = sortedChats;
 
-  // Handle selecting a chat or friend
+  // Handle selecting a chat
   const handleSelectUser = (id: string) => {
     setCurrentChat(id);
     navigate(`/chat/${id}`);
   };
 
-  if (activeTab !== 'chats' && activeTab !== 'contacts') {
+  if (activeTab !== 'chats') {
     return (
       <div className="flex-1 overflow-y-auto p-4">
         {activeTab === 'wallet' && (
@@ -79,15 +79,13 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
     );
   }
 
-  // Show empty state if no chats or friends
+  // Show empty state if no chats
   if (userList.length === 0) {
     return (
       <div className="flex-1 flex flex-col items-center justify-center p-4 text-app-muted">
-        <i className={`${activeTab === 'chats' ? 'ri-message-3-line' : 'ri-user-line'} text-4xl mb-4`}></i>
+        <i className="ri-message-3-line text-4xl mb-4"></i>
         <p className="text-center">
-          {activeTab === 'chats' 
-            ? 'No conversations yet. Add a friend to start chatting.' 
-            : 'No friends added yet.'}
+          No conversations yet. Add a friend to start chatting.
         </p>
       </div>
     );
@@ -96,10 +94,8 @@ export default function ChatList({ activeTab, currentChatId }: ChatListProps) {
   return (
     <div className="flex-1 overflow-y-auto">
       {userList.map((user) => {
-        // Only retrieve last message for Chat objects (not Friend objects)
-        const lastMessage = activeTab === 'chats' && 'messages' in user && user.messages.length > 0
-          ? user.messages[user.messages.length - 1]
-          : null;
+        // Retrieve last message
+        const lastMessage = user.messages.length > 0 ? user.messages[user.messages.length - 1] : null;
         
         return (
           <ConversationItem
