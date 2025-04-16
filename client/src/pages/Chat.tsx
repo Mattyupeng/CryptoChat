@@ -21,6 +21,7 @@ export default function Chat() {
   const { loadChats, loadFriends } = useChatStore();
   const [match, params] = useRoute('/chat/:id?');
   const [activeTab, setActiveTab] = useState<'chats' | 'wallet' | 'settings'>('chats');
+  const [showContacts, setShowContacts] = useState<boolean>(false);
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
   const [showGroupChatModal, setShowGroupChatModal] = useState(false);
@@ -241,7 +242,7 @@ export default function Chat() {
                           className="text-xl font-semibold flex items-center"
                           onClick={() => setShowTabsDropdown((prev: boolean) => !prev)}
                         >
-                          Messages
+                          {showContacts ? 'Contacts' : 'Messages'}
                           <i className="ri-arrow-down-s-line ml-1 text-app-muted text-base"></i>
                         </button>
                         
@@ -253,17 +254,30 @@ export default function Chat() {
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center font-medium text-primary"
                                 onClick={() => {
                                   setActiveTab('chats');
+                                  setShowContacts(false);
                                   setShowTabsDropdown(false);
                                 }}
                               >
                                 <i className="ri-message-3-line mr-2"></i>
                                 Messages
                               </button>
+                              <button 
+                                className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
+                                onClick={() => {
+                                  setActiveTab('chats');
+                                  setShowContacts(true);
+                                  setShowTabsDropdown(false);
+                                }}
+                              >
+                                <i className="ri-user-3-line mr-2"></i>
+                                Contacts
+                              </button>
                               <div className="border-t border-app-border my-1"></div>
                               <button 
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                                 onClick={() => {
                                   setActiveTab('wallet');
+                                  setShowContacts(false);
                                   setShowTabsDropdown(false);
                                 }}
                               >
@@ -351,7 +365,7 @@ export default function Chat() {
                       className="text-xl font-semibold flex items-center"
                       onClick={() => setShowDesktopTabsDropdown((prev: boolean) => !prev)}
                     >
-                      Messages
+                      {showContacts ? 'Contacts' : 'Messages'}
                       <i className="ri-arrow-down-s-line ml-1 text-app-muted text-base"></i>
                     </button>
                     
@@ -363,17 +377,30 @@ export default function Chat() {
                             className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center font-medium text-primary"
                             onClick={() => {
                               setActiveTab('chats');
+                              setShowContacts(false);
                               setShowDesktopTabsDropdown(false);
                             }}
                           >
                             <i className="ri-message-3-line mr-2"></i>
                             Messages
                           </button>
+                          <button 
+                            className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
+                            onClick={() => {
+                              setActiveTab('chats');
+                              setShowContacts(true);
+                              setShowDesktopTabsDropdown(false);
+                            }}
+                          >
+                            <i className="ri-user-3-line mr-2"></i>
+                            Contacts
+                          </button>
                           <div className="border-t border-app-border my-1"></div>
                           <button 
                             className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                             onClick={() => {
                               setActiveTab('wallet');
+                              setShowContacts(false);
                               setShowDesktopTabsDropdown(false);
                             }}
                           >
