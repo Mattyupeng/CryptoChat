@@ -2,6 +2,7 @@ import { useLocation } from 'wouter';
 import { useChatStore, useWalletStore } from '@/store/store';
 import ConversationItem from './ConversationItem';
 import { formatTime } from '@/lib/utils';
+import { Chat, Friend } from '@/types';
 
 interface ChatListProps {
   activeTab: 'chats' | 'wallet' | 'settings';
@@ -26,7 +27,7 @@ export default function ChatList({ activeTab, currentChatId, showContacts = fals
   });
 
   // Choose between showing chats or contacts based on the showContacts prop
-  const userList = showContacts ? friends : sortedChats;
+  const userList: (Chat | Friend)[] = showContacts ? friends : sortedChats;
 
   // Handle selecting a chat
   const handleSelectUser = (id: string) => {
@@ -116,7 +117,7 @@ export default function ChatList({ activeTab, currentChatId, showContacts = fals
               id={friend.id}
               name={friend.displayName || friend.ensName || ''}
               address={friend.address}
-              lastMessage={friend.status || 'Friend'}
+              lastMessage={'Contact'}
               lastMessageTime={''}
               isOnline={friend.isOnline}
               isActive={currentChatId === friend.id}
