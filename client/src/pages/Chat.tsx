@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useRoute, useLocation } from 'wouter';
 import Layout from '@/components/Layout';
 import Sidebar from '@/components/Sidebar';
@@ -34,6 +34,34 @@ export default function Chat() {
   // Dropdown state for tab switching
   const [showTabsDropdown, setShowTabsDropdown] = useState(false);
   const [showDesktopTabsDropdown, setShowDesktopTabsDropdown] = useState(false);
+  
+  // References for dropdown click-outside detection
+  const mobileTabsRef = useRef<HTMLDivElement>(null);
+  const desktopTabsRef = useRef<HTMLDivElement>(null);
+  
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Handle mobile dropdown
+      if (showTabsDropdown && 
+          mobileTabsRef.current && 
+          !mobileTabsRef.current.contains(event.target as Node)) {
+        setShowTabsDropdown(false);
+      }
+      
+      // Handle desktop dropdown
+      if (showDesktopTabsDropdown && 
+          desktopTabsRef.current && 
+          !desktopTabsRef.current.contains(event.target as Node)) {
+        setShowDesktopTabsDropdown(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showTabsDropdown, showDesktopTabsDropdown]);
 
   // Check if user is authenticated, redirect if not
   useEffect(() => {
@@ -208,7 +236,7 @@ export default function Chat() {
                   {/* Mobile Header */}
                   <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
                     {activeTab === 'chats' ? (
-                      <div className="relative group">
+                      <div className="relative group" ref={mobileTabsRef}>
                         <button 
                           className="text-xl font-semibold flex items-center"
                           onClick={() => setShowTabsDropdown((prev: boolean) => !prev)}
@@ -329,10 +357,10 @@ export default function Chat() {
               {/* Header */}
               <div className="p-4 border-b border-app-border flex items-center justify-between">
                 {activeTab === 'chats' ? (
-                  <div className="relative group">
+                  <div className="relative group" ref={desktopTabsRef}>
                     <button 
                       className="text-xl font-semibold flex items-center"
-                      onClick={() => setShowDesktopTabsDropdown(prev => !prev)}
+                      onClick={() => setShowDesktopTabsDropdown((prev: boolean) => !prev)}
                     >
                       Messages
                       <i className="ri-arrow-down-s-line ml-1 text-app-muted text-base"></i>
