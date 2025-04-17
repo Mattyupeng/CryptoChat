@@ -267,7 +267,6 @@ export default function Settings() {
           
           <div className="flex justify-between mt-3">
             <Button variant="outline" className="w-1/2 mr-1">
-              <ArrowUpRight className="mr-1 h-4 w-4" />
               Send
             </Button>
             <Button variant="default" className="w-1/2 ml-1 bg-primary hover:bg-primary/90">
