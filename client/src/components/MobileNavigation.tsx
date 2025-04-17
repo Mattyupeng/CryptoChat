@@ -25,8 +25,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
           }}
           className="flex flex-col items-center justify-center w-1/3 py-2 text-app-muted hover:text-primary transition"
         >
-          <i className="ri-wallet-3-line text-xl"></i>
-          <span className="text-xs mt-1">Wallet</span>
+          <i className="ri-apps-line text-xl"></i>
+          <span className="text-xs mt-1">MiniApps</span>
         </button>
         
         <button 

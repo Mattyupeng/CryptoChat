@@ -310,8 +310,8 @@ export default function Chat() {
                                 setShowTabsDropdown(false);
                               }}
                             >
-                              <i className="ri-wallet-3-line mr-2"></i>
-                              Wallet
+                              <i className="ri-apps-line mr-2"></i>
+                              MiniApps
                             </button>
                           </div>
                         </div>
@@ -428,8 +428,8 @@ export default function Chat() {
                               setShowDesktopTabsDropdown(false);
                             }}
                           >
-                            <i className="ri-wallet-3-line mr-2"></i>
-                            Wallet
+                            <i className="ri-apps-line mr-2"></i>
+                            MiniApps
                           </button>
                         </div>
                       </div>
