@@ -21,7 +21,25 @@ import { toast } from '@/hooks/use-toast';
 
 export default function Settings() {
   const { address, ensName, chainType, publicKey, disconnect } = useWalletStore();
-  const [darkMode, setDarkMode] = useState(true);
+  // Initialize the theme from localStorage if available
+  const [darkMode, setDarkMode] = useState(() => {
+    const savedTheme = localStorage.getItem('hushline-theme');
+    // Default to dark if nothing is saved
+    return savedTheme === 'light' ? false : true;
+  });
+  
+  // Handle theme changes
+  useEffect(() => {
+    // Add a log statement for debugging
+    console.log("Theme updated to:", darkMode ? "dark" : "light");
+    
+    // Update the document with the selected theme
+    document.documentElement.classList.toggle('dark', darkMode);
+    document.documentElement.classList.toggle('light', !darkMode);
+    
+    // Persist theme preference in localStorage
+    localStorage.setItem('hushline-theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isLoadingAssets, setIsLoadingAssets] = useState(true);
   const [assets, setAssets] = useState<{
@@ -100,10 +118,7 @@ export default function Settings() {
         {/* Wallet Section */}
         <div className="bg-app-card rounded-lg p-4 space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <Wallet className="mr-2 h-5 w-5" />
-              <h2 className="text-lg font-medium">Wallet</h2>
-            </div>
+            <h2 className="text-lg font-medium">Wallet</h2>
             <Button 
               variant="outline" 
               size="sm" 
@@ -171,10 +186,7 @@ export default function Settings() {
         {/* Assets Section */}
         <div className="bg-app-card rounded-lg p-4 space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <i className="ri-coins-line mr-2 text-lg"></i>
-              <h2 className="text-lg font-medium">Assets</h2>
-            </div>
+            <h2 className="text-lg font-medium">Assets</h2>
             <Button 
               variant="ghost" 
               size="sm" 
@@ -223,14 +235,7 @@ export default function Settings() {
                       </div>
                     </div>
                     
-                    <div className="mt-2 flex justify-between">
-                      <Button variant="outline" size="sm" className="flex-1 mr-1 h-8 justify-center">
-                        Send
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1 ml-1 h-8 justify-center">
-                        Receive
-                      </Button>
-                    </div>
+
                   </div>
                 ))}
                 
@@ -266,10 +271,7 @@ export default function Settings() {
         {/* App Settings */}
         <div className="bg-app-card rounded-lg p-4 space-y-4">
           <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center">
-              <i className="ri-settings-3-line mr-2 text-lg"></i>
-              <h2 className="text-lg font-medium">App Settings</h2>
-            </div>
+            <h2 className="text-lg font-medium">App Settings</h2>
           </div>
           
           <div className="divide-y divide-app-border">
@@ -277,8 +279,8 @@ export default function Settings() {
             <div className="py-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center">
-                  <Sun className="mr-3 h-5 w-5 text-app-muted" />
-                  <Label htmlFor="dark-mode">Dark Mode</Label>
+                  {darkMode ? <Moon className="mr-3 h-5 w-5 text-app-muted" /> : <Sun className="mr-3 h-5 w-5 text-app-muted" />}
+                  <Label htmlFor="dark-mode">{darkMode ? 'Dark Mode' : 'Light Mode'}</Label>
                 </div>
                 <Switch
                   id="dark-mode"
