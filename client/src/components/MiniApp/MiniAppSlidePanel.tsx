@@ -17,39 +17,29 @@ interface MiniAppSlidePanelProps {
 
 export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSlidePanelProps) {
   const { availableMiniApps } = useMiniApp();
-  const [isVisible, setIsVisible] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
   
-  // Animation effect when mounting
+  // Desktop-only behavior - clicking outside to close
   useEffect(() => {
-    // Small delay to ensure the animation works properly
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 50);
-    
-    return () => clearTimeout(timer);
-  }, []);
-  
-  // Handle clicking outside the panel
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
-        handleClose();
-      }
+    // Only add click outside handler on desktop
+    const isMobile = window.innerWidth < 768;
+    if (!isMobile) {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (panelRef.current && !panelRef.current.contains(event.target as Node)) {
+          onClose();
+        }
+      };
+      
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => {
+        document.removeEventListener('mousedown', handleClickOutside);
+      };
     }
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
+  }, [onClose]);
   
-  // Close with animation
+  // Close handler
   const handleClose = () => {
-    setIsVisible(false);
-    setTimeout(() => {
-      onClose();
-    }, 300); // Match the transition duration
+    onClose();
   };
   
   // Get the openMiniApp function from context at component level
@@ -74,21 +64,18 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
   };
   
   return (
-    <div className="fixed inset-0 z-50 pointer-events-none">
-      {/* Backdrop - only visible when panel is visible */}
+    <div className="fixed inset-0 z-50">
+      {/* Backdrop - for desktop only */}
       <div 
-        className={`absolute inset-0 bg-black/30 backdrop-blur-[2px] transition-opacity duration-300 pointer-events-auto
-          ${isVisible ? 'opacity-100' : 'opacity-0'}`}
+        className="absolute inset-0 bg-black/30 backdrop-blur-[2px] hidden md:block"
         onClick={handleClose}
       />
       
-      {/* Slide panel - full screen on mobile, slide down on desktop */}
+      {/* Mini App panel - full screen on mobile, dropdown on desktop */}
       <div 
         ref={panelRef}
-        className={`absolute top-0 left-0 right-0 bg-app-surface border-b border-app-border shadow-lg
-          transition-transform duration-300 ease-out pointer-events-auto
-          md:max-h-[min(70vh,500px)] ${isVisible ? 'translate-y-0' : '-translate-y-full'} 
-          h-screen md:h-auto flex flex-col`}
+        className="absolute top-0 left-0 right-0 bg-app-surface border-b border-app-border shadow-lg
+          pointer-events-auto md:max-h-[min(70vh,500px)] h-screen md:h-auto flex flex-col"
       >
         {/* Handle bar */}
         <div className="flex justify-center py-2">

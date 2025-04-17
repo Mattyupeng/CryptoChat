@@ -25,7 +25,7 @@ export default function Settings() {
   const [darkMode, setDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem('hushline-theme');
     // Default to dark if nothing is saved
-    return savedTheme === 'light' ? false : true;
+    return savedTheme !== 'light';
   });
   
   // Handle theme changes
@@ -33,9 +33,17 @@ export default function Settings() {
     // Add a log statement for debugging
     console.log("Theme updated to:", darkMode ? "dark" : "light");
     
-    // Update the document with the selected theme
-    document.documentElement.classList.toggle('dark', darkMode);
-    document.documentElement.classList.toggle('light', !darkMode);
+    // Set the appropriate theme class
+    if (darkMode) {
+      document.documentElement.classList.add('dark');
+      document.documentElement.classList.remove('light');
+    } else {
+      document.documentElement.classList.add('light');
+      document.documentElement.classList.remove('dark');
+    }
+    
+    // Set the appropriate data-theme attribute for Tailwind/shadcn
+    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
     
     // Persist theme preference in localStorage
     localStorage.setItem('hushline-theme', darkMode ? 'dark' : 'light');
