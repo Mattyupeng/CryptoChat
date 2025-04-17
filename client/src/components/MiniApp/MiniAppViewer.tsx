@@ -102,6 +102,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               )}
             </button>
             
+            {/* External link button - only for non-internal apps */}
             {!isInternalApp && (
               <button 
                 className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"

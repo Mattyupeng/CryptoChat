@@ -86,9 +86,9 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
       <div 
         ref={panelRef}
         className={`absolute top-0 left-0 right-0 bg-app-surface border-b border-app-border shadow-lg
-          transition-transform duration-300 ease-out pointer-events-auto overflow-hidden
+          transition-transform duration-300 ease-out pointer-events-auto
           md:max-h-[min(70vh,500px)] ${isVisible ? 'translate-y-0' : '-translate-y-full'} 
-          h-screen md:h-auto`}
+          h-screen md:h-auto flex flex-col`}
       >
         {/* Handle bar */}
         <div className="flex justify-center py-2">
@@ -112,7 +112,7 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
         </div>
         
         {/* MiniApps content area with categories */}
-        <div className="px-4 pb-6 overflow-y-auto h-[calc(100vh-60px)] md:h-auto md:max-h-[calc(70vh-60px)]">
+        <div className="px-4 pb-6 overflow-y-auto flex-1">
           {/* Search bar */}
           <div className="mb-4 sticky top-0 pt-2 pb-3 bg-app-surface z-10">
             <div className="relative">
