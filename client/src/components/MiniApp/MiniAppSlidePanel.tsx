@@ -80,17 +80,10 @@ export function MiniAppSlidePanel({
         className="h-full overflow-hidden flex flex-col bg-app-bg"
       >
         {/* Header - matches the style of other page headers */}
-        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+        <div className="p-4 border-b border-app-border bg-app-surface">
           <h1 className="text-xl font-semibold">
             MiniApps
           </h1>
-          
-          <button 
-            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-            onClick={handleClose}
-          >
-            <X className="h-5 w-5 text-app-muted" />
-          </button>
         </div>
         
         {/* MiniApps content area with categories */}
