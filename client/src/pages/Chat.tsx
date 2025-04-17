@@ -276,8 +276,7 @@ export default function Chat() {
                               <button 
                                 className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                                 onClick={() => {
-                                  setActiveTab('wallet');
-                                  setShowContacts(false);
+                                  setShowMiniAppSlidePanel(true);
                                   setShowTabsDropdown(false);
                                 }}
                               >
@@ -290,7 +289,7 @@ export default function Chat() {
                       </div>
                     ) : (
                       <h1 className="text-xl font-semibold">
-                        {activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                        Settings
                       </h1>
                     )}
                     
@@ -400,8 +399,7 @@ export default function Chat() {
                           <button 
                             className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                             onClick={() => {
-                              setActiveTab('wallet');
-                              setShowContacts(false);
+                              setShowMiniAppSlidePanel(true);
                               setShowDesktopTabsDropdown(false);
                             }}
                           >
@@ -414,7 +412,7 @@ export default function Chat() {
                   </div>
                 ) : (
                   <h1 className="text-xl font-semibold">
-                    {activeTab === 'wallet' ? 'Wallet' : 'Settings'}
+                    Settings
                   </h1>
                 )}
                 

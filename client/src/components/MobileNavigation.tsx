@@ -1,6 +1,6 @@
 interface MobileNavigationProps {
-  activeTab: 'chats' | 'wallet' | 'settings';
-  setActiveTab: (tab: 'chats' | 'wallet' | 'settings') => void;
+  activeTab: 'chats' | 'settings';
+  setActiveTab: (tab: 'chats' | 'settings') => void;
 }
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
@@ -9,7 +9,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
       <div className="flex justify-around items-center h-16">
         <button 
           onClick={() => setActiveTab('chats')}
-          className={`flex flex-col items-center justify-center w-1/3 py-2 ${
+          className={`flex flex-col items-center justify-center w-1/2 py-2 ${
             activeTab === 'chats' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >
@@ -18,18 +18,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         </button>
         
         <button 
-          onClick={() => setActiveTab('wallet')}
-          className={`flex flex-col items-center justify-center w-1/3 py-2 ${
-            activeTab === 'wallet' ? 'text-primary' : 'text-app-muted hover:text-primary'
-          } transition`}
-        >
-          <i className="ri-wallet-3-line text-xl"></i>
-          <span className="text-xs mt-1">Wallet</span>
-        </button>
-        
-        <button 
           onClick={() => setActiveTab('settings')}
-          className={`flex flex-col items-center justify-center w-1/3 py-2 ${
+          className={`flex flex-col items-center justify-center w-1/2 py-2 ${
             activeTab === 'settings' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
         >

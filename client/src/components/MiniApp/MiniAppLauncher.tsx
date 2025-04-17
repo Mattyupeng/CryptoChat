@@ -4,9 +4,16 @@ import { X } from 'lucide-react';
 
 interface MiniAppLauncherProps {
   onClose: () => void;
+  onShareApp?: (appId: string, card: { 
+    title: string; 
+    description: string; 
+    thumbnail: string;
+    ctaText?: string;
+    metadata?: Record<string, any>;
+  }) => void;
 }
 
-export function MiniAppLauncher({ onClose }: MiniAppLauncherProps) {
+export function MiniAppLauncher({ onClose, onShareApp }: MiniAppLauncherProps) {
   const { activeMiniApp } = useMiniApp();
 
   // Render the content based on which MiniApp is active
