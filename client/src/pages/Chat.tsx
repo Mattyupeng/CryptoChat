@@ -239,67 +239,84 @@ export default function Chat() {
             <div className="mobile-chat-list">
               {/* Show Settings page when settings tab is active */}
               {activeTab === 'settings' ? (
-                <Settings />
+                <>
+                  {/* Mobile Header for Settings */}
+                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+                    <h1 className="text-xl font-semibold">
+                      Settings
+                    </h1>
+                    
+                    <div className="flex gap-2">
+                      {/* MiniApps button */}
+                      <button 
+                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+                        onClick={() => setShowMiniAppSlidePanel(true)}
+                        title="MiniApps"
+                      >
+                        <i className="ri-apps-line text-xl text-app-muted"></i>
+                      </button>
+                    </div>
+                  </div>
+                  
+                  {/* Settings Content */}
+                  <div className="flex-1 overflow-auto">
+                    <Settings />
+                  </div>
+                </>
               ) : (
                 <>
-                  {/* Mobile Header */}
+                  {/* Mobile Header for Chats */}
                   <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
-                    {activeTab === 'chats' ? (
-                      <div className="relative group" ref={mobileTabsRef}>
-                        <button 
-                          className="text-xl font-semibold flex items-center"
-                          onClick={() => setShowTabsDropdown((prev: boolean) => !prev)}
-                        >
-                          {showContacts ? 'Contacts' : 'Messages'}
-                          <i className="ri-arrow-down-s-line ml-1 text-app-muted text-base"></i>
-                        </button>
-                        
-                        {/* Dropdown menu for switching between tabs */}
-                        {showTabsDropdown && (
-                          <div className="absolute top-full left-0 mt-1 w-48 bg-app-surface rounded-lg shadow-lg border border-app-border z-50">
-                            <div className="py-1">
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center font-medium text-primary"
-                                onClick={() => {
-                                  setActiveTab('chats');
-                                  setShowContacts(false);
-                                  setShowTabsDropdown(false);
-                                }}
-                              >
-                                <i className="ri-message-3-line mr-2"></i>
-                                Messages
-                              </button>
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
-                                onClick={() => {
-                                  setActiveTab('chats');
-                                  setShowContacts(true);
-                                  setShowTabsDropdown(false);
-                                }}
-                              >
-                                <i className="ri-user-3-line mr-2"></i>
-                                Contacts
-                              </button>
-                              <div className="border-t border-app-border my-1"></div>
-                              <button 
-                                className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
-                                onClick={() => {
-                                  setShowMiniAppSlidePanel(true);
-                                  setShowTabsDropdown(false);
-                                }}
-                              >
-                                <i className="ri-wallet-3-line mr-2"></i>
-                                Wallet
-                              </button>
-                            </div>
+                    <div className="relative group" ref={mobileTabsRef}>
+                      <button 
+                        className="text-xl font-semibold flex items-center"
+                        onClick={() => setShowTabsDropdown((prev: boolean) => !prev)}
+                      >
+                        {showContacts ? 'Contacts' : 'Messages'}
+                        <i className="ri-arrow-down-s-line ml-1 text-app-muted text-base"></i>
+                      </button>
+                      
+                      {/* Dropdown menu for switching between tabs */}
+                      {showTabsDropdown && (
+                        <div className="absolute top-full left-0 mt-1 w-48 bg-app-surface rounded-lg shadow-lg border border-app-border z-50">
+                          <div className="py-1">
+                            <button 
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center font-medium text-primary"
+                              onClick={() => {
+                                setActiveTab('chats');
+                                setShowContacts(false);
+                                setShowTabsDropdown(false);
+                              }}
+                            >
+                              <i className="ri-message-3-line mr-2"></i>
+                              Messages
+                            </button>
+                            <button 
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
+                              onClick={() => {
+                                setActiveTab('chats');
+                                setShowContacts(true);
+                                setShowTabsDropdown(false);
+                              }}
+                            >
+                              <i className="ri-user-3-line mr-2"></i>
+                              Contacts
+                            </button>
+                            <div className="border-t border-app-border my-1"></div>
+                            <button 
+                              className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
+                              onClick={() => {
+                                setShowMiniAppSlidePanel(true);
+                                setShowTabsDropdown(false);
+                              }}
+                            >
+                              <i className="ri-wallet-3-line mr-2"></i>
+                              Wallet
+                            </button>
                           </div>
-                        )}
-                      </div>
-                    ) : (
-                      <h1 className="text-xl font-semibold">
-                        Settings
-                      </h1>
-                    )}
+                        </div>
+                      )}
+                    </div>
                     
                     <div className="flex gap-2">
                       {/* MiniApps button */}
@@ -340,7 +357,7 @@ export default function Chat() {
                 </>
               )}
 
-              {/* Bottom Navigation */}
+              {/* Bottom Navigation - Always shown */}
               <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
             </div>
           )}

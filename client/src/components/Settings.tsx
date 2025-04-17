@@ -263,78 +263,75 @@ export default function Settings() {
           </div>
         </div>
         
-        {/* Appearance Settings */}
+        {/* App Settings */}
         <div className="bg-app-card rounded-lg p-4 space-y-4">
-          <div className="flex items-center mb-2">
-            <Sun className="mr-2 h-5 w-5" />
-            <h2 className="text-lg font-medium">Appearance</h2>
-          </div>
-          
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Moon className="h-4 w-4" />
-                <Label htmlFor="dark-mode">Dark Mode</Label>
-              </div>
-              <Switch
-                id="dark-mode"
-                checked={darkMode}
-                onCheckedChange={setDarkMode}
-              />
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center">
+              <i className="ri-settings-3-line mr-2 text-lg"></i>
+              <h2 className="text-lg font-medium">App Settings</h2>
             </div>
           </div>
-        </div>
-        
-        {/* Notifications */}
-        <div className="bg-app-card rounded-lg p-4 space-y-4">
-          <div className="flex items-center mb-2">
-            <Bell className="mr-2 h-5 w-5" />
-            <h2 className="text-lg font-medium">Notifications</h2>
-          </div>
           
-          <div className="space-y-4">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="notifications">Enable Notifications</Label>
-              <Switch
-                id="notifications"
-                checked={notificationsEnabled}
-                onCheckedChange={setNotificationsEnabled}
-              />
-            </div>
-          </div>
-        </div>
-        
-        {/* Privacy & Security */}
-        <div className="bg-app-card rounded-lg p-4 space-y-4">
-          <div className="flex items-center mb-2">
-            <Shield className="mr-2 h-5 w-5" />
-            <h2 className="text-lg font-medium">Privacy & Security</h2>
-          </div>
-          
-          <div className="space-y-3">
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center space-x-2">
-                <Lock className="h-4 w-4" />
-                <div>
-                  <p className="text-sm font-medium">End-to-End Encryption</p>
-                  <p className="text-xs text-app-muted">Messages are encrypted on your device</p>
+          <div className="divide-y divide-app-border">
+            {/* Appearance setting */}
+            <div className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Sun className="mr-3 h-5 w-5 text-app-muted" />
+                  <Label htmlFor="dark-mode">Dark Mode</Label>
                 </div>
-              </div>
-              <div className="text-xs px-2 py-1 bg-green-500 bg-opacity-10 text-green-500 rounded-full">
-                Enabled
+                <Switch
+                  id="dark-mode"
+                  checked={darkMode}
+                  onCheckedChange={setDarkMode}
+                />
               </div>
             </div>
             
-            <div className="flex items-center justify-between py-2">
-              <div className="flex items-center space-x-2">
-                <Globe className="h-4 w-4" />
-                <div>
-                  <p className="text-sm font-medium">Peer Connections</p>
-                  <p className="text-xs text-app-muted">Direct connections with peers when possible</p>
+            {/* Notifications setting */}
+            <div className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Bell className="mr-3 h-5 w-5 text-app-muted" />
+                  <Label htmlFor="notifications">Enable Notifications</Label>
+                </div>
+                <Switch
+                  id="notifications"
+                  checked={notificationsEnabled}
+                  onCheckedChange={setNotificationsEnabled}
+                />
+              </div>
+            </div>
+            
+            {/* Encryption setting */}
+            <div className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Lock className="mr-3 h-5 w-5 text-app-muted" />
+                  <div>
+                    <p className="text-sm font-medium">End-to-End Encryption</p>
+                    <p className="text-xs text-app-muted">Messages are encrypted on your device</p>
+                  </div>
+                </div>
+                <div className="text-xs px-2 py-1 bg-green-500 bg-opacity-10 text-green-500 rounded-full">
+                  Enabled
                 </div>
               </div>
-              <div className="text-xs px-2 py-1 bg-app-surface text-app-muted rounded-full">
-                Auto
+            </div>
+            
+            {/* Peer connections setting */}
+            <div className="py-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <Globe className="mr-3 h-5 w-5 text-app-muted" />
+                  <div>
+                    <p className="text-sm font-medium">Peer Connections</p>
+                    <p className="text-xs text-app-muted">Direct connections with peers when possible</p>
+                  </div>
+                </div>
+                <div className="text-xs px-2 py-1 bg-app-surface text-app-muted rounded-full">
+                  Auto
+                </div>
               </div>
             </div>
           </div>
