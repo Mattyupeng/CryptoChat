@@ -2,10 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { useMiniApp } from './MiniAppContext';
 import { ChevronDown, X } from 'lucide-react';
 import { MiniApp } from './MiniAppData';
+import MobileNavigation from '../MobileNavigation';
 
 interface MiniAppSlidePanelProps {
   onClose: () => void;
   onOpenApp: (appId: string) => void;
+  activeTab?: 'chats' | 'settings' | 'miniapps';
+  setActiveTab?: (tab: 'chats' | 'settings' | 'miniapps') => void;
   onShareApp?: (appId: string, card: {
     title: string;
     description: string;
@@ -15,7 +18,13 @@ interface MiniAppSlidePanelProps {
   }) => void;
 }
 
-export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSlidePanelProps) {
+export function MiniAppSlidePanel({ 
+  onClose, 
+  onOpenApp, 
+  activeTab = 'miniapps', 
+  setActiveTab = () => {}, 
+  onShareApp 
+}: MiniAppSlidePanelProps) {
   const { availableMiniApps } = useMiniApp();
   const panelRef = useRef<HTMLDivElement>(null);
   
@@ -64,37 +73,23 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
   };
   
   return (
-    <div className="fixed inset-0 z-50">
-      {/* Backdrop - for desktop only */}
-      <div 
-        className="absolute inset-0 bg-black/30 backdrop-blur-[2px] hidden md:block"
-        onClick={handleClose}
-      />
-      
-      {/* Mini App panel - full screen on mobile, dropdown on desktop */}
+    <div className="fixed inset-0 z-50 bg-app-bg">
+      {/* Mini App panel - full screen layout for all devices */}
       <div 
         ref={panelRef}
-        className="absolute top-0 left-0 right-0 bg-app-surface border-b border-app-border shadow-lg
-          pointer-events-auto md:max-h-[min(70vh,500px)] h-screen md:h-auto flex flex-col"
+        className="h-full overflow-hidden flex flex-col bg-app-bg"
       >
-        {/* Handle bar */}
-        <div className="flex justify-center py-2">
-          <div className="w-12 h-1 bg-app-muted/30 rounded-full"></div>
-        </div>
-        
-        {/* Header */}
-        <div className="px-4 pb-2 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-6 h-6 rounded-md bg-primary/10 flex items-center justify-center">
-              <i className="ri-layout-grid-line text-lg text-primary"></i>
-            </div>
-            <h2 className="text-base font-medium">MiniApps</h2>
-          </div>
+        {/* Header - matches the style of other page headers */}
+        <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+          <h1 className="text-xl font-semibold">
+            MiniApps
+          </h1>
+          
           <button 
-            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover"
+            className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
             onClick={handleClose}
           >
-            <X className="w-4 h-4 text-app-muted" />
+            <X className="h-5 w-5 text-app-muted" />
           </button>
         </div>
         
@@ -312,6 +307,14 @@ export function MiniAppSlidePanel({ onClose, onOpenApp, onShareApp }: MiniAppSli
             </button>
           </div>
         </div>
+        
+        {/* Mobile Navigation Bar */}
+        <MobileNavigation activeTab={activeTab} setActiveTab={(tab) => {
+          setActiveTab(tab);
+          if (tab !== 'miniapps') {
+            onClose();
+          }
+        }} />
       </div>
     </div>
   );
