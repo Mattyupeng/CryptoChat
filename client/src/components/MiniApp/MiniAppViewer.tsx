@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useMiniApp } from './MiniAppContext';
 import { X, Send, ExternalLink, Maximize2, Minimize2 } from 'lucide-react';
+import { WalletMiniApp } from './WalletMiniApp';
 
 interface MiniAppViewerProps {
   recipientId?: string;
@@ -13,7 +14,12 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
 
   useEffect(() => {
     if (activeMiniApp) {
-      setIsLoading(true);
+      // Don't show loading for internal apps
+      if (activeMiniApp.url.startsWith('internal://')) {
+        setIsLoading(false);
+      } else {
+        setIsLoading(true);
+      }
     }
   }, [activeMiniApp]);
 
@@ -40,12 +46,18 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   };
 
   if (!activeMiniApp) return null;
-
-  // Build URL with wallet context
-  const appUrl = new URL(activeMiniApp.url);
-  appUrl.searchParams.append('walletAddress', walletInfo.address);
-  appUrl.searchParams.append('chainId', walletInfo.chainId);
-  appUrl.searchParams.append('chainName', walletInfo.chainName);
+  
+  // Check if this is an internal app
+  const isInternalApp = activeMiniApp.url.startsWith('internal://');
+  
+  // Build URL with wallet context for external apps
+  const appUrl = !isInternalApp ? new URL(activeMiniApp.url) : null;
+  
+  if (!isInternalApp && appUrl) {
+    appUrl.searchParams.append('walletAddress', walletInfo.address);
+    appUrl.searchParams.append('chainId', walletInfo.chainId);
+    appUrl.searchParams.append('chainName', walletInfo.chainName);
+  }
   
   return (
     <div className={`fixed inset-0 z-50 flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}>
@@ -90,13 +102,15 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               )}
             </button>
             
-            <button 
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-              onClick={() => window.open(activeMiniApp.url, '_blank')}
-              title="Open in new tab"
-            >
-              <ExternalLink className="w-4 h-4" />
-            </button>
+            {!isInternalApp && (
+              <button 
+                className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
+                onClick={() => window.open(activeMiniApp.url, '_blank')}
+                title="Open in new tab"
+              >
+                <ExternalLink className="w-4 h-4" />
+              </button>
+            )}
             
             <button 
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
@@ -117,13 +131,23 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
         
         {/* MiniApp content */}
         <div className="flex-1 overflow-hidden bg-white">
-          <iframe
-            src={appUrl.toString()}
-            className="w-full h-full border-0"
-            sandbox="allow-scripts allow-same-origin allow-forms"
-            onLoad={handleLoad}
-            title={activeMiniApp.title}
-          />
+          {isInternalApp ? (
+            <div className="w-full h-full">
+              {activeMiniApp.id === 'wallet' && <WalletMiniApp />}
+            </div>
+          ) : (
+            appUrl && (
+              <iframe
+                src={appUrl.toString()}
+                className="w-full h-full border-0"
+                sandbox="allow-scripts allow-same-origin allow-forms"
+                onLoad={handleLoad}
+                title={activeMiniApp.title}
+              />
+            ) || <div className="w-full h-full flex items-center justify-center">
+              <p className="text-app-muted">Error loading app</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
