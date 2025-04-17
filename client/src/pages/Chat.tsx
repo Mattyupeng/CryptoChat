@@ -221,6 +221,8 @@ export default function Chat() {
           {showMiniAppSlidePanel && (
             <MiniAppSlidePanel 
               onClose={() => setShowMiniAppSlidePanel(false)}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
               onOpenApp={(appId) => {
                 // Just close the panel when an app is opened
                 setShowMiniAppSlidePanel(false);
