@@ -10,7 +10,7 @@ import WalletConnectionBanner from '@/components/WalletConnectionBanner';
 import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
-import Settings from '@/pages/Settings';
+import Settings from '@/components/Settings';
 import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
 import { ActionDropdownMenu } from '@/components/ActionDropdownMenu';
 import QrCodeScannerModal from '@/components/QrCodeScannerModal';
@@ -20,7 +20,7 @@ export default function Chat() {
   const { isConnected, initialized } = useWalletStore();
   const { loadChats, loadFriends } = useChatStore();
   const [match, params] = useRoute('/chat/:id?');
-  const [activeTab, setActiveTab] = useState<'chats' | 'wallet' | 'settings'>('chats');
+  const [activeTab, setActiveTab] = useState<'chats' | 'settings'>('chats');
   const [showContacts, setShowContacts] = useState<boolean>(false);
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);

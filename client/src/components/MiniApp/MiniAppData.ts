@@ -21,13 +21,13 @@ export interface MiniAppCard {
 // Mock data for MiniApps
 export const miniApps: MiniApp[] = [
   {
-    id: "wallet-explorer",
-    title: "Wallet Explorer",
-    description: "View your wallet assets and transaction history",
+    id: "wallet",
+    title: "Wallet",
+    description: "Manage your crypto assets and transaction history",
     icon: "ri-wallet-3-line",
-    url: "https://app.example.com/wallet-explorer",
+    url: "internal://wallet",
     category: "Finance",
-    features: ["Portfolio tracking", "Transaction history"]
+    features: ["Portfolio tracking", "Transaction history", "Token transfers"]
   },
   {
     id: "nft-gallery",
