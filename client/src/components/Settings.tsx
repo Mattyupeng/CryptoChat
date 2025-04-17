@@ -35,11 +35,11 @@ export default function Settings() {
     
     // Set the appropriate theme class
     if (darkMode) {
-      document.documentElement.classList.add('dark');
-      document.documentElement.classList.remove('light');
+      document.documentElement.classList.add('dark-theme');
+      document.documentElement.classList.remove('light-theme');
     } else {
-      document.documentElement.classList.add('light');
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.add('light-theme');
+      document.documentElement.classList.remove('dark-theme');
     }
     
     // Set the appropriate data-theme attribute for Tailwind/shadcn

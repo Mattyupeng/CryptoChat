@@ -4,6 +4,24 @@ import "./index.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 
+// Initialize theme from localStorage
+const initializeTheme = () => {
+  const savedTheme = localStorage.getItem('hushline-theme') || 'dark';
+  
+  if (savedTheme === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+    document.documentElement.classList.remove('light-theme');
+  } else {
+    document.documentElement.classList.add('light-theme');
+    document.documentElement.classList.remove('dark-theme');
+  }
+  
+  document.documentElement.setAttribute('data-theme', savedTheme);
+};
+
+// Run theme initialization immediately
+initializeTheme();
+
 // Register service worker for PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {

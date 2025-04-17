@@ -247,13 +247,20 @@ export default function Chat() {
                     </h1>
                   </div>
                   
-                  {/* MiniApps Content - show panel directly */}
+                  {/* MiniApps Content - trigger panel to open */}
                   <div className="flex-1 overflow-auto">
-                    {!showMiniAppSlidePanel && (
-                      <div className="h-full">
-                        {setShowMiniAppSlidePanel(true)}
-                      </div>
-                    )}
+                    <div className="h-full">
+                      {/* Use useEffect to prevent infinite rendering */}
+                      {(() => {
+                        if (!showMiniAppSlidePanel) {
+                          // Schedule this to run after render
+                          setTimeout(() => {
+                            setShowMiniAppSlidePanel(true);
+                          }, 0);
+                        }
+                        return null;
+                      })()}
+                    </div>
                   </div>
                 </>
               ) : activeTab === 'settings' ? (
@@ -264,16 +271,7 @@ export default function Chat() {
                       Settings
                     </h1>
                     
-                    <div className="flex gap-2">
-                      {/* MiniApps button */}
-                      <button 
-                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-                        onClick={() => setShowMiniAppSlidePanel(true)}
-                        title="MiniApps"
-                      >
-                        <i className="ri-apps-line text-xl text-app-muted"></i>
-                      </button>
-                    </div>
+                    {/* Removed MiniApps button */}
                   </div>
                   
                   {/* Settings Content */}
@@ -337,14 +335,6 @@ export default function Chat() {
                     </div>
                     
                     <div className="flex gap-2">
-                      {/* MiniApps button */}
-                      <button 
-                        className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
-                        onClick={() => setShowMiniAppSlidePanel(true)}
-                        title="MiniApps"
-                      >
-                        <i className="ri-apps-line text-xl text-app-muted"></i>
-                      </button>
                       <button 
                         className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition"
                         onClick={() => {/* Implement search functionality */}}
@@ -460,14 +450,6 @@ export default function Chat() {
                 )}
                 
                 <div className="flex gap-2">
-                  {/* MiniApps button */}
-                  <button 
-                    className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-                    onClick={() => setShowMiniAppSlidePanel(true)}
-                    title="MiniApps"
-                  >
-                    <i className="ri-apps-line text-xl"></i>
-                  </button>
                   <button 
                     className="w-9 h-9 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                     onClick={() => {/* Implement search functionality */}}
