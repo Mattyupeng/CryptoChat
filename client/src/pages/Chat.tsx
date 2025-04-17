@@ -368,7 +368,16 @@ export default function Chat() {
               )}
 
               {/* Bottom Navigation - Always shown */}
-              <MobileNavigation activeTab={activeTab} setActiveTab={setActiveTab} />
+              <MobileNavigation 
+                activeTab={activeTab} 
+                setActiveTab={(tab) => {
+                  setActiveTab(tab);
+                  // If switching to MiniApps, show the panel
+                  if (tab === 'miniapps') {
+                    setShowMiniAppSlidePanel(true);
+                  }
+                }} 
+              />
             </div>
           )}
 

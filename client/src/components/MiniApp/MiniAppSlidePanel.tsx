@@ -309,11 +309,10 @@ export function MiniAppSlidePanel({
         </div>
         
         {/* Mobile Navigation Bar */}
-        <MobileNavigation activeTab={activeTab} setActiveTab={(tab) => {
+        <MobileNavigation activeTab="miniapps" setActiveTab={(tab) => {
+          // Always close the panel when switching tabs
           setActiveTab(tab);
-          if (tab !== 'miniapps') {
-            onClose();
-          }
+          onClose();
         }} />
       </div>
     </div>

@@ -25,7 +25,12 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         </button>
         
         <button 
-          onClick={() => setActiveTab('miniapps')}
+          onClick={() => {
+            setActiveTab('miniapps');
+            // Trigger the MiniApp panel to show
+            const event = new CustomEvent('open-miniapp-panel');
+            window.dispatchEvent(event);
+          }}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
             activeTab === 'miniapps' 
               ? 'text-app bg-app-hover' 
