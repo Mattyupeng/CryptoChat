@@ -5,7 +5,7 @@ import { formatTime } from '@/lib/utils';
 import { Chat, Friend } from '@/types';
 
 interface ChatListProps {
-  activeTab: 'chats' | 'wallet' | 'settings';
+  activeTab: 'chats' | 'settings';
   currentChatId: string | null;
   showContacts?: boolean;
 }
@@ -38,39 +38,6 @@ export default function ChatList({ activeTab, currentChatId, showContacts = fals
   if (activeTab !== 'chats') {
     return (
       <div className="flex-1 overflow-y-auto p-4">
-        {activeTab === 'wallet' && (
-          <div className="p-4 bg-dark-hover rounded-lg">
-            <h3 className="font-medium mb-2">Your Wallet</h3>
-            <div className="text-sm font-mono text-app break-all">
-              {address}
-            </div>
-            <div className="mt-4">
-              <h4 className="text-sm font-medium mb-2">Assets</h4>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between p-2 bg-dark-bg rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#627EEA] flex items-center justify-center">
-                      <span className="font-medium text-white text-sm">Ξ</span>
-                    </div>
-                    <span>ETH</span>
-                  </div>
-                  <span>Loading...</span>
-                </div>
-                
-                <div className="flex items-center justify-between p-2 bg-dark-bg rounded-lg">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-full bg-[#9945FF] flex items-center justify-center">
-                      <span className="font-medium text-white text-sm">◎</span>
-                    </div>
-                    <span>SOL</span>
-                  </div>
-                  <span>Loading...</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        
         {activeTab === 'settings' && (
           <div className="p-4 bg-dark-hover rounded-lg">
             <h3 className="font-medium mb-2">Settings</h3>

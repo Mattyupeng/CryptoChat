@@ -58,9 +58,17 @@ export default function Chat() {
       }
     };
     
+    // Listen for custom event to open MiniApp panel
+    const handleOpenMiniAppPanel = () => {
+      setShowMiniAppSlidePanel(true);
+    };
+    
     document.addEventListener('mousedown', handleClickOutside);
+    window.addEventListener('open-miniapp-panel', handleOpenMiniAppPanel);
+    
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      window.removeEventListener('open-miniapp-panel', handleOpenMiniAppPanel);
     };
   }, [showTabsDropdown, showDesktopTabsDropdown]);
 
