@@ -20,7 +20,7 @@ export default function Chat() {
   const { isConnected, initialized } = useWalletStore();
   const { loadChats, loadFriends } = useChatStore();
   const [match, params] = useRoute('/chat/:id?');
-  const [activeTab, setActiveTab] = useState<'chats' | 'settings'>('chats');
+  const [activeTab, setActiveTab] = useState<'chats' | 'settings' | 'miniapps'>('chats');
   const [showContacts, setShowContacts] = useState<boolean>(false);
   const [showAddFriendModal, setShowAddFriendModal] = useState(false);
   const [showTransferModal, setShowTransferModal] = useState(false);
@@ -234,11 +234,29 @@ export default function Chat() {
           
           {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">
-          {/* MOBILE: Show chat list or settings when no chat is selected */}
+          {/* MOBILE: Show chat list, miniapps or settings when no chat is selected */}
           {!currentChatId && (
             <div className="mobile-chat-list">
               {/* Show Settings page when settings tab is active */}
-              {activeTab === 'settings' ? (
+              {activeTab === 'miniapps' ? (
+                <>
+                  {/* Mobile Header for MiniApps */}
+                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+                    <h1 className="text-xl font-semibold">
+                      MiniApps
+                    </h1>
+                  </div>
+                  
+                  {/* MiniApps Content - show panel directly */}
+                  <div className="flex-1 overflow-auto">
+                    {!showMiniAppSlidePanel && (
+                      <div className="h-full">
+                        {setShowMiniAppSlidePanel(true)}
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : activeTab === 'settings' ? (
                 <>
                   {/* Mobile Header for Settings */}
                   <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">

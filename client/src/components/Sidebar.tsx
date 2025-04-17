@@ -1,6 +1,6 @@
 interface SidebarProps {
-  activeTab: 'chats' | 'settings';
-  setActiveTab: (tab: 'chats' | 'settings') => void;
+  activeTab: 'chats' | 'settings' | 'miniapps';
+  setActiveTab: (tab: 'chats' | 'settings' | 'miniapps') => void;
 }
 
 export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
@@ -25,8 +25,19 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         </button>
         
         <button 
+          onClick={() => setActiveTab('miniapps')}
+          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+            activeTab === 'miniapps' 
+              ? 'text-app bg-app-hover' 
+              : 'text-app-muted hover:bg-app-hover hover:text-app'
+          } transition`}
+        >
+          <i className="ri-apps-line text-xl"></i>
+        </button>
+        
+        <button 
           onClick={() => {
-            /* Open MiniApp slide panel for wallet */
+            /* Open wallet app */
             const event = new CustomEvent('open-miniapp-panel');
             window.dispatchEvent(event);
           }}

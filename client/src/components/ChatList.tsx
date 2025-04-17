@@ -5,7 +5,7 @@ import { formatTime } from '@/lib/utils';
 import { Chat, Friend } from '@/types';
 
 interface ChatListProps {
-  activeTab: 'chats' | 'settings';
+  activeTab: 'chats' | 'settings' | 'miniapps';
   currentChatId: string | null;
   showContacts?: boolean;
 }
