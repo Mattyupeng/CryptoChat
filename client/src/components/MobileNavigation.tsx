@@ -55,9 +55,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         <button 
           onClick={() => {
             setActiveTab('settings');
-            // Note: Settings is shown within Chat page 
-            // but we make sure to set the right tab for rendering
-            navigate('/chat');
+            // Navigate to the dedicated settings page
+            navigate('/settings');
             closeMiniApp(); // Close MiniApp when switching to settings
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${

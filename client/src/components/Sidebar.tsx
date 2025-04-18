@@ -67,7 +67,7 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         <button 
           onClick={() => {
             setActiveTab('settings');
-            navigate('/chat');
+            navigate('/settings');
             closeMiniApp(); // Close any open MiniApp
           }}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${

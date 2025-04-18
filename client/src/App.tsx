@@ -4,6 +4,7 @@ import WalletConnect from "@/pages/WalletConnect";
 import Home from "@/pages/Home";
 import Chat from "@/pages/Chat";
 import MiniApps from "@/pages/MiniApps";
+import Settings from "@/pages/Settings";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 import { useSocketStore } from "./store/store";
@@ -27,6 +28,7 @@ function Router() {
       <Route path="/connect" component={WalletConnect} />
       <Route path="/chat/:id?" component={Chat} />
       <Route path="/miniapps" component={MiniApps} />
+      <Route path="/settings" component={Settings} />
       <Route component={NotFound} />
     </Switch>
   );
