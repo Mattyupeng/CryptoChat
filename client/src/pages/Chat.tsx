@@ -224,15 +224,22 @@ export default function Chat() {
               activeTab={activeTab}
               setActiveTab={setActiveTab}
               onOpenApp={(appId) => {
-                // Just close the panel when an app is opened
+                console.log(`Chat: Opening MiniApp with ID ${appId}`);
+                // Close the panel when an app is opened
                 setShowMiniAppSlidePanel(false);
               }}
               onShareApp={handleShareMiniApp}
             />
           )}
           
-          {/* MiniApp Viewer (overlaid on the entire UI) */}
-          <MiniAppViewer recipientId={currentChatId || ''} />
+          {/* 
+            MiniApp Viewer (overlaid on the entire UI)
+            Using a key based on currentChatId to force re-render when chat changes
+          */}
+          <MiniAppViewer 
+            key={`miniapp-viewer-${currentChatId || 'home'}`}
+            recipientId={currentChatId || ''} 
+          />
           
           {/* MOBILE DESIGN - Full page views that appear one at a time */}
         <div className="md:hidden w-full h-full">

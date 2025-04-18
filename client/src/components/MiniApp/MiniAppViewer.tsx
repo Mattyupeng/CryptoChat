@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useMiniApp } from './MiniAppContext';
 import { X, Send, ExternalLink, Maximize2, Minimize2 } from 'lucide-react';
 import { WalletMiniApp } from './WalletMiniApp';
@@ -12,15 +12,42 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Reference to prevent multiple close button clicks
-  const closeInProgress = useRef(false);
+  // Reference to track if close operation is in progress
+  const isClosingRef = useRef(false);
+  // Reference to the close button
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // More reliable close handler with debounce
+  const handleClose = useCallback(() => {
+    if (isClosingRef.current) return;
+    
+    console.log("MiniAppViewer: Close button clicked");
+    isClosingRef.current = true;
+    
+    // Add a visual indication that the close is in progress
+    if (closeButtonRef.current) {
+      closeButtonRef.current.classList.add('opacity-50');
+    }
+    
+    // Actually close the MiniApp
+    closeMiniApp();
+    
+    // Set a timeout to reset the closing state
+    setTimeout(() => {
+      isClosingRef.current = false;
+      if (closeButtonRef.current) {
+        closeButtonRef.current.classList.remove('opacity-50');
+      }
+    }, 500);
+  }, [closeMiniApp]);
 
+  // Reset state when activeMiniApp changes
   useEffect(() => {
     if (activeMiniApp) {
-      // Reset closing state when a new app is opened
-      closeInProgress.current = false;
+      console.log(`MiniAppViewer: App activated - ${activeMiniApp.title}`);
+      isClosingRef.current = false;
       
-      // Don't show loading for internal apps
+      // Handle loading state for different app types
       if (activeMiniApp.url.startsWith('internal://')) {
         setIsLoading(false);
       } else {
@@ -29,6 +56,21 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
     }
   }, [activeMiniApp]);
 
+  // Register a keyboard event handler for Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && activeMiniApp && !isClosingRef.current) {
+        console.log('MiniAppViewer: Escape key pressed, closing app');
+        handleClose();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeMiniApp, handleClose]);
+  
   const handleLoad = () => {
     setIsLoading(false);
   };
@@ -36,36 +78,23 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   const toggleFullscreen = () => {
     setIsFullscreen(prev => !prev);
   };
-  
-  // Enhanced close handler with debounce to prevent multiple clicks
-  const handleCloseMiniApp = () => {
-    if (closeInProgress.current) return;
-    
-    closeInProgress.current = true;
-    // Close the MiniApp
-    closeMiniApp();
-    
-    // Reset the flag after a short delay
-    setTimeout(() => {
-      closeInProgress.current = false;
-    }, 500);
-  };
 
   const handleSendCard = () => {
     if (activeMiniApp && recipientId) {
-      // For demo purposes, we're simulating sending a card with preset data
-      // In a real implementation, the MiniApp would communicate with the host app
-      // to provide custom card data
+      // Send a card with preset data
       sendMiniAppCard(activeMiniApp.id, recipientId, {
         title: activeMiniApp.title,
         description: `Check out this ${activeMiniApp.title} app!`,
         ctaText: 'Open App',
-        thumbnail: activeMiniApp.icon // Using icon as thumbnail for demo
+        thumbnail: activeMiniApp.icon
       });
     }
   };
 
-  if (!activeMiniApp) return null;
+  // If no active MiniApp, don't render anything
+  if (!activeMiniApp) {
+    return null;
+  }
   
   // Check if this is an internal app
   const isInternalApp = activeMiniApp.url.startsWith('internal://');
@@ -80,17 +109,24 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   }
   
   return (
-    <div className={`fixed inset-0 z-40 flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}>
-      {/* Backdrop - z-40 to allow navigation to remain accessible */}
+    <div 
+      className={`fixed inset-0 z-40 flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="miniapp-title"
+    >
+      {/* Backdrop - higher z-index to properly block UI */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
-        onClick={handleCloseMiniApp}
+        onClick={handleClose}
+        data-testid="miniapp-backdrop"
       />
       
-      {/* MiniApp Container */}
+      {/* MiniApp Container - even higher z-index */}
       <div 
-        className={`relative bg-app-surface rounded-lg shadow-lg border border-app-border z-10 flex flex-col overflow-hidden
+        className={`relative bg-app-surface rounded-lg shadow-lg border border-app-border z-50 flex flex-col overflow-hidden
           ${isFullscreen ? 'w-full h-full rounded-none' : 'w-full max-w-3xl h-[80vh]'}`}
+        data-testid="miniapp-container"
       >
         {/* Header */}
         <div className="p-3 border-b border-app-border flex items-center justify-between bg-app-surface/90 backdrop-blur-sm">
@@ -98,7 +134,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
             <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
               <i className={`${activeMiniApp.icon} text-lg`}></i>
             </div>
-            <h2 className="font-medium">{activeMiniApp.title}</h2>
+            <h2 id="miniapp-title" className="font-medium">{activeMiniApp.title}</h2>
           </div>
           
           <div className="flex gap-1">
@@ -106,6 +142,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
               onClick={handleSendCard}
               title="Share to chat"
+              aria-label="Share to chat"
             >
               <Send className="w-4 h-4" />
             </button>
@@ -114,6 +151,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
               onClick={toggleFullscreen}
               title={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
+              aria-label={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
             >
               {isFullscreen ? (
                 <Minimize2 className="w-4 h-4" />
@@ -128,15 +166,20 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
                 className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
                 onClick={() => window.open(activeMiniApp.url, '_blank')}
                 title="Open in new tab"
+                aria-label="Open in new tab"
               >
                 <ExternalLink className="w-4 h-4" />
               </button>
             )}
             
+            {/* Close button - with ref for tracking */}
             <button 
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-              onClick={handleCloseMiniApp}
+              ref={closeButtonRef}
+              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted focus:ring-2 focus:ring-primary"
+              onClick={handleClose}
               title="Close"
+              aria-label="Close MiniApp"
+              data-testid="miniapp-close-button"
             >
               <X className="w-4 h-4" />
             </button>

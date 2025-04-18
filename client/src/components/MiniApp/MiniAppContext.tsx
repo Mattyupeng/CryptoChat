@@ -54,6 +54,7 @@ export function MiniAppProvider({ children }: { children: ReactNode }) {
   const openMiniApp = (appId: string) => {
     const app = miniApps.find(app => app.id === appId);
     if (app) {
+      console.log(`Opening MiniApp: ${app.title}`);
       setActiveMiniApp(app);
       // Close the launcher when an app is opened
       setIsLauncherOpen(false);
@@ -62,7 +63,19 @@ export function MiniAppProvider({ children }: { children: ReactNode }) {
   
   // Function to close the active MiniApp
   const closeMiniApp = () => {
+    console.log('Closing MiniApp');
+    
+    // Force null assignment to ensure state update
     setActiveMiniApp(null);
+    
+    // Add a small delay to ensure state updates properly
+    setTimeout(() => {
+      // Double-check that the app is really closed
+      if (activeMiniApp) {
+        console.log('Forcing MiniApp closure');
+        setActiveMiniApp(null);
+      }
+    }, 100);
   };
   
   // Function to get a MiniApp by ID
