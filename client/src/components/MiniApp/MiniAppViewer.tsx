@@ -56,8 +56,9 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
     }
   }, [activeMiniApp]);
 
-  // Register a keyboard event handler for Escape key
+  // Register event handlers for app closing
   useEffect(() => {
+    // Handle Escape key
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && activeMiniApp && !isClosingRef.current) {
         console.log('MiniAppViewer: Escape key pressed, closing app');
@@ -65,9 +66,22 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
       }
     };
     
+    // Handle custom miniapp-closed event
+    const handleMiniAppClosed = () => {
+      if (activeMiniApp && !isClosingRef.current) {
+        console.log('MiniAppViewer: Received miniapp-closed event');
+        // Reset loading state and ensure the app is really closed
+        setIsLoading(false);
+        isClosingRef.current = true;
+      }
+    };
+    
     window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('miniapp-closed', handleMiniAppClosed);
+    
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('miniapp-closed', handleMiniAppClosed);
     };
   }, [activeMiniApp, handleClose]);
   

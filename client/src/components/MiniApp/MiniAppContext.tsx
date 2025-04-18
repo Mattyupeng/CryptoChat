@@ -68,12 +68,19 @@ export function MiniAppProvider({ children }: { children: ReactNode }) {
     // Force null assignment to ensure state update
     setActiveMiniApp(null);
     
-    // Add a small delay to ensure state updates properly
+    // Add a custom event for MiniApp closure that other components can listen for
+    const closeEvent = new CustomEvent('miniapp-closed');
+    window.dispatchEvent(closeEvent);
+    
+    // Add a small delay to ensure state updates properly and handle any possible race conditions
     setTimeout(() => {
       // Double-check that the app is really closed
       if (activeMiniApp) {
         console.log('Forcing MiniApp closure');
         setActiveMiniApp(null);
+        
+        // Fire the event again just to be sure
+        window.dispatchEvent(closeEvent);
       }
     }, 100);
   };

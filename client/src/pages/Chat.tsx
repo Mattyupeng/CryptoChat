@@ -31,7 +31,10 @@ export default function Chat() {
   const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
   const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
   const [showQrScanner, setShowQrScanner] = useState(false);
-  const { closeMiniApp } = useMiniApp();
+  
+  // Get MiniApp context functions
+  const miniAppContext = useMiniApp();
+  const { closeMiniApp } = miniAppContext;
   
   // Dropdown state for tab switching
   const [showTabsDropdown, setShowTabsDropdown] = useState(false);
@@ -175,6 +178,15 @@ export default function Chat() {
     setShowTransferModal(true);
   };
   
+  // Close MiniApps when changing tab
+  useEffect(() => {
+    // Close any open MiniApp when changing tabs (except when going to miniapps tab)
+    if (activeTab !== 'miniapps' && miniAppContext.activeMiniApp) {
+      console.log('Closing MiniApp due to tab change');
+      closeMiniApp();
+    }
+  }, [activeTab, closeMiniApp, miniAppContext.activeMiniApp]);
+
   // Handle sharing a MiniApp card
   const handleShareMiniApp = (appId: string, card: { 
     title: string; 
@@ -197,6 +209,14 @@ export default function Chat() {
 
   // Get current chat ID from URL params
   const currentChatId = match && params?.id ? params.id : null;
+  
+  // Close MiniApps when navigating to a chat
+  useEffect(() => {
+    if (currentChatId && miniAppContext.activeMiniApp) {
+      console.log('Closing MiniApp due to chat navigation');
+      closeMiniApp();
+    }
+  }, [currentChatId, closeMiniApp, miniAppContext.activeMiniApp]);
 
   if (!initialized) {
     return (
