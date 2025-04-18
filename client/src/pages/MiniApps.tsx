@@ -235,7 +235,16 @@ export default function MiniApps() {
           
           {/* Mobile Navigation */}
           <div className="md:hidden">
-            <MobileNavigation activeTab="miniapps" setActiveTab={() => {}} />
+            <MobileNavigation 
+              activeTab="miniapps" 
+              setActiveTab={(tab) => {
+                // Handle tab changes from mobile navigation
+                if (tab !== 'miniapps') {
+                  // Setting and processing the tab itself happens inside MobileNavigation
+                  console.log(`MiniApps page: changing to ${tab}`);
+                }
+              }} 
+            />
           </div>
         </div>
       </div>
