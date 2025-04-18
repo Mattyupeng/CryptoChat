@@ -11,7 +11,7 @@ import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/components/Settings';
-import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
+import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer, useMiniApp } from '@/components/MiniApp';
 import { ActionDropdownMenu } from '@/components/ActionDropdownMenu';
 import QrCodeScannerModal from '@/components/QrCodeScannerModal';
 
@@ -31,6 +31,7 @@ export default function Chat() {
   const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
   const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
   const [showQrScanner, setShowQrScanner] = useState(false);
+  const { closeMiniApp } = useMiniApp();
   
   // Dropdown state for tab switching
   const [showTabsDropdown, setShowTabsDropdown] = useState(false);

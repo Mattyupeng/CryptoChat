@@ -172,17 +172,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               </button>
             )}
             
-            {/* Close button - with ref for tracking */}
-            <button 
-              ref={closeButtonRef}
-              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted focus:ring-2 focus:ring-primary"
-              onClick={handleClose}
-              title="Close"
-              aria-label="Close MiniApp"
-              data-testid="miniapp-close-button"
-            >
-              <X className="w-4 h-4" />
-            </button>
+            {/* Close button removed per requirement */}
           </div>
         </div>
         

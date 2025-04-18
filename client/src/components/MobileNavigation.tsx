@@ -1,14 +1,20 @@
+import { useMiniApp } from './MiniApp/MiniAppContext';
+
 interface MobileNavigationProps {
   activeTab: 'chats' | 'settings' | 'miniapps';
   setActiveTab: (tab: 'chats' | 'settings' | 'miniapps') => void;
 }
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
+  const { closeMiniApp } = useMiniApp();
   return (
     <div className="w-full bg-app-surface border-t border-app-border z-50 md:hidden relative">
       <div className="flex justify-around items-center h-16">
         <button 
-          onClick={() => setActiveTab('chats')}
+          onClick={() => {
+            setActiveTab('chats');
+            closeMiniApp(); // Close MiniApp when switching to chats
+          }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
             activeTab === 'chats' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
@@ -33,7 +39,10 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         </button>
         
         <button 
-          onClick={() => setActiveTab('settings')}
+          onClick={() => {
+            setActiveTab('settings');
+            closeMiniApp(); // Close MiniApp when switching to settings
+          }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
             activeTab === 'settings' ? 'text-primary' : 'text-app-muted hover:text-primary'
           } transition`}
