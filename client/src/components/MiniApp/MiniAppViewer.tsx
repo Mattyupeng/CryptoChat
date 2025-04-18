@@ -60,8 +60,8 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   }
   
   return (
-    <div className={`fixed inset-0 z-50 flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}>
-      {/* Backdrop */}
+    <div className={`fixed inset-0 z-40 flex items-center justify-center ${isFullscreen ? '' : 'p-4'}`}>
+      {/* Backdrop - z-40 to allow navigation to remain accessible */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
         onClick={closeMiniApp}
