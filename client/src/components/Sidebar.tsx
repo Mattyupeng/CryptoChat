@@ -1,9 +1,14 @@
+import { useLocation } from 'wouter';
+import { useMiniApp } from '@/components/MiniApp/MiniAppContext';
+
 interface SidebarProps {
   activeTab: 'chats' | 'settings' | 'miniapps';
   setActiveTab: (tab: 'chats' | 'settings' | 'miniapps') => void;
 }
 
 export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
+  const [, navigate] = useLocation();
+  const { closeMiniApp, openMiniApp } = useMiniApp();
   return (
     <div className="hidden md:flex md:w-20 h-full bg-app-surface border-r border-app-border flex-shrink-0 flex-col items-center py-8">
       <div className="mb-8">
@@ -14,7 +19,11 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       
       <nav className="flex flex-col items-center space-y-6 flex-1">
         <button 
-          onClick={() => setActiveTab('chats')}
+          onClick={() => {
+            setActiveTab('chats');
+            navigate('/chat');
+            closeMiniApp(); // Close any open MiniApp
+          }}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
             activeTab === 'chats' 
               ? 'text-app bg-app-hover' 
@@ -27,9 +36,8 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         <button 
           onClick={() => {
             setActiveTab('miniapps');
-            // Trigger the MiniApp panel to show
-            const event = new CustomEvent('open-miniapp-panel');
-            window.dispatchEvent(event);
+            navigate('/miniapps');
+            closeMiniApp(); // Close any open MiniApp
           }}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
             activeTab === 'miniapps' 
@@ -42,9 +50,12 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
         
         <button 
           onClick={() => {
-            /* Open wallet app */
-            const event = new CustomEvent('open-miniapp-panel');
-            window.dispatchEvent(event);
+            /* Open wallet mini app directly */
+            navigate('/miniapps');
+            // Use a timeout to ensure navigation completes first
+            setTimeout(() => {
+              openMiniApp('wallet');
+            }, 100);
           }}
           className="w-12 h-12 rounded-xl flex items-center justify-center text-app-muted hover:bg-app-hover hover:text-app transition"
         >
@@ -54,7 +65,11 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
       
       <div className="mt-auto">
         <button 
-          onClick={() => setActiveTab('settings')}
+          onClick={() => {
+            setActiveTab('settings');
+            navigate('/chat');
+            closeMiniApp(); // Close any open MiniApp
+          }}
           className={`w-12 h-12 rounded-xl flex items-center justify-center ${
             activeTab === 'settings' 
               ? 'text-app bg-app-hover' 
