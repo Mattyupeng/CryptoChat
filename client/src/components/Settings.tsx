@@ -118,7 +118,7 @@ export default function Settings() {
 
   return (
     <div className="h-full flex flex-col bg-app-background">
-      <div className="p-4 border-b border-app-border flex items-center justify-between">
+      <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
         <h1 className="text-xl font-semibold">Settings</h1>
       </div>
       

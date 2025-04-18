@@ -14,12 +14,7 @@ export default function SettingsPage() {
         <div className="w-full flex flex-col">
           {/* Main content area */}
           <div className="flex-1 flex flex-col overflow-hidden">
-            {/* Fixed header */}
-            <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
-              <h1 className="text-xl font-semibold">Settings</h1>
-            </div>
-            
-            {/* Scrollable content */}
+            {/* Scrollable content - no header here since it's in the component */}
             <div className="flex-1 overflow-y-auto">
               <SettingsComponent />
             </div>
