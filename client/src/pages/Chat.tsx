@@ -11,7 +11,7 @@ import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/components/Settings';
-import { MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
+import { MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
 import { useMiniApp } from '@/components/MiniApp/MiniAppContext';
 import { ActionDropdownMenu } from '@/components/ActionDropdownMenu';
 import QrCodeScannerModal from '@/components/QrCodeScannerModal';
@@ -30,7 +30,6 @@ export default function Chat() {
   
   // MiniApp state
   const [showMiniAppLauncher, setShowMiniAppLauncher] = useState(false);
-  const [showMiniAppSlidePanel, setShowMiniAppSlidePanel] = useState(false);
   const [showQrScanner, setShowQrScanner] = useState(false);
   
   // Get MiniApp context functions
@@ -66,17 +65,10 @@ export default function Chat() {
       }
     };
     
-    // Listen for custom event to open MiniApp panel
-    const handleOpenMiniAppPanel = () => {
-      setShowMiniAppSlidePanel(true);
-    };
-    
     document.addEventListener('mousedown', handleClickOutside);
-    window.addEventListener('open-miniapp-panel', handleOpenMiniAppPanel);
     
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
-      window.removeEventListener('open-miniapp-panel', handleOpenMiniAppPanel);
     };
   }, [showTabsDropdown, showDesktopTabsDropdown]);
 
@@ -204,7 +196,6 @@ export default function Chat() {
     // In the chat page, we can't send message directly since no chat is selected
     // Instead just show the MiniApp that was selected
     setShowMiniAppLauncher(false);
-    setShowMiniAppSlidePanel(false);
     
     // If we have a current chat, navigate to it
     if (currentChatId) {
@@ -245,20 +236,7 @@ export default function Chat() {
             />
           )}
           
-          {/* MiniApp slide-down panel (WeChat style) */}
-          {showMiniAppSlidePanel && (
-            <MiniAppSlidePanel 
-              onClose={() => setShowMiniAppSlidePanel(false)}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab}
-              onOpenApp={(appId) => {
-                console.log(`Chat: Opening MiniApp with ID ${appId}`);
-                // Close the panel when an app is opened
-                setShowMiniAppSlidePanel(false);
-              }}
-              onShareApp={handleShareMiniApp}
-            />
-          )}
+          {/* MiniApp panel has been removed and replaced with a standalone MiniApps page */}
           
           {/* 
             MiniApp Viewer (overlaid on the entire UI)
@@ -330,18 +308,20 @@ export default function Chat() {
                     </div>
                   </div>
                   
-                  {/* MiniApps Content - trigger panel to open */}
+                  {/* MiniApps Content - redirect to MiniApps page */}
                   <div className="flex-1 overflow-auto">
                     <div className="h-full">
-                      {/* Use useEffect to prevent infinite rendering */}
+                      {/* Redirect to MiniApps page */}
                       {(() => {
-                        if (!showMiniAppSlidePanel) {
-                          // Schedule this to run after render
-                          setTimeout(() => {
-                            setShowMiniAppSlidePanel(true);
-                          }, 0);
-                        }
-                        return null;
+                        // Navigate to the MiniApps page
+                        setTimeout(() => {
+                          navigate('/miniapps');
+                        }, 0);
+                        return (
+                          <div className="h-full flex items-center justify-center">
+                            <div className="animate-pulse">Redirecting to MiniApps...</div>
+                          </div>
+                        );
                       })()}
                     </div>
                   </div>
@@ -459,7 +439,8 @@ export default function Chat() {
                             <button 
                               className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                               onClick={() => {
-                                setShowMiniAppSlidePanel(true);
+                                setActiveTab('miniapps');
+                                navigate('/miniapps');
                                 setShowTabsDropdown(false);
                               }}
                             >
@@ -507,9 +488,9 @@ export default function Chat() {
                 activeTab={activeTab} 
                 setActiveTab={(tab) => {
                   setActiveTab(tab);
-                  // If switching to MiniApps, show the panel
+                  // If switching to MiniApps, navigate to MiniApps page
                   if (tab === 'miniapps') {
-                    setShowMiniAppSlidePanel(true);
+                    navigate('/miniapps');
                   }
                 }} 
               />
@@ -578,7 +559,8 @@ export default function Chat() {
                           <button 
                             className="w-full px-4 py-2 text-left text-sm hover:bg-app-hover flex items-center"
                             onClick={() => {
-                              setShowMiniAppSlidePanel(true);
+                              setActiveTab('miniapps');
+                              navigate('/miniapps');
                               setShowDesktopTabsDropdown(false);
                             }}
                           >
