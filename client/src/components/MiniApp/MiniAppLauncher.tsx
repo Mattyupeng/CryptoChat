@@ -75,8 +75,15 @@ export function MiniAppLauncher({ onClose, onShareApp }: MiniAppLauncherProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
-      <div className="bg-app-surface rounded-xl shadow-xl overflow-hidden max-w-lg w-full max-h-[80vh] h-[600px] flex flex-col">
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-app-surface rounded-xl shadow-xl overflow-hidden max-w-lg w-full max-h-[80vh] h-[600px] flex flex-col relative">
+        <button
+          className="absolute top-2 right-2 w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover bg-app-surface/80 z-10"
+          onClick={onClose}
+          aria-label="Close mini app"
+        >
+          <X className="w-4 h-4 text-app-muted" />
+        </button>
         {renderContent()}
       </div>
     </div>

@@ -73,17 +73,24 @@ export function MiniAppSlidePanel({
   };
   
   return (
-    <div className="fixed inset-0 z-50 bg-app-bg">
+    <div className="fixed inset-0 z-40 bg-app-bg">
       {/* Mini App panel - full screen layout for all devices */}
       <div 
         ref={panelRef}
         className="h-full overflow-hidden flex flex-col bg-app-bg"
       >
         {/* Header - matches the style of other page headers */}
-        <div className="p-4 border-b border-app-border bg-app-surface">
+        <div className="p-4 border-b border-app-border bg-app-surface flex items-center justify-between">
           <h1 className="text-xl font-semibold">
             MiniApps
           </h1>
+          <button 
+            className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition"
+            onClick={handleClose}
+            aria-label="Close MiniApps panel"
+          >
+            <X className="w-4 h-4 text-app-muted" />
+          </button>
         </div>
         
         {/* MiniApps content area with categories */}
