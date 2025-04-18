@@ -1,5 +1,6 @@
 // Import directly from context to avoid circular dependencies
 import { useMiniApp } from '@/components/MiniApp/MiniAppContext';
+import { useLocation } from 'wouter';
 
 interface MobileNavigationProps {
   activeTab: 'chats' | 'settings' | 'miniapps';
@@ -7,6 +8,7 @@ interface MobileNavigationProps {
 }
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
+  const [, navigate] = useLocation();
   // Get miniapp context functions if available, otherwise provide fallbacks
   let closeMiniApp = () => {}; // Default empty function if context not available
   
@@ -24,6 +26,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         <button 
           onClick={() => {
             setActiveTab('chats');
+            navigate('/chat');
             closeMiniApp(); // Close MiniApp when switching to chats
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
@@ -36,10 +39,10 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
         
         <button 
           onClick={() => {
-            // Set active tab and open MiniApp slide panel
+            // Set active tab and navigate to MiniApps page
             setActiveTab('miniapps');
-            const event = new CustomEvent('open-miniapp-panel');
-            window.dispatchEvent(event);
+            navigate('/miniapps');
+            closeMiniApp(); // Close any open MiniApp
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
             activeTab === 'miniapps' ? 'text-primary' : 'text-app-muted hover:text-primary'

@@ -3,6 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import WalletConnect from "@/pages/WalletConnect";
 import Home from "@/pages/Home";
 import Chat from "@/pages/Chat";
+import MiniApps from "@/pages/MiniApps";
 import NotFound from "@/pages/not-found";
 import { useEffect } from "react";
 import { useSocketStore } from "./store/store";
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/" component={Home} />
       <Route path="/connect" component={WalletConnect} />
       <Route path="/chat/:id?" component={Chat} />
+      <Route path="/miniapps" component={MiniApps} />
       <Route component={NotFound} />
     </Switch>
   );
