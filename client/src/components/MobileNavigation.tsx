@@ -21,7 +21,7 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
     console.log('MiniApp context not available in MobileNavigation:', error);
   }
   return (
-    <div className="w-full bg-app-surface border-t border-app-border z-50 md:hidden relative">
+    <div className="w-full bg-app-surface border-t border-app-border z-50 md:hidden fixed bottom-0 left-0 right-0">
       <div className="flex justify-around items-center h-16">
         <button 
           onClick={() => {

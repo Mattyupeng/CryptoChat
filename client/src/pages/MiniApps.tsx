@@ -29,9 +29,9 @@ export default function MiniApps() {
   return (
     <Layout>
       <div className="flex h-full w-full overflow-hidden bg-app-bg text-app">
-        <div className="w-full">
+        <div className="w-full flex flex-col">
           {/* Main content area */}
-          <div className="h-full flex flex-col">
+          <div className="flex-1 flex flex-col overflow-hidden">
             {/* Fixed header */}
             <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
               <h1 className="text-xl font-semibold">MiniApps</h1>
