@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useMiniApp } from './MiniAppContext';
 import { X, Send, ExternalLink, Maximize2, Minimize2 } from 'lucide-react';
 import { WalletMiniApp } from './WalletMiniApp';
@@ -11,9 +11,15 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
   const { activeMiniApp, closeMiniApp, walletInfo, sendMiniAppCard } = useMiniApp();
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  
+  // Reference to prevent multiple close button clicks
+  const closeInProgress = useRef(false);
 
   useEffect(() => {
     if (activeMiniApp) {
+      // Reset closing state when a new app is opened
+      closeInProgress.current = false;
+      
       // Don't show loading for internal apps
       if (activeMiniApp.url.startsWith('internal://')) {
         setIsLoading(false);
@@ -29,6 +35,20 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
 
   const toggleFullscreen = () => {
     setIsFullscreen(prev => !prev);
+  };
+  
+  // Enhanced close handler with debounce to prevent multiple clicks
+  const handleCloseMiniApp = () => {
+    if (closeInProgress.current) return;
+    
+    closeInProgress.current = true;
+    // Close the MiniApp
+    closeMiniApp();
+    
+    // Reset the flag after a short delay
+    setTimeout(() => {
+      closeInProgress.current = false;
+    }, 500);
   };
 
   const handleSendCard = () => {
@@ -64,7 +84,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
       {/* Backdrop - z-40 to allow navigation to remain accessible */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm" 
-        onClick={closeMiniApp}
+        onClick={handleCloseMiniApp}
       />
       
       {/* MiniApp Container */}
@@ -115,7 +135,7 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
             
             <button 
               className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-app-hover transition text-app-muted"
-              onClick={closeMiniApp}
+              onClick={handleCloseMiniApp}
               title="Close"
             >
               <X className="w-4 h-4" />
