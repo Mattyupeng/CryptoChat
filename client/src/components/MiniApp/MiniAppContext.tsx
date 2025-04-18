@@ -130,7 +130,25 @@ export function MiniAppProvider({ children }: { children: ReactNode }) {
 export function useMiniApp() {
   const context = useContext(MiniAppContext);
   if (context === undefined) {
-    throw new Error('useMiniApp must be used within a MiniAppProvider');
+    console.warn('useMiniApp was called outside of MiniAppProvider. Some functionality may be limited.');
+    // Return a minimal implementation that won't break the app
+    return {
+      isLauncherOpen: false,
+      openLauncher: () => console.warn('MiniApp launcher cannot be opened outside context'),
+      closeLauncher: () => console.warn('MiniApp launcher cannot be closed outside context'),
+      toggleLauncher: () => console.warn('MiniApp launcher cannot be toggled outside context'),
+      activeMiniApp: null,
+      openMiniApp: () => console.warn('MiniApp cannot be opened outside context'),
+      closeMiniApp: () => console.warn('MiniApp cannot be closed outside context'),
+      sendMiniAppCard: () => console.warn('MiniApp card cannot be sent outside context'),
+      availableMiniApps: [],
+      getMiniAppById: () => undefined,
+      walletInfo: {
+        address: '',
+        chainId: '',
+        chainName: '',
+      }
+    };
   }
   return context;
 }

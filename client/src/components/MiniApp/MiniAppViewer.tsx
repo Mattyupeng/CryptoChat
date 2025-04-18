@@ -8,7 +8,20 @@ interface MiniAppViewerProps {
 }
 
 export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
-  const { activeMiniApp, closeMiniApp, walletInfo, sendMiniAppCard } = useMiniApp();
+  // Use context with safeguards against potential null values
+  const miniAppContext = useMiniApp();
+  const activeMiniApp = miniAppContext?.activeMiniApp || null;
+  const closeMiniApp = miniAppContext?.closeMiniApp || (() => {
+    console.log('Empty closeMiniApp function called - context not available in MiniAppViewer');
+  });
+  const walletInfo = miniAppContext?.walletInfo || {
+    address: '',
+    chainId: '',
+    chainName: ''
+  };
+  const sendMiniAppCard = miniAppContext?.sendMiniAppCard || (() => {
+    console.log('Empty sendMiniAppCard function called - context not available');
+  });
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -186,7 +199,16 @@ export function MiniAppViewer({ recipientId }: MiniAppViewerProps) {
               </button>
             )}
             
-            {/* Close button removed per requirement */}
+            {/* Close button - added back to fix inaccessible app */}
+            <button 
+              ref={closeButtonRef}
+              className="w-8 h-8 rounded-full flex items-center justify-center hover:bg-red-500/10 hover:text-red-500 transition text-app-muted"
+              onClick={handleClose}
+              title="Close app"
+              aria-label="Close app"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
         </div>
         
