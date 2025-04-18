@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useSocketStore } from "./store/store";
 import { ThemeProvider } from "@/lib/theme-provider";
 import { FontSizeProvider } from "@/lib/font-size-provider";
+import { MiniAppProvider } from "@/components/MiniApp";
 
 function Router() {
   const { connectSocket } = useSocketStore();
@@ -33,8 +34,10 @@ function App() {
   return (
     <ThemeProvider>
       <FontSizeProvider>
-        <Router />
-        <Toaster />
+        <MiniAppProvider>
+          <Router />
+          <Toaster />
+        </MiniAppProvider>
       </FontSizeProvider>
     </ThemeProvider>
   );

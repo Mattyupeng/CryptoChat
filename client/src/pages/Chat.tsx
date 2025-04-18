@@ -228,8 +228,7 @@ export default function Chat() {
 
   return (
     <Layout>
-      <MiniAppProvider>
-        <div className="flex h-full w-full overflow-hidden bg-app-bg text-app relative">
+      <div className="flex h-full w-full overflow-hidden bg-app-bg text-app relative">
           {/* MiniApp Components */}
           {showMiniAppLauncher && (
             <MiniAppLauncher 
@@ -654,7 +653,6 @@ export default function Chat() {
           <QrCodeScannerModal onClose={() => setShowQrScanner(false)} />
         )}
       </div>
-      </MiniAppProvider>
     </Layout>
   );
 }

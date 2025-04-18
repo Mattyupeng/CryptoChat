@@ -1,4 +1,5 @@
-import { useMiniApp } from './MiniApp/MiniAppContext';
+// Import from index file instead of direct module
+import { useMiniApp } from '@/components/MiniApp';
 
 interface MobileNavigationProps {
   activeTab: 'chats' | 'settings' | 'miniapps';
@@ -6,7 +7,17 @@ interface MobileNavigationProps {
 }
 
 export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavigationProps) {
-  const { closeMiniApp } = useMiniApp();
+  // Get miniapp context functions if available, otherwise provide fallbacks
+  let closeMiniApp = () => {}; // Default empty function if context not available
+  
+  try {
+    const miniAppContext = useMiniApp();
+    if (miniAppContext && miniAppContext.closeMiniApp) {
+      closeMiniApp = miniAppContext.closeMiniApp;
+    }
+  } catch (error) {
+    console.log('MiniApp context not available in MobileNavigation');
+  }
   return (
     <div className="w-full bg-app-surface border-t border-app-border z-50 md:hidden relative">
       <div className="flex justify-around items-center h-16">
