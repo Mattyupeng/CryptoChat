@@ -11,7 +11,8 @@ import AddFriendModal from '@/components/AddFriendModal';
 import AssetTransferModal from '@/components/AssetTransferModal';
 import CreateGroupChatModal from '@/components/CreateGroupChatModal';
 import Settings from '@/components/Settings';
-import { MiniAppProvider, MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer, useMiniApp } from '@/components/MiniApp';
+import { MiniAppSlidePanel, MiniAppLauncher, MiniAppViewer } from '@/components/MiniApp';
+import { useMiniApp } from '@/components/MiniApp/MiniAppContext';
 import { ActionDropdownMenu } from '@/components/ActionDropdownMenu';
 import QrCodeScannerModal from '@/components/QrCodeScannerModal';
 
@@ -34,7 +35,10 @@ export default function Chat() {
   
   // Get MiniApp context functions
   const miniAppContext = useMiniApp();
-  const { closeMiniApp } = miniAppContext;
+  // Use optional chaining to safely access closeMiniApp
+  const closeMiniApp = miniAppContext?.closeMiniApp || (() => {
+    console.log('Empty closeMiniApp function called - context not available in Chat');
+  });
   
   // Dropdown state for tab switching
   const [showTabsDropdown, setShowTabsDropdown] = useState(false);
@@ -181,11 +185,13 @@ export default function Chat() {
   // Close MiniApps when changing tab
   useEffect(() => {
     // Close any open MiniApp when changing tabs (except when going to miniapps tab)
-    if (activeTab !== 'miniapps' && miniAppContext.activeMiniApp) {
+    if (activeTab !== 'miniapps' && miniAppContext?.activeMiniApp) {
       console.log('Closing MiniApp due to tab change');
-      closeMiniApp();
+      if (typeof closeMiniApp === 'function') {
+        closeMiniApp();
+      }
     }
-  }, [activeTab, closeMiniApp, miniAppContext.activeMiniApp]);
+  }, [activeTab, closeMiniApp, miniAppContext?.activeMiniApp]);
 
   // Handle sharing a MiniApp card
   const handleShareMiniApp = (appId: string, card: { 
@@ -212,11 +218,13 @@ export default function Chat() {
   
   // Close MiniApps when navigating to a chat
   useEffect(() => {
-    if (currentChatId && miniAppContext.activeMiniApp) {
+    if (currentChatId && miniAppContext?.activeMiniApp) {
       console.log('Closing MiniApp due to chat navigation');
-      closeMiniApp();
+      if (typeof closeMiniApp === 'function') {
+        closeMiniApp();
+      }
     }
-  }, [currentChatId, closeMiniApp, miniAppContext.activeMiniApp]);
+  }, [currentChatId, closeMiniApp, miniAppContext?.activeMiniApp]);
 
   if (!initialized) {
     return (
