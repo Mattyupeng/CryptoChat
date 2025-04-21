@@ -123,7 +123,7 @@ export default function Settings() {
             <Button 
               variant="outline" 
               size="sm" 
-              className="h-8 text-app text-primary dark:text-white"
+              className="h-8 text-primary dark:text-white bg-app-card dark:bg-app-surface border-primary/30"
               onClick={() => disconnect()}
             >
               <LogOut className="mr-1 h-4 w-4" />
@@ -259,10 +259,10 @@ export default function Settings() {
           </div>
           
           <div className="flex justify-between mt-3">
-            <Button variant="outline" className="w-1/2 mr-1 text-app text-primary dark:text-white">
+            <Button variant="outline" className="w-1/2 mr-1 text-primary dark:text-white bg-app-card dark:bg-app-surface border-primary/30">
               Send
             </Button>
-            <Button variant="default" className="w-1/2 ml-1 bg-primary text-white">
+            <Button variant="default" className="w-1/2 ml-1 bg-primary text-white border-none">
               Receive
             </Button>
           </div>

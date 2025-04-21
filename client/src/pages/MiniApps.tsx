@@ -137,7 +137,7 @@ export default function MiniApps() {
                         className={`px-3 py-1.5 rounded-lg text-xs ${
                           category === selectedCategory 
                             ? 'bg-primary text-white'
-                            : 'bg-app-bg text-app-muted hover:bg-app-hover'
+                            : 'bg-app-bg text-app-muted'
                         }`}
                         onClick={() => setSelectedCategory(category)}
                       >
@@ -152,7 +152,7 @@ export default function MiniApps() {
                   <div className="flex items-center justify-between mb-3 px-1">
                     <h3 className="text-xs font-medium text-app-muted">All MiniApps</h3>
                     <div className="flex items-center gap-2">
-                      <button className="text-sm text-app-muted hover:text-app-foreground">
+                      <button className="text-sm text-app-muted">
                         <i className="ri-list-check-3"></i>
                       </button>
                       <button className="text-sm text-primary">
@@ -169,8 +169,7 @@ export default function MiniApps() {
                       >
                         <button
                           className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary/10 to-primary/20 
-                            flex items-center justify-center mb-1.5 hover:shadow-md transition-all relative
-                            group-hover:scale-105"
+                            flex items-center justify-center mb-1.5 relative"
                           onClick={() => handleOpenApp(app)}
                         >
                           <i className={`${app.icon} text-2xl text-primary`}></i>

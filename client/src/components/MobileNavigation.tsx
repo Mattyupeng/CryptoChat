@@ -30,8 +30,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
             closeMiniApp(); // Close MiniApp when switching to chats
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
-            activeTab === 'chats' ? 'text-primary' : 'text-app-muted hover:text-primary'
-          } transition`}
+            activeTab === 'chats' ? 'text-primary' : 'text-app-muted'
+          }`}
         >
           <i className="ri-message-3-line text-xl"></i>
           <span className="text-xs mt-1">Chats</span>
@@ -45,8 +45,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
             closeMiniApp(); // Close any open MiniApp
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
-            activeTab === 'miniapps' ? 'text-primary' : 'text-app-muted hover:text-primary'
-          } transition`}
+            activeTab === 'miniapps' ? 'text-primary' : 'text-app-muted'
+          }`}
         >
           <i className="ri-apps-line text-xl"></i>
           <span className="text-xs mt-1">MiniApps</span>
@@ -60,8 +60,8 @@ export default function MobileNavigation({ activeTab, setActiveTab }: MobileNavi
             closeMiniApp(); // Close MiniApp when switching to settings
           }}
           className={`flex flex-col items-center justify-center w-1/3 py-2 ${
-            activeTab === 'settings' ? 'text-primary' : 'text-app-muted hover:text-primary'
-          } transition`}
+            activeTab === 'settings' ? 'text-primary' : 'text-app-muted'
+          }`}
         >
           <i className="ri-settings-3-line text-xl"></i>
           <span className="text-xs mt-1">Settings</span>
