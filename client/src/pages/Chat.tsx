@@ -256,7 +256,7 @@ export default function Chat() {
               {activeTab === 'miniapps' ? (
                 <>
                   {/* Mobile Header for MiniApps */}
-                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
                     <div className="relative group" ref={mobileTabsRef}>
                       <button 
                         className="text-xl font-semibold flex items-center"
@@ -329,7 +329,7 @@ export default function Chat() {
               ) : activeTab === 'settings' ? (
                 <>
                   {/* Mobile Header for Settings */}
-                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
                     <div className="relative group" ref={mobileTabsRef}>
                       <button 
                         className="text-xl font-semibold flex items-center"
@@ -399,7 +399,7 @@ export default function Chat() {
               ) : (
                 <>
                   {/* Mobile Header for Chats */}
-                  <div className="p-4 border-b border-app-border flex items-center justify-between bg-app-surface">
+                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
                     <div className="relative group" ref={mobileTabsRef}>
                       <button 
                         className="text-xl font-semibold flex items-center"
