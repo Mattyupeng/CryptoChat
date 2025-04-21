@@ -31,7 +31,7 @@ export default function WalletConnectionBanner() {
         </div>
         <button 
           onClick={() => navigate('/')}
-          className="px-2 py-1 text-xs rounded-full border border-yellow-500/30 text-yellow-600 hover:bg-yellow-500/10 transition"
+          className="px-2 py-1 text-xs rounded-full border border-yellow-500/30 text-yellow-600 dark:text-yellow-500 hover:bg-yellow-500/10 transition"
         >
           Connect
         </button>

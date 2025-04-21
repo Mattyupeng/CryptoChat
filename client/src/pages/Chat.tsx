@@ -399,7 +399,7 @@ export default function Chat() {
               ) : (
                 <>
                   {/* Mobile Header for Chats */}
-                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
+                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0 flex justify-between items-center">
                     <div className="relative group" ref={mobileTabsRef}>
                       <button 
                         className="text-xl font-semibold flex items-center"
