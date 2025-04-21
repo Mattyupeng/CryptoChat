@@ -1,4 +1,4 @@
-import { useWalletStore } from '@/store/store';
+import { useWalletStore, useSettingsStore } from '@/store/store';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -18,51 +18,29 @@ import {
 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { toast } from '@/hooks/use-toast';
+import { applyTheme } from '@/lib/theme-provider';
 
 export default function Settings() {
   const { address, ensName, chainType, publicKey, disconnect } = useWalletStore();
-  // Initialize the theme from localStorage if available
+  const { theme, setTheme } = useSettingsStore();
+  
+  // Convert theme string to boolean for the switch
   const [darkMode, setDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('hushline-theme');
-    // Default to dark if nothing is saved
-    return savedTheme !== 'light';
+    return theme === 'dark';
   });
   
-  // Handle theme changes
+  // Sync darkMode state with theme store
   useEffect(() => {
-    // Add a log statement for debugging
-    console.log("Theme updated to:", darkMode ? "dark" : "light");
-    
-    // Set the appropriate theme class
-    if (darkMode) {
-      document.documentElement.classList.add('dark-theme');
-      document.documentElement.classList.remove('light-theme');
-    } else {
-      document.documentElement.classList.add('light-theme');
-      document.documentElement.classList.remove('dark-theme');
-    }
-    
-    // Set the appropriate data-theme attribute for Tailwind/shadcn
-    document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
-    
-    // Apply CSS variables directly for better theme switching
-    const bgColor = darkMode ? '#0c0f1d' : '#f8fafc';
-    const textColor = darkMode ? '#f8fafc' : '#0f172a';
-    const cardColor = darkMode ? '#151a30' : '#ffffff';
-    const surfaceColor = darkMode ? '#151a30' : '#f1f5f9';
-    const borderColor = darkMode ? '#2a3453' : '#cbd5e1';
-    const hoverColor = darkMode ? '#212a42' : '#e2e8f0';
-    
-    document.documentElement.style.setProperty('--bg', bgColor);
-    document.documentElement.style.setProperty('--text', textColor);
-    document.documentElement.style.setProperty('--card', cardColor);
-    document.documentElement.style.setProperty('--surface', surfaceColor);
-    document.documentElement.style.setProperty('--border', borderColor);
-    document.documentElement.style.setProperty('--hover', hoverColor);
-    
-    // Persist theme preference in localStorage
-    localStorage.setItem('hushline-theme', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
+    setDarkMode(theme === 'dark');
+  }, [theme]);
+  
+  // Apply theme when darkMode switch changes
+  const handleThemeChange = (isDark: boolean) => {
+    setDarkMode(isDark);
+    setTheme(isDark ? 'dark' : 'light');
+    applyTheme(isDark);
+    console.log("Theme updated to:", isDark ? "dark" : "light");
+  };
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [isLoadingAssets, setIsLoadingAssets] = useState(true);
   const [assets, setAssets] = useState<{
@@ -145,7 +123,7 @@ export default function Settings() {
             <Button 
               variant="outline" 
               size="sm" 
-              className="h-8"
+              className="h-8 text-app text-primary dark:text-white"
               onClick={() => disconnect()}
             >
               <LogOut className="mr-1 h-4 w-4" />
@@ -230,7 +208,7 @@ export default function Settings() {
             ) : (
               <div className="divide-y divide-app-border">
                 {assets.map((asset) => (
-                  <div key={asset.symbol} className="p-3 hover:bg-app-hover transition-colors">
+                  <div key={asset.symbol} className="p-3">
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-3">
                         <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
@@ -265,7 +243,7 @@ export default function Settings() {
                 <div className="p-3">
                   <Button 
                     variant="ghost" 
-                    className="w-full flex items-center justify-between text-app-muted"
+                    className="w-full flex items-center justify-between text-primary dark:text-app-muted"
                     onClick={() => {
                       // Open full wallet
                       const event = new CustomEvent('open-miniapp-panel');
@@ -281,10 +259,10 @@ export default function Settings() {
           </div>
           
           <div className="flex justify-between mt-3">
-            <Button variant="outline" className="w-1/2 mr-1">
+            <Button variant="outline" className="w-1/2 mr-1 text-app text-primary dark:text-white">
               Send
             </Button>
-            <Button variant="default" className="w-1/2 ml-1 bg-primary hover:bg-primary/90">
+            <Button variant="default" className="w-1/2 ml-1 bg-primary text-white">
               Receive
             </Button>
           </div>
@@ -307,7 +285,7 @@ export default function Settings() {
                 <Switch
                   id="dark-mode"
                   checked={darkMode}
-                  onCheckedChange={setDarkMode}
+                  onCheckedChange={handleThemeChange}
                 />
               </div>
             </div>
