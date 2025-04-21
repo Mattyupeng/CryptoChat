@@ -259,10 +259,10 @@ export default function Settings() {
           </div>
           
           <div className="flex justify-between mt-3">
-            <Button variant="outline" className="w-1/2 mr-1 text-primary dark:text-white bg-app-card dark:bg-app-surface border-primary/30">
+            <Button variant="outline" className="w-1/2 mr-1 text-primary dark:text-white bg-app-card/90 dark:bg-app-surface border-primary/60 shadow-sm font-medium">
               Send
             </Button>
-            <Button variant="default" className="w-1/2 ml-1 bg-primary text-white border-none">
+            <Button variant="default" className="w-1/2 ml-1 bg-primary/90 dark:bg-primary text-white border border-primary shadow-sm font-medium">
               Receive
             </Button>
           </div>
