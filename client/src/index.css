@@ -149,6 +149,10 @@
     background-color: var(--surface, var(--dark-card));
   }
   
+  .bg-app-card {
+    background-color: var(--card, var(--dark-card));
+  }
+  
   .hover\:bg-app-hover:hover {
     background-color: var(--hover, var(--dark-hover));
   }

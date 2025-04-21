@@ -45,6 +45,21 @@ export default function Settings() {
     // Set the appropriate data-theme attribute for Tailwind/shadcn
     document.documentElement.setAttribute('data-theme', darkMode ? 'dark' : 'light');
     
+    // Apply CSS variables directly for better theme switching
+    const bgColor = darkMode ? '#0c0f1d' : '#f8fafc';
+    const textColor = darkMode ? '#f8fafc' : '#0f172a';
+    const cardColor = darkMode ? '#151a30' : '#ffffff';
+    const surfaceColor = darkMode ? '#151a30' : '#f1f5f9';
+    const borderColor = darkMode ? '#2a3453' : '#cbd5e1';
+    const hoverColor = darkMode ? '#212a42' : '#e2e8f0';
+    
+    document.documentElement.style.setProperty('--bg', bgColor);
+    document.documentElement.style.setProperty('--text', textColor);
+    document.documentElement.style.setProperty('--card', cardColor);
+    document.documentElement.style.setProperty('--surface', surfaceColor);
+    document.documentElement.style.setProperty('--border', borderColor);
+    document.documentElement.style.setProperty('--hover', hoverColor);
+    
     // Persist theme preference in localStorage
     localStorage.setItem('hushline-theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
@@ -117,7 +132,7 @@ export default function Settings() {
   }, []);
 
   return (
-    <div className="h-full flex flex-col bg-app-background">
+    <div className="h-full flex flex-col bg-app-bg">
       <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
         <h1 className="text-xl font-semibold">Settings</h1>
       </div>
