@@ -146,7 +146,7 @@ export default function Settings() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="h-6 px-2" 
+                    className="h-6 px-2 bg-app-card/30 dark:bg-app-surface/30" 
                     onClick={() => copyToClipboard(address || '', 'Address')}
                   >
                     <Copy className="h-3.5 w-3.5" />
@@ -168,7 +168,7 @@ export default function Settings() {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="h-6 px-2"
+                    className="h-6 px-2 bg-app-card/30 dark:bg-app-surface/30"
                     onClick={() => copyToClipboard(publicKey || '', 'Public Key')}
                   >
                     <Copy className="h-3.5 w-3.5" />
@@ -191,7 +191,7 @@ export default function Settings() {
             <Button 
               variant="ghost" 
               size="sm" 
-              className="h-8"
+              className="h-8 bg-app-card/30 dark:bg-app-surface/30"
               onClick={() => setIsLoadingAssets(true)}
               disabled={isLoadingAssets}
             >
@@ -243,7 +243,7 @@ export default function Settings() {
                 <div className="p-3">
                   <Button 
                     variant="ghost" 
-                    className="w-full flex items-center justify-between text-primary dark:text-app-muted"
+                    className="w-full flex items-center justify-between text-primary dark:text-app-muted bg-app-card/50 dark:bg-app-surface/50"
                     onClick={() => {
                       // Open full wallet
                       const event = new CustomEvent('open-miniapp-panel');

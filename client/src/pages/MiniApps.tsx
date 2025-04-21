@@ -224,7 +224,7 @@ export default function MiniApps() {
                       </div>
                     </div>
                   </div>
-                  <button className="w-full mt-3 py-2 bg-app-bg hover:bg-app-hover rounded-lg text-sm text-app-foreground transition-colors">
+                  <button className="w-full mt-3 py-2 bg-app-bg rounded-lg text-sm text-app-foreground">
                     Join Waitlist
                   </button>
                 </div>
