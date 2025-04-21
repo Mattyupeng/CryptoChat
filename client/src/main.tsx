@@ -4,22 +4,18 @@ import "./index.css";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 
+// Import our applyTheme function for consistent theme application
+import { applyTheme } from './lib/theme-provider';
+
 // Initialize theme from localStorage
 const initializeTheme = () => {
   const savedTheme = localStorage.getItem('hushline-theme') || 'dark';
   
-  if (savedTheme === 'dark') {
-    document.documentElement.classList.add('dark-theme');
-    document.documentElement.classList.remove('light-theme');
-  } else {
-    document.documentElement.classList.add('light-theme');
-    document.documentElement.classList.remove('dark-theme');
-  }
-  
-  document.documentElement.setAttribute('data-theme', savedTheme);
+  // Use the same theme application logic from our provider
+  applyTheme(savedTheme === 'dark');
 };
 
-// Run theme initialization immediately
+// Run theme initialization immediately to avoid flash of wrong theme
 initializeTheme();
 
 // Register service worker for PWA
