@@ -399,7 +399,7 @@ export default function Chat() {
               ) : (
                 <>
                   {/* Mobile Header for Chats */}
-                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0 flex justify-between items-center">
+                  <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0 flex justify-between items-center h-[60px]">
                     <div className="relative group" ref={mobileTabsRef}>
                       <button 
                         className="text-xl font-semibold flex items-center"
@@ -518,7 +518,7 @@ export default function Chat() {
             {/* Chat List Column */}
             <div className="w-full h-full bg-app-surface flex-shrink-0 border-r border-app-border flex flex-col">
               {/* Header */}
-              <div className="p-4 border-b border-app-border flex items-center justify-between">
+              <div className="p-4 border-b border-app-border flex items-center justify-between h-[60px]">
                 {activeTab === 'chats' ? (
                   <div className="relative group" ref={desktopTabsRef}>
                     <button 

@@ -33,7 +33,7 @@ export default function MiniApps() {
           {/* Main content area */}
           <div className="flex-1 flex flex-col overflow-hidden">
             {/* Fixed header */}
-            <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0">
+            <div className="p-4 border-b border-app-border bg-app-surface flex-shrink-0 h-[60px] flex items-center">
               <h1 className="text-xl font-semibold">MiniApps</h1>
             </div>
             
